@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* Tailwind v4 não escaneia node_modules por padrão — incluir o fonte do pacote para gerar utilitários usados em componentes (ex.: Button gradient). */
+@source "./**/*.{ts,tsx}";
+
+/* Tema manual via classe no <html> (useTheme), não só media query do SO — senão dark:* não casa com .dark */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Simplafy Hub — Design Tokens
+ * Source of truth: _bmad-output/hub-2.0-wireframe/css/hub-wireframe.css
+ * Primary: #22C55E (Simplafy Green) → OKLCH
+ *
+ * Padrão de componentes (@simplafy/ui) — aplicar sempre aqui, não só em telas isoladas:
+ * - Controles: border-border, bg-card, foco border-primary + ring-[3px] ring-primary/20
+ * - Botões: Button (gradiente primary, outline/ghost wireframe)
+ * - Overlays (Sheet, Dialog, Select, Dropdown, Popover): z-[100], border-border, rounded-lg
+ * - Listas/hover item: bg-primary/10 onde couber (dropdown, menu, command)
+ */
+
+/* ── Tailwind v4 theme registration ─────────────────────────────────
+   @theme registers tokens as Tailwind utility classes:
+   bg-primary, text-primary-foreground, font-sans, font-display,
+   w-sidebar-w, w-sidebar-collapsed, h-topbar-h, bg-sidebar, etc.
+   ------------------------------------------------------------------ */
+@theme {
+  /* Surface & Text */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0.02 265);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0.02 265);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0.02 265);
+
+  /* Primary — Simplafy Green #22C55E (+ hover / fim do gradiente — hub-wireframe .btn-primary) */
+  --color-primary: oklch(0.72 0.19 150);
+  --color-primary-foreground: oklch(0.98 0 0);
+  --color-primary-hover: #16a34a;
+  --color-primary-gradient-end: #34d399;
+
+  /* Secondary */
+  --color-secondary: oklch(0.97 0.002 265);
+  --color-secondary-foreground: oklch(0.205 0.02 265);
+
+  /* Muted */
+  --color-muted: oklch(0.97 0.002 265);
+  --color-muted-foreground: oklch(0.55 0.01 265);
+
+  /* Accent */
+  --color-accent: oklch(0.97 0.002 265);
+  --color-accent-foreground: oklch(0.205 0.02 265);
+
+  /* Destructive */
+  --color-destructive: oklch(0.58 0.22 27);
+  --color-destructive-foreground: oklch(0.98 0 0);
+
+  /* Semantic */
+  --color-success: oklch(0.72 0.19 150);
+  --color-success-foreground: oklch(0.98 0 0);
+  --color-warning: oklch(0.80 0.16 85);
+  --color-warning-foreground: oklch(0.145 0 0);
+  --color-teal: oklch(0.78 0.13 175);
+  --color-teal-foreground: oklch(0.145 0 0);
+  --color-blue: oklch(0.77 0.13 230);
+  --color-blue-foreground: oklch(0.145 0 0);
+  --color-purple: oklch(0.62 0.22 295);
+  --color-purple-foreground: oklch(0.98 0 0);
+  --color-orange: oklch(0.72 0.19 50);
+  --color-orange-foreground: oklch(0.98 0 0);
+
+  /* Border & Input */
+  --color-border: oklch(0.92 0.004 265);
+  --color-input: oklch(0.92 0.004 265);
+  --color-ring: oklch(0.72 0.19 150);
+
+  /* Sidebar */
+  --color-sidebar: oklch(0.985 0 0);
+  --color-sidebar-foreground: oklch(0.145 0.02 265);
+  --color-sidebar-border: oklch(0.92 0.004 265);
+  --color-sidebar-accent: oklch(0.72 0.19 150 / 0.1);
+  --color-sidebar-accent-foreground: oklch(0.4 0.12 150);
+  --color-sidebar-ring: oklch(0.72 0.19 150);
+
+  /* Layout dimensions — generates w-sidebar-w, w-sidebar-collapsed, h-topbar-h */
+  --spacing-sidebar-w: 240px;
+  --spacing-sidebar-collapsed: 72px;
+  --spacing-topbar-h: 56px;
+}
+
+/* Fonts reference next/font CSS vars injected via HTML className in layout.tsx */
+@theme inline {
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+  --font-display: var(--font-sora), Sora, system-ui, sans-serif;
+}
+
+/* ── Non-color CSS vars (radius + layout) ───────────────────────── */
+@layer base {
+  :root {
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+    --sidebar-w: 240px;
+    --sidebar-w-collapsed: 72px;
+    --topbar-h: 56px;
+  }
+}
+
+/* ── Dark mode token overrides ───────────────────────────────────── */
+@layer base {
+  .dark {
+    --color-background: #0e1117;
+    --color-foreground: #ecf0f5;
+    --color-card: #1c2130;
+    --color-card-foreground: #ecf0f5;
+    --color-popover: #1c2130;
+    --color-popover-foreground: #ecf0f5;
+
+    --color-primary: oklch(0.72 0.19 150);
+    --color-primary-foreground: oklch(0.145 0 0);
+    --color-primary-hover: #15803d;
+    --color-primary-gradient-end: #34d399;
+    --color-secondary: #161b26;
+    --color-secondary-foreground: #ecf0f5;
+    --color-muted: #161b26;
+    --color-muted-foreground: #94a3b8;
+    --color-accent: #161b26;
+    --color-accent-foreground: #ecf0f5;
+
+    --color-destructive: oklch(0.65 0.22 27);
+    --color-destructive-foreground: oklch(0.145 0 0);
+    --color-success: oklch(0.72 0.19 150);
+    --color-success-foreground: oklch(0.145 0 0);
+    --color-warning: oklch(0.85 0.16 85);
+    --color-warning-foreground: oklch(0.145 0 0);
+
+    --color-border: #2d3548;
+    --color-input: #2d3548;
+    --color-ring: oklch(0.72 0.19 150);
+
+    --color-sidebar: #111621;
+    --color-sidebar-foreground: #ecf0f5;
+    --color-sidebar-border: #2d3548;
+    --color-sidebar-accent: rgba(34, 197, 94, 0.15);
+    --color-sidebar-accent-foreground: #22c55e;
+    --color-sidebar-ring: oklch(0.72 0.19 150);
+  }
+}
+
+/* ── Ícones botão estilo wireframe (.hub-ibtn) — toda app que importa globals.css ── */
+@layer components {
+  .hub-ibtn {
+    @apply transition-colors;
+  }
+  .hub-ibtn:hover:not(:disabled) {
+    @apply border-border bg-primary/10 text-foreground;
+  }
+}
+
+/* ── Base styles ─────────────────────────────────────────────────── */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  /* Ponteiro em controles clicáveis (Tailwind não define por padrão para <button>) */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+  button:disabled,
+  [role="button"][aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  /* Keep Next.js dev tools portal from being pinned at top-left. */
+  nextjs-portal {
+    left: unset !important;
+    top: unset !important;
+  }
+}
