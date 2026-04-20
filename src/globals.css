@@ -14,7 +14,7 @@
  * Padrão de componentes (@simplafy/ui) — aplicar sempre aqui, não só em telas isoladas:
  * - Controles: border-border, bg-card, foco border-primary + ring-[3px] ring-primary/20
  * - Botões: Button (gradiente primary, outline/ghost wireframe)
- * - Overlays (Sheet, Dialog, Select, Dropdown, Popover): z-[100], border-border, rounded-lg
+ * - Fundo modal (Dialog/Sheet): z-[100]; painel z-[101]; popovers/dropdowns/select z-[110] (acima do painel)
  * - Listas/hover item: bg-primary/10 onde couber (dropdown, menu, command)
  */
 
