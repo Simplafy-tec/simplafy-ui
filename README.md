@@ -1,25 +1,25 @@
-# @simplafy/ui
+# @simplafy-tec/ui
 
 Design System do ecossistema Simplafy — componentes, tokens semânticos, Tailwind 4 preset.
 
 ## Instalação
 
 ```bash
-pnpm add @simplafy/ui
+pnpm add @simplafy-tec/ui
 ```
 
 Requer `.npmrc` no projeto consumidor:
 
 ```
-@simplafy:registry=https://npm.pkg.github.com
+@simplafy-tec:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
 ```
 
 ## Uso
 
 ```tsx
-import { Button, Badge, Input } from "@simplafy/ui";
-import "@simplafy/ui/globals.css";
+import { Button, Badge, Input } from "@simplafy-tec/ui";
+import "@simplafy-tec/ui/globals.css";
 ```
 
 ## Storybook

@@ -1,5 +1,5 @@
 {
-  "name": "@simplafy/ui",
+  "name": "@simplafy-tec/ui",
   "version": "1.0.0",
   "description": "Simplafy Design System — componentes, tokens semânticos, Tailwind 4 preset",
   "type": "module",
