@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Simplafy Seguros</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-sans);font-size:14px}
+.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;min-height:100vh}
+.sb{grid-row:1/3;background:var(--color-sidebar);border-right:1px solid var(--color-sidebar-border);display:flex;flex-direction:column}
+.brand{height:56px;padding:0 16px;display:flex;align-items:center;border-bottom:1px solid var(--color-sidebar-border)}
+.brand img{height:22px}
+.nav{padding:14px 10px;display:flex;flex-direction:column;gap:2px;flex:1}
+.nav-sec{padding:12px 10px 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-muted-foreground)}
+.nv{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--color-sidebar-foreground);cursor:pointer}
+.nv:hover{background:color-mix(in oklab,var(--color-primary) 6%,transparent)}
+.nv.active{background:var(--color-sidebar-accent);color:var(--color-sidebar-accent-foreground)}
+.nv [data-lucide]{width:16px;height:16px;stroke-width:1.75}
+.top{border-bottom:1px solid var(--color-border);background:var(--color-card);display:flex;align-items:center;padding:0 24px;gap:16px}
+.search{position:relative;flex:1;max-width:400px}
+.search input{height:36px;width:100%;border-radius:8px;border:1px solid var(--color-border);background:var(--color-card);padding:0 12px 0 34px;font-size:13px;outline:0}
+.search input:focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus)}
+.search [data-lucide]{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--color-muted-foreground)}
+.ibtn{width:36px;height:36px;border-radius:8px;border:1px solid transparent;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--color-muted-foreground);cursor:pointer}
+.ibtn:hover{background:color-mix(in oklab,var(--color-primary) 10%,transparent);color:var(--color-primary);border-color:var(--color-border)}
+.avatar{width:32px;height:32px;border-radius:999px;background:var(--color-muted);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px}
+.act{margin-left:auto;display:flex;gap:8px;align-items:center}
+.main{padding:24px 28px;overflow:auto;background:var(--color-muted)}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;gap:16px;flex-wrap:wrap}
+.ph h1{font-family:var(--font-display);font-weight:700;font-size:26px;letter-spacing:-0.01em;margin:0 0 4px}
+.ph p{margin:0;color:var(--color-muted-foreground)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:10px;font-weight:600;font-size:13px;border:1.5px solid transparent;cursor:pointer}
+.btn [data-lucide]{width:16px;height:16px}
+.btn-p{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-gradient-end));color:#fff;box-shadow:var(--shadow-sm)}
+.btn-o{background:var(--color-card);border-color:var(--color-border);color:var(--color-foreground)}
+.btn-o:hover{border-color:var(--color-primary);background:var(--color-sidebar-accent);color:var(--color-primary)}
+.toolbar{background:var(--color-card);border:1px solid var(--color-border);border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:center;margin-bottom:16px}
+.trigger{height:34px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-card);padding:5px 26px 5px 10px;font-size:13px;outline:0;appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:right 12px top 15px,right 7px top 15px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.trigger:focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus)}
+/* pipeline kanban */
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;min-height:400px}
+.col{background:var(--color-card);border:1px solid var(--color-border);border-radius:14px;display:flex;flex-direction:column;min-height:100%}
+.col-h{padding:12px 14px;border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center}
+.col-h .n{font-family:var(--font-display);font-weight:600;font-size:13px}
+.col-h .c{font-size:11px;color:var(--color-muted-foreground);font-family:var(--font-mono);background:var(--color-muted);padding:2px 6px;border-radius:999px}
+.col-body{padding:8px;display:flex;flex-direction:column;gap:8px;flex:1}
+.lead{background:var(--color-card);border:1px solid var(--color-border);border-radius:10px;padding:10px;box-shadow:var(--shadow-sm);cursor:grab}
+.lead:hover{border-color:var(--color-primary)}
+.lead-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.lead-co{font-size:11px;color:var(--color-muted-foreground)}
+.lead-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.lead-val{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--color-foreground)}
+.badge{display:inline-flex;align-items:center;border-radius:6px;padding:2px 6px;font-size:10px;font-weight:600}
+.b-success{background:var(--color-success);color:var(--color-success-foreground)}
+.b-warning{background:var(--color-warning);color:var(--color-warning-foreground)}
+.b-teal{background:var(--color-teal);color:var(--color-teal-foreground)}
+.b-blue{background:var(--color-blue);color:var(--color-blue-foreground)}
+.b-orange{background:var(--color-orange);color:var(--color-orange-foreground)}
+.b-dest{background:var(--color-destructive);color:var(--color-destructive-foreground)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--color-card);border:1px solid var(--color-border);border-radius:14px;padding:14px 16px}
+.kpi-l{font-size:12px;color:var(--color-muted-foreground)}
+.kpi-v{font-family:var(--font-display);font-weight:700;font-size:22px;margin-top:2px}
+</style></head><body>
+<div class="app">
+  <aside class="sb">
+    <div class="brand"><img src="../../assets/logos/seguros_BlackGreen.svg" alt="Simplafy Seguros"></div>
+    <nav class="nav">
+      <div class="nav-sec">Vendas</div>
+      <div class="nv active"><i data-lucide="kanban-square"></i>Pipeline</div>
+      <div class="nv"><i data-lucide="users"></i>Leads</div>
+      <div class="nv"><i data-lucide="file-text"></i>Cotações</div>
+      <div class="nv"><i data-lucide="shield-check"></i>Apólices</div>
+      <div class="nav-sec">Carteira</div>
+      <div class="nv"><i data-lucide="building-2"></i>Clientes</div>
+      <div class="nv"><i data-lucide="repeat"></i>Renovações</div>
+      <div class="nv"><i data-lucide="alert-triangle"></i>Sinistros</div>
+      <div class="nav-sec">Integrações</div>
+      <div class="nv"><i data-lucide="plug"></i>Seguradoras</div>
+      <div class="nv"><i data-lucide="message-square"></i>WhatsApp</div>
+      <div class="nav-sec">Conta</div>
+      <div class="nv"><i data-lucide="settings"></i>Configurações</div>
+    </nav>
+  </aside>
+  <header class="top">
+    <div class="search"><i data-lucide="search"></i><input placeholder="Buscar lead, apólice, CPF/CNPJ…"></div>
+    <div class="act"><button class="ibtn"><i data-lucide="bell"></i></button><div class="avatar">RM</div></div>
+  </header>
+  <main class="main">
+    <div class="ph">
+      <div><h1>Pipeline comercial</h1><p>Corretora Medeiros · abril · 48 leads ativos</p></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-o"><i data-lucide="filter"></i>Filtros</button><button class="btn btn-p"><i data-lucide="plus"></i>Novo lead</button></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-l">Leads no mês</div><div class="kpi-v">142</div></div>
+      <div class="kpi"><div class="kpi-l">Em negociação</div><div class="kpi-v">R$ 284k</div></div>
+      <div class="kpi"><div class="kpi-l">Fechados</div><div class="kpi-v">R$ 96k</div></div>
+      <div class="kpi"><div class="kpi-l">Taxa conversão</div><div class="kpi-v">22,4%</div></div>
+    </div>
+    <div class="toolbar">
+      <select class="trigger"><option>Todos os produtos</option><option>Auto</option><option>Vida</option><option>Residencial</option></select>
+      <select class="trigger"><option>Todos os responsáveis</option><option>Renato M.</option><option>Juliana S.</option></select>
+      <select class="trigger"><option>Este mês</option><option>Últimos 30d</option><option>Últimos 90d</option></select>
+      <div style="margin-left:auto;color:var(--color-muted-foreground);font-size:12px">Atualizado há 3 min</div>
+    </div>
+    <div class="pipe">
+      <div class="col"><div class="col-h"><div class="n">Novo</div><div class="c">12</div></div><div class="col-body">
+        <div class="lead"><div class="lead-name">Padaria Vitória</div><div class="lead-co">Empresarial · CNPJ</div><div class="lead-meta"><span class="badge b-blue">Auto frota</span><span class="lead-val">R$ 8.4k</span></div></div>
+        <div class="lead"><div class="lead-name">Maria Silva</div><div class="lead-co">Pessoa física</div><div class="lead-meta"><span class="badge b-teal">Vida</span><span class="lead-val">R$ 1.2k</span></div></div>
+        <div class="lead"><div class="lead-name">Farmácia Saúde+</div><div class="lead-co">Empresarial</div><div class="lead-meta"><span class="badge b-blue">Patrimonial</span><span class="lead-val">R$ 3.1k</span></div></div>
+      </div></div>
+      <div class="col"><div class="col-h"><div class="n">Contato</div><div class="c">9</div></div><div class="col-body">
+        <div class="lead"><div class="lead-name">João Oliveira</div><div class="lead-co">Pessoa física</div><div class="lead-meta"><span class="badge b-blue">Auto</span><span class="lead-val">R$ 2.8k</span></div></div>
+        <div class="lead"><div class="lead-name">Clínica Nova Vida</div><div class="lead-co">Empresarial</div><div class="lead-meta"><span class="badge b-orange">Hot</span><span class="lead-val">R$ 14k</span></div></div>
+      </div></div>
+      <div class="col"><div class="col-h"><div class="n">Cotação</div><div class="c">15</div></div><div class="col-body">
+        <div class="lead"><div class="lead-name">Ana Costa</div><div class="lead-co">Pessoa física</div><div class="lead-meta"><span class="badge b-teal">Vida</span><span class="lead-val">R$ 980</span></div></div>
+        <div class="lead"><div class="lead-name">Transportes Fênix</div><div class="lead-co">Empresarial</div><div class="lead-meta"><span class="badge b-blue">Frota</span><span class="lead-val">R$ 22k</span></div></div>
+        <div class="lead"><div class="lead-name">Beatriz Lima</div><div class="lead-co">Pessoa física</div><div class="lead-meta"><span class="badge b-warning">Pendente</span><span class="lead-val">R$ 4.6k</span></div></div>
+      </div></div>
+      <div class="col"><div class="col-h"><div class="n">Negociação</div><div class="c">7</div></div><div class="col-body">
+        <div class="lead"><div class="lead-name">Carlos Pereira</div><div class="lead-co">Pessoa física</div><div class="lead-meta"><span class="badge b-orange">Hot</span><span class="lead-val">R$ 5.2k</span></div></div>
+        <div class="lead"><div class="lead-name">Padaria Vitória II</div><div class="lead-co">Empresarial</div><div class="lead-meta"><span class="badge b-blue">Auto</span><span class="lead-val">R$ 6.8k</span></div></div>
+      </div></div>
+      <div class="col"><div class="col-h"><div class="n">Fechado</div><div class="c">5</div></div><div class="col-body">
+        <div class="lead" style="border-color:var(--color-success)"><div class="lead-name">Fernanda Souza</div><div class="lead-co">Pessoa física</div><div class="lead-meta"><span class="badge b-success">Convertido</span><span class="lead-val">R$ 3.1k</span></div></div>
+        <div class="lead" style="border-color:var(--color-success)"><div class="lead-name">Oficina Mecânica BR</div><div class="lead-co">Empresarial</div><div class="lead-meta"><span class="badge b-success">Convertido</span><span class="lead-val">R$ 11.4k</span></div></div>
+      </div></div>
+    </div>
+  </main>
+</div>
+<script src="https://unpkg.com/lucide@0.509.0/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();document.querySelectorAll('.nv').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('.nv').forEach(x=>x.classList.remove('active'));el.classList.add('active')}));</script>
+</body></html>

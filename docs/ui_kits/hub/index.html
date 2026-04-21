@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Hub v2 — Simplafy</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-sans);font-size:14px;line-height:1.5;}
+  button{font-family:inherit;cursor:pointer;}
+  a{color:inherit;text-decoration:none;}
+
+  /* Radius scale — ESCALA CONTIDA (proposta Nov 2026) */
+  :root{
+    --r-xs: 4px;   /* badges, bar-fill */
+    --r-sm: 6px;   /* nav-item, ibtn, mini-controls */
+    --r-md: 8px;   /* btn, inputs, agent row, a-ico, kpi-icon */
+    --r-lg: 10px;  /* cards, kpi, sheet surfaces */
+    --r-pill: 999px; /* switch, nav-badge, profile-btn */
+  }
+
+  /* Layout */
+  .app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;min-height:100vh;background:var(--color-background);}
+  .sidebar{grid-row:1/3;background:var(--color-sidebar);border-right:1px solid var(--color-sidebar-border);display:flex;flex-direction:column;}
+  .topbar{border-bottom:1px solid var(--color-border);background:var(--color-card);display:flex;align-items:center;padding:0 24px;gap:16px;}
+  .main{padding:24px 28px;overflow:auto;}
+
+  /* Sidebar */
+  .brand{height:56px;padding:0 16px;display:flex;align-items:center;border-bottom:1px solid var(--color-sidebar-border);}
+  .brand img{height:22px;}
+  .nav{padding:14px 10px;display:flex;flex-direction:column;gap:2px;flex:1;}
+  .nav-section{padding:12px 10px 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-muted-foreground);}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:500;color:var(--color-sidebar-foreground);transition:background .15s;cursor:pointer;}
+  .nav-item:hover{background:color-mix(in oklab,var(--color-primary) 6%, transparent);}
+  .nav-item.active{background:var(--color-sidebar-accent);color:var(--color-sidebar-accent-foreground);}
+  .nav-item [data-lucide]{width:16px;height:16px;stroke-width:1.75;}
+  .nav-badge{margin-left:auto;background:var(--color-primary);color:#fff;font-size:10px;font-weight:700;border-radius:var(--r-pill);padding:1px 6px;}
+  /* Sidebar footer — status do sistema (sem switcher de org, Hub é single-tenant) */
+  .sb-footer{margin-top:auto;padding:12px 14px;border-top:1px solid var(--color-sidebar-border);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--color-muted-foreground);}
+  .sb-status{display:flex;align-items:center;gap:6px;}
+  .sb-status::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--color-success);box-shadow:0 0 0 2px color-mix(in oklab,var(--color-success) 25%, transparent);}
+  .sb-version{font-family:var(--font-mono);font-size:10.5px;}
+
+  /* Topbar — minimal: contexto à esquerda, perfil à direita */
+  .tb-context{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-muted-foreground);}
+  .tb-context strong{color:var(--color-foreground);font-weight:600;}
+  .tb-context [data-lucide]{width:14px;height:14px;opacity:.55;}
+  .topbar-actions{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .ibtn{width:32px;height:32px;border-radius:var(--r-sm);border:1px solid transparent;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--color-muted-foreground);transition:background .15s,color .15s;cursor:pointer;}
+  .ibtn:hover{background:color-mix(in oklab,var(--color-primary) 10%, transparent);color:var(--color-primary);}
+  .ibtn [data-lucide]{width:16px;height:16px;}
+  .profile-btn{display:flex;align-items:center;gap:10px;padding:3px 10px 3px 3px;border-radius:var(--r-pill);border:1px solid var(--color-border);background:var(--color-card);cursor:pointer;transition:border-color .15s;}
+  .profile-btn:hover{border-color:var(--color-primary);}
+  .profile-btn .avatar{width:28px;height:28px;border-radius:var(--r-pill);background:linear-gradient(135deg,var(--color-primary),var(--color-primary-gradient-end));display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;color:#fff;}
+  .profile-btn .pname{font-size:12.5px;font-weight:500;color:var(--color-foreground);}
+  .profile-btn [data-lucide]{width:14px;height:14px;color:var(--color-muted-foreground);}
+
+  /* Page header */
+  .page-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:16px;flex-wrap:wrap;}
+  .page-h h1{font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-0.01em;margin:0 0 4px;}
+  .page-h p{margin:0;color:var(--color-muted-foreground);font-size:14px;}
+
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:var(--r-md);font-weight:600;font-size:13px;border:1.5px solid transparent;transition:all .2s;white-space:nowrap;}
+  .btn [data-lucide]{width:16px;height:16px;}
+  .btn-primary{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-gradient-end));color:#fff;box-shadow:var(--shadow-sm);}
+  .btn-primary:hover{background:var(--color-primary-hover);filter:brightness(1.05);}
+  .btn-outline{background:var(--color-card);border-color:var(--color-border);color:var(--color-foreground);}
+  .btn-outline:hover{border-color:var(--color-primary);background:var(--color-sidebar-accent);color:var(--color-primary);}
+  .btn-ghost{background:transparent;color:var(--color-muted-foreground);}
+  .btn-ghost:hover{background:color-mix(in oklab,var(--color-primary) 10%, transparent);color:var(--color-primary);}
+
+  /* KPIs */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;}
+  .kpi{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm);}
+  .kpi-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+  .kpi-label{font-size:13px;color:var(--color-muted-foreground);}
+  .kpi-value{font-family:var(--font-display);font-weight:700;font-size:26px;letter-spacing:-0.01em;margin-top:4px;}
+  .kpi-trend{margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;}
+  .kpi-trend.up{color:var(--color-success);}
+  .kpi-trend.dn{color:var(--color-destructive);}
+  .kpi-icon{width:40px;height:40px;border-radius:var(--r-md);background:color-mix(in oklab,var(--color-primary) 10%, transparent);color:var(--color-primary);display:flex;align-items:center;justify-content:center;}
+  .kpi-icon [data-lucide]{width:18px;height:18px;}
+
+  /* Grid split */
+  .grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px;}
+  .card{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);}
+  .card-h{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--color-border);}
+  .card-title{font-family:var(--font-display);font-weight:600;font-size:16px;margin:0;}
+  .card-body{padding:18px 20px;}
+
+  /* Chart (pure CSS bars) */
+  .chart{display:grid;grid-template-rows:1fr auto;gap:8px;height:200px;padding:10px 0;}
+  .chart-bars{display:flex;align-items:flex-end;gap:10px;height:100%;}
+  .chart-labels{display:flex;gap:10px;}
+  .bar{flex:1;display:flex;align-items:flex-end;height:100%;}
+  .chart-labels>div{flex:1;text-align:center;font-size:11px;color:var(--color-muted-foreground);font-family:var(--font-mono);}
+  .bar-fill{width:100%;background:linear-gradient(180deg,var(--color-primary-gradient-end),var(--color-primary));border-radius:var(--r-xs) var(--r-xs) 0 0;min-height:4px;}
+
+  /* Agent list */
+  .agent{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);transition:background .15s;cursor:pointer;}
+  .agent:hover{background:var(--color-muted);}
+  .agent.sel{background:var(--color-sidebar-accent);}
+  .agent .a-ico{width:36px;height:36px;border-radius:var(--r-md);background:color-mix(in oklab,var(--color-primary) 12%,transparent);color:var(--color-primary);display:flex;align-items:center;justify-content:center;}
+  .agent .a-ico [data-lucide]{width:18px;height:18px;}
+  .agent-name{font-weight:600;font-size:13px;}
+  .agent-sub{font-size:12px;color:var(--color-muted-foreground);}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th{text-align:left;padding:12px 20px;color:var(--color-muted-foreground);font-weight:500;font-size:13px;border-bottom:1px solid var(--color-border);background:var(--color-card);}
+  td{padding:14px 20px;border-bottom:1px solid var(--color-border);}
+  tbody tr:hover{background:color-mix(in oklab,var(--color-muted) 50%,transparent);}
+  tbody tr:last-child td{border-bottom:0;}
+  .badge{display:inline-flex;align-items:center;gap:4px;border-radius:var(--r-xs);padding:2px 8px;font-size:11px;font-weight:600;}
+  .b-success{background:var(--color-success);color:var(--color-success-foreground);}
+  .b-warning{background:var(--color-warning);color:var(--color-warning-foreground);}
+  .b-teal{background:var(--color-teal);color:var(--color-teal-foreground);}
+  .b-blue{background:var(--color-blue);color:var(--color-blue-foreground);}
+  .b-orange{background:var(--color-orange);color:var(--color-orange-foreground);}
+  .b-secondary{background:var(--color-secondary);color:var(--color-secondary-foreground);border:1px solid var(--color-border);}
+
+  /* Tabs */
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--color-border);margin-bottom:16px;}
+  .tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--color-muted-foreground);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color .15s,border-color .15s;}
+  .tab.active{color:var(--color-primary);border-color:var(--color-primary);}
+  .tab:hover:not(.active){color:var(--color-foreground);}
+
+  /* Sheet */
+  .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;}
+  .sheet-backdrop.open{opacity:1;pointer-events:auto;}
+  .sheet{position:fixed;top:0;right:0;bottom:0;width:480px;background:var(--color-card);border-left:1px solid var(--color-border);transform:translateX(100%);transition:transform .2s;z-index:51;display:flex;flex-direction:column;}
+  .sheet.open{transform:translateX(0);}
+  .sheet-h{padding:20px 24px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;}
+  .sheet-h h2{font-family:var(--font-display);font-size:18px;font-weight:600;margin:0;}
+  .sheet-body{padding:20px 24px;overflow:auto;flex:1;}
+  .sheet-f{padding:16px 24px;border-top:1px solid var(--color-border);display:flex;gap:8px;justify-content:flex-end;}
+
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .field label{font-size:13px;font-weight:500;}
+  .field input, .field select, .field textarea{height:40px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-card);padding:0 12px;font:inherit;font-size:14px;color:var(--color-foreground);outline:0;}
+  .field textarea{height:80px;padding:10px 12px;resize:vertical;}
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus);}
+
+  .row-end{display:flex;justify-content:flex-end;gap:8px;}
+  .hint{font-size:12px;color:var(--color-muted-foreground);margin-top:-8px;margin-bottom:12px;}
+
+  /* Switch */
+  .switch{display:inline-flex;align-items:center;gap:10px;}
+  .switch input{appearance:none;width:36px;height:20px;border-radius:var(--r-pill);background:var(--color-border);position:relative;cursor:pointer;transition:background .15s;margin:0;}
+  .switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:var(--r-pill);background:#fff;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,.15);}
+  .switch input:checked{background:var(--color-primary);}
+  .switch input:checked::after{left:18px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><img src="../../assets/logos/simplafy_BlackGreen.svg" alt="Simplafy"></div>
+    <nav class="nav">
+      <div class="nav-section">Principal</div>
+      <div class="nav-item active" data-page="dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</div>
+      <div class="nav-item" data-page="agentes"><i data-lucide="bot"></i>Agentes<span class="nav-badge">4</span></div>
+      <div class="nav-item" data-page="contatos"><i data-lucide="users"></i>Contatos</div>
+      <div class="nav-item" data-page="conversas"><i data-lucide="message-square"></i>Conversas</div>
+      <div class="nav-item" data-page="jornadas"><i data-lucide="route"></i>Jornadas</div>
+      <div class="nav-section">Análise</div>
+      <div class="nav-item" data-page="relatorios"><i data-lucide="bar-chart-3"></i>Relatórios</div>
+      <div class="nav-item" data-page="integracoes"><i data-lucide="plug"></i>Integrações</div>
+      <div class="nav-section">Conta</div>
+      <div class="nav-item" data-page="config"><i data-lucide="settings"></i>Configurações</div>
+    </nav>
+    <div class="sb-footer">
+      <span class="sb-status">Operacional</span>
+      <span class="sb-version">v2.0.1</span>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div class="tb-context">
+      <strong>Dashboard</strong>
+      <i data-lucide="chevron-right"></i>
+      <span>Visão geral</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="profile-btn" aria-label="Perfil e conta">
+        <span class="avatar">FM</span>
+        <span class="pname">Felipe M.</span>
+        <i data-lucide="chevron-down"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="main" id="main">
+    <div class="page-h">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Visão geral dos agentes e conversas desta semana.</p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline"><i data-lucide="download"></i>Exportar</button>
+        <button class="btn btn-primary" onclick="openSheet()"><i data-lucide="plus"></i>Novo agente</button>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-head"><div><div class="kpi-label">Conversas ativas</div><div class="kpi-value">1.284</div><div class="kpi-trend up">▲ 12,4% vs. semana</div></div><div class="kpi-icon"><i data-lucide="message-square"></i></div></div></div>
+      <div class="kpi"><div class="kpi-head"><div><div class="kpi-label">Taxa de resposta</div><div class="kpi-value">94,2%</div><div class="kpi-trend up">▲ 1,8%</div></div><div class="kpi-icon"><i data-lucide="zap"></i></div></div></div>
+      <div class="kpi"><div class="kpi-head"><div><div class="kpi-label">Leads convertidos</div><div class="kpi-value">312</div><div class="kpi-trend up">▲ 6,1%</div></div><div class="kpi-icon"><i data-lucide="trending-up"></i></div></div></div>
+      <div class="kpi"><div class="kpi-head"><div><div class="kpi-label">Tempo médio</div><div class="kpi-value">2m 14s</div><div class="kpi-trend dn">▼ 0,4%</div></div><div class="kpi-icon"><i data-lucide="clock"></i></div></div></div>
+    </div>
+
+    <div class="grid2">
+      <section class="card">
+        <div class="card-h">
+          <h2 class="card-title">Volume por dia</h2>
+          <div class="tabs" style="border:0;margin:0;">
+            <div class="tab active">7d</div><div class="tab">30d</div><div class="tab">90d</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart">
+            <div class="chart-bars">
+              <div class="bar"><div class="bar-fill" style="height:62%"></div></div>
+              <div class="bar"><div class="bar-fill" style="height:78%"></div></div>
+              <div class="bar"><div class="bar-fill" style="height:54%"></div></div>
+              <div class="bar"><div class="bar-fill" style="height:88%"></div></div>
+              <div class="bar"><div class="bar-fill" style="height:92%"></div></div>
+              <div class="bar"><div class="bar-fill" style="height:46%"></div></div>
+              <div class="bar"><div class="bar-fill" style="height:28%"></div></div>
+            </div>
+            <div class="chart-labels">
+              <div>seg</div><div>ter</div><div>qua</div><div>qui</div><div>sex</div><div>sáb</div><div>dom</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><h2 class="card-title">Agentes ativos</h2><button class="btn-ghost btn" style="height:32px;padding:0 10px;font-size:12px;">Ver tudo</button></div>
+        <div class="card-body" style="padding:8px;">
+          <div class="agent sel"><div class="a-ico"><i data-lucide="bot"></i></div><div><div class="agent-name">SDR WhatsApp</div><div class="agent-sub">412 conversas hoje</div></div><span class="badge b-success" style="margin-left:auto;">Online</span></div>
+          <div class="agent"><div class="a-ico"><i data-lucide="headphones"></i></div><div><div class="agent-name">Atendimento SAC</div><div class="agent-sub">188 conversas hoje</div></div><span class="badge b-success" style="margin-left:auto;">Online</span></div>
+          <div class="agent"><div class="a-ico"><i data-lucide="calendar"></i></div><div><div class="agent-name">Agendador clínico</div><div class="agent-sub">76 conversas hoje</div></div><span class="badge b-warning" style="margin-left:auto;">Pausado</span></div>
+          <div class="agent"><div class="a-ico"><i data-lucide="dollar-sign"></i></div><div><div class="agent-name">Cobrança amigável</div><div class="agent-sub">24 conversas hoje</div></div><span class="badge b-secondary" style="margin-left:auto;">Inativo</span></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:16px;">
+      <div class="card-h">
+        <h2 class="card-title">Conversas recentes</h2>
+        <div class="tabs" style="border:0;margin:0;">
+          <div class="tab active">Todas</div><div class="tab">Abertas</div><div class="tab">Pendentes</div>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Contato</th><th>Canal</th><th>Agente</th><th>Status</th><th>Última msg</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Maria Silva</strong><div style="font-size:12px;color:var(--color-muted-foreground);">+55 11 9 8123-4567</div></td><td><span class="badge b-teal">WhatsApp</span></td><td>SDR WhatsApp</td><td><span class="badge b-success">Convertido</span></td><td>há 2 min</td><td><button class="ibtn" aria-label="mais"><i data-lucide="more-horizontal"></i></button></td></tr>
+          <tr><td><strong>João Oliveira</strong><div style="font-size:12px;color:var(--color-muted-foreground);">joao@example.com</div></td><td><span class="badge b-blue">Email</span></td><td>Atendimento SAC</td><td><span class="badge b-warning">Pendente</span></td><td>há 18 min</td><td><button class="ibtn"><i data-lucide="more-horizontal"></i></button></td></tr>
+          <tr><td><strong>Ana Costa</strong><div style="font-size:12px;color:var(--color-muted-foreground);">+55 21 9 8765-4321</div></td><td><span class="badge b-teal">WhatsApp</span></td><td>Agendador clínico</td><td><span class="badge b-orange">Hot</span></td><td>há 42 min</td><td><button class="ibtn"><i data-lucide="more-horizontal"></i></button></td></tr>
+          <tr><td><strong>Carlos Pereira</strong><div style="font-size:12px;color:var(--color-muted-foreground);">+55 31 9 7654-3210</div></td><td><span class="badge b-teal">WhatsApp</span></td><td>Cobrança amigável</td><td><span class="badge b-success">Convertido</span></td><td>há 1 h</td><td><button class="ibtn"><i data-lucide="more-horizontal"></i></button></td></tr>
+          <tr><td><strong>Beatriz Lima</strong><div style="font-size:12px;color:var(--color-muted-foreground);">+55 41 9 2345-6789</div></td><td><span class="badge b-blue">Email</span></td><td>Atendimento SAC</td><td><span class="badge b-secondary">Inativo</span></td><td>ontem</td><td><button class="ibtn"><i data-lucide="more-horizontal"></i></button></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<!-- Sheet -->
+<div class="sheet-backdrop" id="backdrop" onclick="closeSheet()"></div>
+<aside class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheet-h">
+    <h2>Novo agente</h2>
+    <button class="ibtn" onclick="closeSheet()" aria-label="Fechar"><i data-lucide="x"></i></button>
+  </div>
+  <div class="sheet-body">
+    <div class="field"><label>Nome do agente</label><input placeholder="Ex.: SDR WhatsApp"></div>
+    <div class="hint">Nome interno, visível apenas para sua equipe.</div>
+    <div class="field"><label>Tipo</label><select><option>Atendimento</option><option>Vendas</option><option>Agendamento</option><option>Cobrança</option></select></div>
+    <div class="field"><label>Canal</label><select><option>WhatsApp</option><option>Email</option><option>Instagram</option></select></div>
+    <div class="field"><label>Prompt base</label><textarea placeholder="Você é um SDR que responde em pt-BR…"></textarea></div>
+    <div class="switch" style="margin-top:4px;"><input type="checkbox" id="sw1" checked><label for="sw1" style="font-size:13px;">Ativar assim que criado</label></div>
+  </div>
+  <div class="sheet-f">
+    <button class="btn btn-outline" onclick="closeSheet()">Cancelar</button>
+    <button class="btn btn-primary" onclick="closeSheet()">Salvar</button>
+  </div>
+</aside>
+
+<script src="https://unpkg.com/lucide@0.509.0/dist/umd/lucide.min.js"></script>
+<script>
+  lucide.createIcons();
+  function openSheet(){document.getElementById('sheet').classList.add('open');document.getElementById('backdrop').classList.add('open');}
+  function closeSheet(){document.getElementById('sheet').classList.remove('open');document.getElementById('backdrop').classList.remove('open');}
+  document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));el.classList.add('active');}));
+  document.querySelectorAll('.tab').forEach(el=>el.addEventListener('click',()=>{el.parentElement.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');}));
+</script>
+</body>
+</html>
