@@ -10,7 +10,7 @@ const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
 /**
- * Hub 2.0 — alinhado ao `Input`: 40px, rounded-md, mesma borda/sombra/foco (focus-visible).
+ * Hub 2.0 — 40px, rounded-lg (igual `Input`), foco com focus-visible (não focus:).
  */
 const SelectTrigger = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Trigger>,
@@ -20,7 +20,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "relative box-border flex h-[40px] min-h-[40px] w-full min-w-0 items-center justify-between gap-2",
-      "whitespace-nowrap rounded-md border border-border bg-card py-[5px] pl-[10px] pr-[26px] text-left",
+      "whitespace-nowrap rounded-lg border border-border bg-card py-[5px] pl-[10px] pr-[26px] text-left",
       "font-sans text-sm font-normal leading-tight text-foreground shadow-sm",
       "transition-[border-color,box-shadow,background-color] duration-200",
       "placeholder:text-muted-foreground",
@@ -79,7 +79,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-[110] max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "relative z-[110] max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className,
