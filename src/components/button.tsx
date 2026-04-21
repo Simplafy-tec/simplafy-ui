@@ -9,7 +9,7 @@ import { cn } from '../lib/utils';
  */
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] font-semibold font-sans text-[13px] leading-tight',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-semibold font-sans text-[13px] leading-tight',
     'cursor-pointer',
     'ring-offset-background transition-[background,background-image,color,border-color,filter,box-shadow] duration-200',
     'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/20',
@@ -41,9 +41,9 @@ const buttonVariants = cva(
       },
       size: {
         default: '',
-        sm: 'min-h-9 rounded-[10px] px-3 text-sm',
-        lg: 'min-h-11 rounded-[10px] px-8 text-[13px]',
-        icon: 'size-10 min-h-10 min-w-10 shrink-0 rounded-[10px] px-0',
+        sm: 'min-h-9 rounded-md px-3 text-sm',
+        lg: 'min-h-11 rounded-md px-8 text-[13px]',
+        icon: 'size-10 min-h-10 min-w-10 shrink-0 rounded-md px-0',
       },
     },
     defaultVariants: {

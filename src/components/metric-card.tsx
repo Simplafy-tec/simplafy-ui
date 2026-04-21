@@ -71,7 +71,7 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
     <div
       ref={ref}
       className={cn(
-        "rounded-xl border bg-card p-5 text-card-foreground shadow-sm",
+        "rounded-lg border bg-card p-5 text-card-foreground shadow-sm",
         className,
       )}
       {...props}
