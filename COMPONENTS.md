@@ -5,7 +5,7 @@
 - **NUNCA** criar componente em `apps/web` se equivalente existe em `@simplafy/ui`
 - **NUNCA** hardcodar cor — usar tokens (`bg-primary`, `text-muted-foreground`, `border-border`, etc.)
 - **NUNCA** hardcodar radius — usar `rounded-sm` / `rounded-md` / `rounded-lg` / `rounded-xl`
-- **NUNCA** hardcodar font — usar `font-sans` (Inter) ou `font-display` (Sora)
+- **NUNCA** hardcodar font — usar `font-sans` (Geist) ou `font-display` (Geist, heavier)
 - **Ícones:** SEMPRE `lucide-react` — NÃO importar outro icon pack
 - **Altura inputs:** 40px (`Input`) ou 34px (`Select`) — NÃO alterar
 
@@ -185,8 +185,8 @@ Definidos em `packages/ui/src/globals.css` (bloco `@theme`):
 | `bg-muted` / `text-muted-foreground` | Fundo sutil / texto secundário |
 | `bg-destructive` / `text-destructive` | Erros e ações perigosas |
 | `border-border` | Bordas padrão |
-| `font-sans` | Inter (body) |
-| `font-display` | Sora (headings) |
+| `font-sans` | Geist (body) |
+| `font-display` | Geist 600/700 (headings) |
 | `bg-teal` / `bg-blue` / `bg-purple` / `bg-orange` | Semântica de badges |
 | `bg-success` / `bg-warning` | Status positivo / alerta |
 

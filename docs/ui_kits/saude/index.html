@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Simplafy Saúde</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-sans);font-size:14px}
+.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;min-height:100vh}
+.sb{grid-row:1/3;background:var(--color-sidebar);border-right:1px solid var(--color-sidebar-border);display:flex;flex-direction:column}
+.brand{height:56px;padding:0 16px;display:flex;align-items:center;border-bottom:1px solid var(--color-sidebar-border)}
+.brand img{height:22px}
+.nav{padding:14px 10px;display:flex;flex-direction:column;gap:2px;flex:1}
+.nav-sec{padding:12px 10px 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-muted-foreground)}
+.nv{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--color-sidebar-foreground);cursor:pointer}
+.nv:hover{background:color-mix(in oklab,var(--color-primary) 6%,transparent)}
+.nv.active{background:var(--color-sidebar-accent);color:var(--color-sidebar-accent-foreground)}
+.nv [data-lucide]{width:16px;height:16px;stroke-width:1.75}
+.top{border-bottom:1px solid var(--color-border);background:var(--color-card);display:flex;align-items:center;padding:0 24px;gap:16px}
+.search{position:relative;flex:1;max-width:400px}
+.search input{height:36px;width:100%;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-card);padding:0 12px 0 34px;font-size:13px;outline:0}
+.search input:focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus)}
+.search [data-lucide]{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--color-muted-foreground)}
+.ibtn{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid transparent;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--color-muted-foreground);cursor:pointer}
+.ibtn:hover{background:color-mix(in oklab,var(--color-primary) 10%,transparent);color:var(--color-primary);border-color:var(--color-border)}
+.avatar{width:32px;height:32px;border-radius:var(--radius-full);background:var(--color-muted);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px}
+.act{margin-left:auto;display:flex;gap:8px;align-items:center}
+.main{padding:24px 28px;overflow:auto}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;gap:16px}
+.ph h1{font-family:var(--font-display);font-weight:700;font-size:26px;letter-spacing:-0.01em;margin:0 0 4px}
+.ph p{margin:0;color:var(--color-muted-foreground)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:var(--radius-md);font-weight:600;font-size:13px;border:1.5px solid transparent;cursor:pointer}
+.btn [data-lucide]{width:16px;height:16px}
+.btn-p{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-gradient-end));color:#fff;box-shadow:var(--shadow-sm)}
+.btn-o{background:var(--color-card);border-color:var(--color-border);color:var(--color-foreground)}
+.btn-o:hover{border-color:var(--color-primary);background:var(--color-sidebar-accent);color:var(--color-primary)}
+.grid{display:grid;grid-template-columns:280px 1fr;gap:16px}
+.card{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.ch{padding:18px 20px;border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center}
+.ch h2{font-family:var(--font-display);font-size:16px;font-weight:600;margin:0}
+.cb{padding:16px 20px}
+.badge{display:inline-flex;align-items:center;border-radius:var(--radius-xs);padding:2px 8px;font-size:11px;font-weight:600}
+.b-success{background:var(--color-success);color:var(--color-success-foreground)}
+.b-warning{background:var(--color-warning);color:var(--color-warning-foreground)}
+.b-teal{background:var(--color-teal);color:var(--color-teal-foreground)}
+.b-blue{background:var(--color-blue);color:var(--color-blue-foreground)}
+.b-dest{background:var(--color-destructive);color:var(--color-destructive-foreground)}
+.pat-list{display:flex;flex-direction:column;gap:2px;padding:6px}
+.pat{padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;display:flex;gap:10px;align-items:center}
+.pat:hover{background:var(--color-muted)}
+.pat.sel{background:var(--color-sidebar-accent)}
+.pat-ava{width:36px;height:36px;border-radius:var(--radius-full);background:color-mix(in oklab,var(--color-primary) 15%,transparent);color:var(--color-primary);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px}
+.pat-name{font-size:13px;font-weight:600}
+.pat-sub{font-size:11px;color:var(--color-muted-foreground)}
+/* agenda */
+.agenda{display:grid;grid-template-columns:60px repeat(5,1fr);gap:1px;background:var(--color-border);border-radius:var(--radius-lg);overflow:hidden}
+.agenda > div{background:var(--color-card);padding:10px;font-size:12px;min-height:48px}
+.agenda .hdr{background:var(--color-muted);font-weight:600;text-align:center;color:var(--color-muted-foreground);padding:10px 8px}
+.agenda .time{color:var(--color-muted-foreground);font-family:var(--font-mono);font-size:11px;text-align:right}
+.appt{background:color-mix(in oklab,var(--color-primary) 15%,transparent)!important;border-left:3px solid var(--color-primary);padding:6px 8px!important;border-radius:var(--radius-sm);margin:2px}
+.appt-name{font-size:12px;font-weight:600;color:var(--color-primary)}
+.appt-sub{font-size:10px;color:var(--color-muted-foreground)}
+.appt.b{background:color-mix(in oklab,var(--color-blue) 20%,transparent)!important;border-color:var(--color-blue)}
+.appt.b .appt-name{color:oklch(.35 .13 230)}
+.appt.w{background:color-mix(in oklab,var(--color-warning) 25%,transparent)!important;border-color:var(--color-warning)}
+.appt.w .appt-name{color:oklch(.45 .14 85)}
+/* right col */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:16px}
+.kpi-l{font-size:12px;color:var(--color-muted-foreground)}
+.kpi-v{font-family:var(--font-display);font-weight:700;font-size:22px;margin-top:4px}
+.kpi-t{font-size:11px;color:var(--color-success);font-weight:500;margin-top:2px}
+/* field */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:13px;font-weight:500}
+.field input,.field select{height:40px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-card);padding:0 12px;font:inherit;font-size:14px;outline:0}
+.field input:focus,.field select:focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus)}
+</style></head><body>
+<div class="app">
+  <aside class="sb">
+    <div class="brand"><img src="../../assets/logos/saude_BlackGreen.svg" alt="Simplafy Saúde"></div>
+    <nav class="nav">
+      <div class="nav-sec">Clínica</div>
+      <div class="nv active"><i data-lucide="calendar"></i>Agenda</div>
+      <div class="nv"><i data-lucide="users"></i>Pacientes</div>
+      <div class="nv"><i data-lucide="stethoscope"></i>Profissionais</div>
+      <div class="nv"><i data-lucide="clipboard-list"></i>Prontuários</div>
+      <div class="nv-sec nav-sec">Financeiro</div>
+      <div class="nv"><i data-lucide="credit-card"></i>Faturamento</div>
+      <div class="nv"><i data-lucide="receipt"></i>Convênios</div>
+      <div class="nav-sec">Comunicação</div>
+      <div class="nv"><i data-lucide="message-square"></i>WhatsApp</div>
+      <div class="nv"><i data-lucide="bot"></i>Agentes IA</div>
+      <div class="nav-sec">Conta</div>
+      <div class="nv"><i data-lucide="settings"></i>Configurações</div>
+    </nav>
+  </aside>
+  <header class="top">
+    <div class="search"><i data-lucide="search"></i><input placeholder="Buscar paciente, CPF, agendamento…"></div>
+    <div class="act">
+      <button class="ibtn"><i data-lucide="bell"></i></button>
+      <button class="ibtn"><i data-lucide="help-circle"></i></button>
+      <div class="avatar">DR</div>
+    </div>
+  </header>
+  <main class="main">
+    <div class="ph">
+      <div><h1>Agenda — 20 de abril</h1><p>Clínica Nova Vida · Dr. Renato Medeiros</p></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-o"><i data-lucide="calendar"></i>Hoje</button><button class="btn btn-p"><i data-lucide="plus"></i>Novo agendamento</button></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-l">Agendamentos hoje</div><div class="kpi-v">28</div><div class="kpi-t">▲ 4 vs. ontem</div></div>
+      <div class="kpi"><div class="kpi-l">Taxa de comparecimento</div><div class="kpi-v">92%</div><div class="kpi-t">▲ 1,2%</div></div>
+      <div class="kpi"><div class="kpi-l">Receita do dia</div><div class="kpi-v">R$ 8.430</div><div class="kpi-t">▲ R$ 820</div></div>
+    </div>
+    <div class="grid">
+      <section class="card">
+        <div class="ch"><h2>Próximos pacientes</h2><button class="ibtn"><i data-lucide="plus"></i></button></div>
+        <div class="pat-list">
+          <div class="pat sel"><div class="pat-ava">MS</div><div><div class="pat-name">Maria Silva</div><div class="pat-sub">09:00 · Consulta</div></div></div>
+          <div class="pat"><div class="pat-ava">JO</div><div><div class="pat-name">João Oliveira</div><div class="pat-sub">09:30 · Retorno</div></div></div>
+          <div class="pat"><div class="pat-ava">AC</div><div><div class="pat-name">Ana Costa</div><div class="pat-sub">10:00 · Exame</div></div></div>
+          <div class="pat"><div class="pat-ava">CP</div><div><div class="pat-name">Carlos Pereira</div><div class="pat-sub">10:30 · Consulta</div></div></div>
+          <div class="pat"><div class="pat-ava">BL</div><div><div class="pat-name">Beatriz Lima</div><div class="pat-sub">11:00 · Retorno</div></div></div>
+          <div class="pat"><div class="pat-ava">FS</div><div><div class="pat-name">Fernanda Souza</div><div class="pat-sub">11:30 · Consulta</div></div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="ch"><h2>Esta semana</h2><span class="badge b-teal">WhatsApp sincronizado</span></div>
+        <div class="cb">
+          <div class="agenda">
+            <div class="hdr"></div>
+            <div class="hdr">Seg 19</div><div class="hdr">Ter 20</div><div class="hdr">Qua 21</div><div class="hdr">Qui 22</div><div class="hdr">Sex 23</div>
+            <div class="time">09:00</div>
+            <div><div class="appt"><div class="appt-name">M. Silva</div><div class="appt-sub">Consulta</div></div></div>
+            <div><div class="appt"><div class="appt-name">M. Silva</div><div class="appt-sub">Consulta</div></div></div>
+            <div></div><div><div class="appt b"><div class="appt-name">L. Mendes</div><div class="appt-sub">Exame</div></div></div><div></div>
+            <div class="time">10:00</div>
+            <div></div><div><div class="appt"><div class="appt-name">A. Costa</div><div class="appt-sub">Exame</div></div></div><div><div class="appt w"><div class="appt-name">Reunião</div></div></div><div></div><div><div class="appt b"><div class="appt-name">R. Alves</div></div></div>
+            <div class="time">11:00</div>
+            <div><div class="appt"><div class="appt-name">P. Santos</div></div></div><div><div class="appt"><div class="appt-name">B. Lima</div><div class="appt-sub">Retorno</div></div></div><div></div><div></div><div></div>
+            <div class="time">14:00</div>
+            <div></div><div><div class="appt"><div class="appt-name">C. Pereira</div></div></div><div><div class="appt"><div class="appt-name">H. Torres</div></div></div><div><div class="appt w"><div class="appt-name">Bloqueado</div></div></div><div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="https://unpkg.com/lucide@0.509.0/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();document.querySelectorAll('.nv,.pat').forEach(el=>el.addEventListener('click',()=>{el.parentElement.querySelectorAll('.active,.sel').forEach(x=>{x.classList.remove('active');x.classList.remove('sel')});el.classList.add(el.classList.contains('nv')?'active':'sel')}));</script>
+</body></html>

@@ -1,0 +1,273 @@
+/*
+ * Simplafy Design System — Colors + Type tokens
+ *
+ * SOURCES OF TRUTH (already imported into this project):
+ *   simplafy-ui/src/globals.css       → /src/globals.css         (Hub v2, Tailwind 4, oklch)
+ *   simplafy-ui/src/tailwind-preset.ts→ /src/tailwind-preset.ts
+ *   simplafy-saude/apps/portal/src/index.css                      (Saúde legacy, Tailwind 3, HSL)
+ *
+ * This file is the unified CSS-var layer that powers every preview / kit /
+ * deck in THIS project. It mirrors the Hub v2 canonical tokens verbatim and
+ * adds the extra Saúde semantic tokens (soft *-bg tints, page-bg, chart-*,
+ * doc-color-*) so a single stylesheet drives both products.
+ *
+ * Brand hierarchy
+ *  Simplafy (parent)        — Simplafy Green oklch(0.72 0.19 150) ~ #22C55E
+ *  ├─ Hub v2                — platform of AI agents, neutral + Simplafy Green
+ *  ├─ Simplafy Saúde        — clinical management (same green, "saúde" lockup)
+ *  ├─ Simplafy Seguros      — insurance brokers (same green, "seguros" lockup)
+ *  └─ Simplafy Agro         — agribusiness (same green, "agro" lockup)
+ *
+ * Typography
+ *  Brand / display:   Causten (loaded locally from /fonts) — logo + marketing hero
+ *  App display + sans: Geist (Google) — headings + body in product surfaces
+ *  Mono:              Geist Mono (Google) — code, R$ values, IDs
+ */
+
+/* ── Webfonts ──────────────────────────────────────────────── */
+@font-face {
+  font-family: "Causten";
+  font-weight: 300;
+  font-style: normal;
+  src: url("fonts/Causten-Light.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Causten";
+  font-weight: 400;
+  font-style: normal;
+  src: url("fonts/Causten-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Causten";
+  font-weight: 500;
+  font-style: normal;
+  src: url("fonts/Causten-Medium.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Causten";
+  font-weight: 600;
+  font-style: normal;
+  src: url("fonts/Causten-SemiBold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Causten";
+  font-weight: 700;
+  font-style: normal;
+  src: url("fonts/Causten-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Causten";
+  font-weight: 800;
+  font-style: normal;
+  src: url("fonts/Causten-ExtraBold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Causten";
+  font-weight: 900;
+  font-style: normal;
+  src: url("fonts/Causten-Black.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* Pull Geist (app UI) + Geist Mono. Causten stays local for brand. */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ── Color system (light — Tailwind v4 @theme tokens) ── */
+  /* Surface + text */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0.02 265);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0.02 265);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0.02 265);
+
+  /* Primary — Simplafy Green (#22C55E), hover + gradient-end */
+  --color-primary: oklch(0.72 0.19 150);
+  --color-primary-foreground: oklch(0.98 0 0);
+  --color-primary-hover: #16a34a;
+  --color-primary-gradient-end: #34d399;
+
+  /* Secondary / muted / accent — near-white neutrals */
+  --color-secondary: oklch(0.97 0.002 265);
+  --color-secondary-foreground: oklch(0.205 0.02 265);
+  --color-muted: oklch(0.97 0.002 265);
+  --color-muted-foreground: oklch(0.55 0.01 265);
+  --color-accent: oklch(0.97 0.002 265);
+  --color-accent-foreground: oklch(0.205 0.02 265);
+
+  /* Destructive */
+  --color-destructive: oklch(0.58 0.22 27);
+  --color-destructive-foreground: oklch(0.98 0 0);
+
+  /* Semantic (used by Badge + chart variants) */
+  --color-success: oklch(0.72 0.19 150);
+  --color-success-foreground: oklch(0.98 0 0);
+  --color-warning: oklch(0.80 0.16 85);
+  --color-warning-foreground: oklch(0.145 0 0);
+  --color-teal: oklch(0.78 0.13 175);
+  --color-teal-foreground: oklch(0.145 0 0);
+  --color-blue: oklch(0.77 0.13 230);
+  --color-blue-foreground: oklch(0.145 0 0);
+  --color-purple: oklch(0.62 0.22 295);
+  --color-purple-foreground: oklch(0.98 0 0);
+  --color-orange: oklch(0.72 0.19 50);
+  --color-orange-foreground: oklch(0.98 0 0);
+
+  /* Border / input / ring */
+  --color-border: oklch(0.92 0.004 265);
+  --color-input: oklch(0.92 0.004 265);
+  --color-ring: oklch(0.72 0.19 150);
+
+  /* Sidebar */
+  --color-sidebar: oklch(0.985 0 0);
+  --color-sidebar-foreground: oklch(0.145 0.02 265);
+  --color-sidebar-border: oklch(0.92 0.004 265);
+  --color-sidebar-accent: oklch(0.72 0.19 150 / 0.1);
+  --color-sidebar-accent-foreground: oklch(0.4 0.12 150);
+  --color-sidebar-ring: oklch(0.72 0.19 150);
+
+  /* ── Soft backgrounds (from Saúde portal index.css) ──
+     Low-opacity tints for filter chips, status pills, subtle containers.
+     Pattern: rgba(<semantic>, 0.12 light / 0.15 dark). */
+  --color-primary-bg: rgb(34 197 94 / 0.12);
+  --color-teal-bg:    rgb(45 212 191 / 0.12);
+  --color-blue-bg:    rgb(56 189 248 / 0.12);
+  --color-purple-bg:  rgb(168 85 247 / 0.12);
+  --color-amber-bg:   rgb(245 158 11 / 0.12);
+  --color-orange-bg:  rgb(249 115 22 / 0.12);
+  --color-red-bg:     rgb(239 68 68 / 0.12);
+
+  /* ── Page background (behind content, Saúde wireframe v1) ── */
+  --color-page-bg: oklch(0.93 0.004 265);  /* #E5E7EB */
+  --color-border-light: rgb(0 0 0 / 0.06); /* subtle separators */
+
+  /* ── Chart colors (Saúde chart-1..5) ── */
+  --chart-1: hsl(129 87% 53%);  /* verde */
+  --chart-2: hsl(172 66% 50%);  /* teal */
+  --chart-3: hsl(92 75% 63%);   /* lime */
+  --chart-4: hsl(199 89% 61%);  /* sky */
+  --chart-5: hsl(142 76% 32%);  /* verde escuro */
+
+  /* ── Doctor / entity palette (deterministic colored dots — AgendaFilterBar) ──
+     10 perceptually distinct hues; assign by stable hash of entity id. */
+  --doc-color-0: hsl(174 70% 41%); /* teal */
+  --doc-color-1: hsl(239 84% 67%); /* indigo */
+  --doc-color-2: hsl(25 95% 53%);  /* orange */
+  --doc-color-3: hsl(48 96% 53%);  /* yellow */
+  --doc-color-4: hsl(271 91% 65%); /* purple */
+  --doc-color-5: hsl(142 71% 45%); /* green */
+  --doc-color-6: hsl(330 81% 60%); /* pink */
+  --doc-color-7: hsl(217 91% 60%); /* blue */
+  --doc-color-8: hsl(350 89% 60%); /* rose */
+  --doc-color-9: hsl(188 86% 53%); /* cyan */
+
+  /* ── Brand raw hexes (from Figma METADATA) ── */
+  --brand-green: #1DEF3B;          /* vivid "screen" green — hero surfaces/CTAs */
+  --brand-green-soft: #9DE85B;     /* softer pistachio — large color fields */
+  --brand-teal: #33D1AD;
+  --brand-ink-1: #0B1B18;          /* near-black w/ green cast — dark hero bg */
+  --brand-ink-2: #0D201D;
+  --brand-ink-3: #14322C;
+  --brand-white: #FFFFFF;
+  --brand-black: #000000;
+
+  /* ── Radius scale (contida, Nov 2026) ── */
+  --radius-xs: 0.125rem;  /* 2px  — badges, chart bars */
+  --radius-sm: 0.25rem;   /* 4px  — nav-item, ibtn, tab helpers */
+  --radius-md: 0.375rem;  /* 6px  — inputs, select, textarea, btn */
+  --radius-lg: 0.5rem;    /* 8px  — cards, KPIs, sheets, popovers */
+  --radius-xl: 0.625rem;  /* 10px — marketing hero surfaces only */
+  --radius-full: 9999px;  /* pílulas: switch, avatar, profile-btn, contador */
+  --radius-btn: var(--radius-md); /* alias — mesma régua do input */
+
+  /* ── Spacing + layout ── */
+  --spacing-sidebar-w: 240px;
+  --spacing-sidebar-collapsed: 72px;
+  --spacing-topbar-h: 56px;
+
+  /* ── Shadows (shadcn/ui new-york) ── */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.10), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-focus: 0 0 0 3px oklch(0.72 0.19 150 / 0.20);
+
+  /* ── Type: families ── */
+  --font-display-brand: "Causten", "Geist", system-ui, sans-serif; /* logo + marketing hero */
+  --font-display: "Geist", system-ui, sans-serif;                  /* app page titles */
+  --font-sans: "Geist", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; /* body */
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* ── Type: semantic roles ── */
+  --type-hero-size: 64px;      --type-hero-weight: 800; --type-hero-lh: 1.0;   --type-hero-family: var(--font-display-brand);
+  --type-display-size: 48px;   --type-display-weight: 700; --type-display-lh: 1.05; --type-display-family: var(--font-display-brand);
+  --type-h1-size: 30px;        --type-h1-weight: 700;  --type-h1-lh: 1.15;    --type-h1-family: var(--font-display);
+  --type-h2-size: 24px;        --type-h2-weight: 600;  --type-h2-lh: 1.2;     --type-h2-family: var(--font-display);
+  --type-h3-size: 18px;        --type-h3-weight: 600;  --type-h3-lh: 1.3;     --type-h3-family: var(--font-display);
+  --type-body-size: 14px;      --type-body-weight: 400; --type-body-lh: 1.5;  --type-body-family: var(--font-sans);
+  --type-body-sm-size: 13px;   --type-body-sm-weight: 400; --type-body-sm-lh: 1.45; --type-body-sm-family: var(--font-sans);
+  --type-caption-size: 12px;   --type-caption-weight: 500; --type-caption-lh: 1.4; --type-caption-family: var(--font-sans);
+  --type-label-size: 13px;     --type-label-weight: 500;  --type-label-lh: 1.3; --type-label-family: var(--font-sans);
+  --type-btn-size: 13px;       --type-btn-weight: 600;    --type-btn-lh: 1.1;  --type-btn-family: var(--font-sans);
+  --type-mono-size: 13px;      --type-mono-weight: 500;   --type-mono-lh: 1.4; --type-mono-family: var(--font-mono);
+}
+
+/* ── Dark mode ── */
+.dark, [data-theme="dark"] {
+  --color-background: #0e1117;
+  --color-foreground: #ecf0f5;
+  --color-card: #1c2130;
+  --color-card-foreground: #ecf0f5;
+  --color-popover: #1c2130;
+  --color-popover-foreground: #ecf0f5;
+  --color-primary: oklch(0.72 0.19 150);
+  --color-primary-foreground: oklch(0.145 0 0);
+  --color-primary-hover: #15803d;
+  --color-secondary: #161b26;
+  --color-secondary-foreground: #ecf0f5;
+  --color-muted: #161b26;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #161b26;
+  --color-accent-foreground: #ecf0f5;
+  --color-destructive: oklch(0.65 0.22 27);
+  --color-destructive-foreground: oklch(0.145 0 0);
+  --color-warning: oklch(0.85 0.16 85);
+  --color-border: #2d3548;
+  --color-input: #2d3548;
+  --color-sidebar: #111621;
+  --color-sidebar-foreground: #ecf0f5;
+  --color-sidebar-border: #2d3548;
+  --color-sidebar-accent: rgba(34, 197, 94, 0.15);
+  --color-sidebar-accent-foreground: #22c55e;
+
+  /* Soft backgrounds — bumped to 0.15 for dark mode contrast */
+  --color-primary-bg: rgb(34 197 94 / 0.15);
+  --color-teal-bg:    rgb(45 212 191 / 0.15);
+  --color-blue-bg:    rgb(56 189 248 / 0.15);
+  --color-purple-bg:  rgb(168 85 247 / 0.15);
+  --color-amber-bg:   rgb(245 158 11 / 0.15);
+  --color-orange-bg:  rgb(249 115 22 / 0.15);
+  --color-red-bg:     rgb(239 68 68 / 0.15);
+
+  --color-page-bg: #090c12;            /* deeper than --color-background */
+  --color-border-light: rgb(255 255 255 / 0.06);
+}
+
+/* ── Base typographic roles (optional utility layer) ── */
+.ds-hero     { font: var(--type-hero-weight) var(--type-hero-size)/var(--type-hero-lh) var(--type-hero-family); letter-spacing: -0.02em; }
+.ds-display  { font: var(--type-display-weight) var(--type-display-size)/var(--type-display-lh) var(--type-display-family); letter-spacing: -0.01em; }
+.ds-h1       { font: var(--type-h1-weight) var(--type-h1-size)/var(--type-h1-lh) var(--type-h1-family); letter-spacing: -0.01em; }
+.ds-h2       { font: var(--type-h2-weight) var(--type-h2-size)/var(--type-h2-lh) var(--type-h2-family); }
+.ds-h3       { font: var(--type-h3-weight) var(--type-h3-size)/var(--type-h3-lh) var(--type-h3-family); }
+.ds-body     { font: var(--type-body-weight) var(--type-body-size)/var(--type-body-lh) var(--type-body-family); }
+.ds-body-sm  { font: var(--type-body-sm-weight) var(--type-body-sm-size)/var(--type-body-sm-lh) var(--type-body-sm-family); }
+.ds-caption  { font: var(--type-caption-weight) var(--type-caption-size)/var(--type-caption-lh) var(--type-caption-family); color: var(--color-muted-foreground); }
+.ds-label    { font: var(--type-label-weight) var(--type-label-size)/var(--type-label-lh) var(--type-label-family); }
+.ds-btn      { font: var(--type-btn-weight) var(--type-btn-size)/var(--type-btn-lh) var(--type-btn-family); }
+.ds-mono     { font: var(--type-mono-weight) var(--type-mono-size)/var(--type-mono-lh) var(--type-mono-family); }
