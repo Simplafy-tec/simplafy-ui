@@ -10,9 +10,7 @@ const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
 /**
- * Hub 2.0 wireframe — `.crm-pipe-bar__select.form-input`:
- * padding 5px 26px 5px 10px; height 34px; font 13px; radius 8px (rounded-lg).
- * Foco: borda primary + anel 3px tipo `--primary-bg`.
+ * Hub 2.0 — alinhado ao `Input`: 40px, rounded-md, mesma borda/sombra/foco (focus-visible).
  */
 const SelectTrigger = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Trigger>,
@@ -22,13 +20,14 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "relative box-border flex h-[40px] min-h-[40px] w-full min-w-0 items-center justify-between gap-2",
-      "whitespace-nowrap rounded-lg border border-border bg-card py-[5px] pl-[10px] pr-[26px] text-left",
-      "text-[13px] font-normal leading-tight text-foreground shadow-sm",
+      "whitespace-nowrap rounded-md border border-border bg-card py-[5px] pl-[10px] pr-[26px] text-left",
+      "font-sans text-sm font-normal leading-tight text-foreground shadow-sm",
       "transition-[border-color,box-shadow,background-color] duration-200",
       "placeholder:text-muted-foreground",
-      "focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/20",
+      "focus-visible:outline-none focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-primary/20",
       "disabled:cursor-not-allowed disabled:opacity-50",
-      "[&>span]:line-clamp-1",
+      /* Só o 1.º span (Radix SelectValue); evita estilizar outros spans (ex.: wrapper do ícone). */
+      "[&>span:first-of-type]:min-w-0 [&>span:first-of-type]:flex-1 [&>span:first-of-type]:truncate [&>span:first-of-type]:text-left",
       className,
     )}
     {...props}
@@ -80,7 +79,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-[110] max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "relative z-[110] max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className,
@@ -124,7 +123,7 @@ const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       /* Linha interna em flex (não grid arbitrário): se a classe de grid não entra no CSS, vira 1 coluna e o check fica acima do texto. */
-      "relative w-full min-w-0 cursor-default select-none rounded-md py-0 text-[13px] outline-none data-[highlighted]:bg-primary/10 data-[highlighted]:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative w-full min-w-0 cursor-default select-none rounded-md py-0 font-sans text-sm outline-none data-[highlighted]:bg-primary/10 data-[highlighted]:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
