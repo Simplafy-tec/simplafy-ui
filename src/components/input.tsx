@@ -2,8 +2,7 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 
 /**
- * Hub 2.0 wireframe `.form-input` — borda `--border`, fundo card, 14px, altura ~40px,
- * foco: borda primary + anel 3px tipo `--primary-bg` (igual Select).
+ * Hub 2.0 `.form-input` — 40px, rounded-lg (alinhado ao Select), foco focus-visible.
  */
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, type, ...props }, ref) => {
