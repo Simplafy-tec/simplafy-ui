@@ -79,7 +79,8 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="font-display text-2xl font-bold tracking-tight">
+          {/* font-sans (Geist) aqui — Causten (font-display) é pesada demais pra KPI numérico (DS 2.0.0 Risco 5) */}
+          <p className="font-sans text-2xl font-bold tracking-tight">
             {value}
           </p>
           {trend && (

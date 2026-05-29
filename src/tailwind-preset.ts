@@ -12,8 +12,10 @@ export const simplafyPreset = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['var(--font-sora)', 'Sora', 'system-ui', 'sans-serif'],
+        // DS 2.0.0: Inter e Sora removidos (breaking). Geist = UI/corpo; Causten = marca/hero; Geist Mono = código/KPI.
+        sans:    ['Geist', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        display: ['Causten', 'Geist', 'system-ui', 'sans-serif'],
+        mono:    ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       colors: {
         background: 'var(--color-background)',
