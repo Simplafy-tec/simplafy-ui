@@ -19,7 +19,10 @@ export { Checkbox } from "./components/checkbox";
 export { Separator } from "./components/separator";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export { Avatar, AvatarImage, AvatarFallback } from "./components/avatar";
-export { Skeleton } from "./components/skeleton";
+export { Skeleton, type SkeletonComponent } from "./components/skeleton";
+export { Empty, type EmptyProps } from "./components/empty";
+export { ErrorBoundary, type ErrorBoundaryProps, type ErrorBoundaryFallbackProps } from "./components/error-boundary";
+export { ModalConfirm, Modal, type ModalConfirmProps } from "./components/modal-confirm";
 export {
   Dialog,
   DialogPortal,
