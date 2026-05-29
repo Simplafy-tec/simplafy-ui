@@ -93,6 +93,8 @@
    TODO: avaliar hospedar Causten em CDN/R2 — ADR-026 Risco
    Geist + Geist Mono: Google Fonts (UI corpo / mono).
    ----------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
+
 @font-face { font-family:"Causten"; font-weight:300; src:url("./fonts/Causten-Light.ttf")     format("truetype"); font-display:swap; }
 @font-face { font-family:"Causten"; font-weight:400; src:url("./fonts/Causten-Regular.ttf")   format("truetype"); font-display:swap; }
 @font-face { font-family:"Causten"; font-weight:500; src:url("./fonts/Causten-Medium.ttf")    format("truetype"); font-display:swap; }
@@ -100,8 +102,6 @@
 @font-face { font-family:"Causten"; font-weight:700; src:url("./fonts/Causten-Bold.ttf")      format("truetype"); font-display:swap; }
 @font-face { font-family:"Causten"; font-weight:800; src:url("./fonts/Causten-ExtraBold.ttf") format("truetype"); font-display:swap; }
 @font-face { font-family:"Causten"; font-weight:900; src:url("./fonts/Causten-Black.ttf")     format("truetype"); font-display:swap; }
-
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
 
 /* Registra as famílias canônicas DS 2.0.0:
    - font-sans    → Geist (UI/corpo/títulos de produto)
