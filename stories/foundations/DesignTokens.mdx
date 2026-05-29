@@ -143,9 +143,9 @@ h-topbar-h          /* height: 56px */
 
 ## Typography
 
-### font-sans — Inter (corpo)
+### font-sans — Geist (UI/corpo/títulos de produto)
 
-<div style={{ fontFamily: "Inter, sans-serif", marginBottom: "24px" }}>
+<div style={{ fontFamily: "Geist, system-ui, sans-serif", marginBottom: "24px" }}>
   <div style={{ fontSize: 28, fontWeight: 700, lineHeight: 1.2 }}>Bold 700 — Título de página</div>
   <div style={{ fontSize: 20, fontWeight: 600, lineHeight: 1.3 }}>SemiBold 600 — Subtítulo</div>
   <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.5 }}>Medium 500 — Label / rótulo</div>
@@ -153,17 +153,25 @@ h-topbar-h          /* height: 56px */
   <div style={{ fontSize: 12, fontWeight: 400, lineHeight: 1.5, color: "#6b7280" }}>Small 400 — Caption / legenda</div>
 </div>
 
-### font-display — Sora (destaques)
+### font-display — Causten (marca/display — hero, títulos de marca)
 
-<div style={{ fontFamily: "Sora, sans-serif", marginBottom: "24px" }}>
-  <div style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.1 }}>Bold 700 — Sora Hero</div>
-  <div style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.2 }}>SemiBold 600 — Sora Heading</div>
-  <div style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.5 }}>Regular 400 — Sora body</div>
+<div style={{ fontFamily: "Causten, Geist, system-ui, sans-serif", marginBottom: "24px" }}>
+  <div style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.1 }}>Bold 700 — Causten Hero</div>
+  <div style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.2 }}>SemiBold 600 — Causten Heading</div>
+  <div style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.5 }}>Regular 400 — Causten display</div>
+</div>
+
+### font-mono — Geist Mono (números/IDs/código)
+
+<div style={{ fontFamily: "Geist Mono, ui-monospace, monospace", marginBottom: "24px" }}>
+  <div style={{ fontSize: 14, fontWeight: 400, lineHeight: 1.6 }}>Regular 400 — ID: #00124 / valor: R$ 1.290,00</div>
+  <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.5 }}>Medium 500 — <code>código inline</code></div>
 </div>
 
 ```css
-font-sans    /* Inter — padrão global */
-font-display /* Sora — use em headings de marketing */
+font-sans    /* Geist — padrão global (UI, corpo, títulos de produto) */
+font-display /* Causten — use em hero e títulos de marca */
+font-mono    /* Geist Mono — números, IDs, código */
 ```
 
 ---

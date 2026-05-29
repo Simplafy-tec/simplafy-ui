@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.0.0] — 2026-05-29
+
+### Alterado
+
+- **⚠️ BREAKING: tipografia Causten/Geist substitui Inter/Sora.** `--font-sans` agora aponta para Geist (UI/corpo/títulos de produto); `--font-display` aponta para Causten (marca/hero; fallback Geist); `--font-mono` aponta para Geist Mono. Inter e Sora foram completamente removidos. (platform#2.2.2.4)
+- **`globals.css`** — `@theme inline` reescrito: novos `@font-face` Causten (7 pesos, incluídas no pacote em `src/fonts/`), `@import` Google Fonts Geist + Geist Mono. Var `--font-inter`/`--font-sora` removidas.
+- **`tailwind-preset.ts`** — `fontFamily.sans` = Geist, `fontFamily.display` = Causten, `fontFamily.mono` = Geist Mono adicionado.
+- **`metric-card.tsx`** — valor numérico KPI corrigido de `font-display` para `font-sans` (Geist). Causten é pesada demais para KPI numérico (DS 2.0.0 Risco 5).
+- **`package.json`** — `files` inclui `src/fonts/` para publicar as TTFs da Causten junto ao pacote.
+
 ## [1.2.0] — 2026-05-29
 
 ### Adicionado
