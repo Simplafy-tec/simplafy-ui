@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Badges · Simplafy DS</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-sans);padding:32px 28px;}
+  .page{max-width:1100px;margin:0 auto;display:grid;gap:20px;}
+
+  .hero h1{margin:0 0 6px;font:700 22px/1.2 var(--font-display);letter-spacing:-0.01em;}
+  .hero p{margin:0;color:var(--color-muted-foreground);font-size:13px;line-height:1.55;max-width:760px;}
+  .hero code{font-family:var(--font-mono);background:var(--color-muted);padding:1px 5px;border-radius:var(--radius-xs);font-size:12px;}
+
+  .section{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;}
+  .section > header{padding:14px 18px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section h2{margin:0;font:600 12px/1 var(--font-display);letter-spacing:.05em;text-transform:uppercase;}
+  .section h2 em{font-style:normal;font-weight:500;color:var(--color-muted-foreground);font-size:11.5px;text-transform:none;letter-spacing:0;margin-left:8px;}
+  .section > .body{padding:18px;display:grid;gap:16px;}
+
+  /* Badge base — radius XS (2px) */
+  .badge{
+    display:inline-flex;align-items:center;gap:4px;
+    border-radius:var(--radius-xs);
+    padding:2px 8px;
+    font:600 11px/1.4 var(--font-sans);
+    letter-spacing:.01em;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .badge svg{width:11px;height:11px;}
+  .badge .dot{width:6px;height:6px;border-radius:var(--radius-full);background:currentColor;}
+
+  /* Solid (strong) */
+  .b-success{background:var(--color-success);color:var(--color-success-foreground);}
+  .b-warning{background:var(--color-warning);color:var(--color-warning-foreground);}
+  .b-dest{background:var(--color-destructive);color:var(--color-destructive-foreground);}
+  .b-teal{background:var(--color-teal);color:var(--color-teal-foreground);}
+  .b-blue{background:var(--color-blue);color:var(--color-blue-foreground);}
+  .b-purple{background:var(--color-purple);color:var(--color-purple-foreground);}
+  .b-orange{background:var(--color-orange);color:var(--color-orange-foreground);}
+  .b-primary{background:var(--color-primary);color:var(--color-primary-foreground);}
+  .b-secondary{background:var(--color-secondary);color:var(--color-secondary-foreground);}
+
+  /* Soft (tint bg + colored text) */
+  .b-soft-success{background:color-mix(in oklab, var(--color-success) 15%, transparent);color:var(--color-success);}
+  .b-soft-warning{background:color-mix(in oklab, var(--color-warning) 18%, transparent);color:color-mix(in oklab, var(--color-warning) 80%, var(--color-foreground));}
+  .b-soft-dest{background:color-mix(in oklab, var(--color-destructive) 12%, transparent);color:var(--color-destructive);}
+  .b-soft-teal{background:color-mix(in oklab, var(--color-teal) 15%, transparent);color:var(--color-teal);}
+  .b-soft-blue{background:color-mix(in oklab, var(--color-blue) 15%, transparent);color:var(--color-blue);}
+  .b-soft-purple{background:color-mix(in oklab, var(--color-purple) 15%, transparent);color:var(--color-purple);}
+  .b-soft-orange{background:color-mix(in oklab, var(--color-orange) 15%, transparent);color:var(--color-orange);}
+  .b-soft-primary{background:color-mix(in oklab, var(--color-primary) 12%, transparent);color:var(--color-primary);}
+
+  /* Outline */
+  .b-outline{background:transparent;color:var(--color-foreground);border-color:var(--color-border);}
+  .b-outline-primary{background:transparent;color:var(--color-primary);border-color:color-mix(in oklab, var(--color-primary) 50%, transparent);}
+
+  /* Layout helpers */
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .sub{font:500 11px/1 var(--font-sans);letter-spacing:.04em;text-transform:uppercase;color:var(--color-muted-foreground);margin-bottom:10px;}
+
+  /* Use-case table */
+  .use{display:grid;grid-template-columns:180px 1fr 2fr;gap:10px 16px;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-border);}
+  .use:last-child{border-bottom:0;}
+  .use .cxt{font-size:12.5px;color:var(--color-foreground);font-weight:500;}
+  .use .note{font-size:12px;color:var(--color-muted-foreground);line-height:1.45;}
+
+  .callout{padding:14px 16px;border:1px dashed var(--color-border);border-radius:var(--radius-md);background:color-mix(in oklab, var(--color-muted) 40%, var(--color-card));font-size:12.5px;color:var(--color-muted-foreground);line-height:1.55;}
+  .callout b{color:var(--color-foreground);font-weight:600;}
+  .callout code{font-family:var(--font-mono);}
+</style></head>
+
+<body>
+<div class="page">
+
+<div class="hero">
+  <h1>Badges</h1>
+  <p>
+    Radius <b style="color:var(--color-foreground)">2&nbsp;px</b> (<code>--radius-xs</code>) — mais contido que na v1. Três estilos (solid / soft / outline), três usos (status, canal, categoria).
+    Altura total ~20&nbsp;px · fonte 11/600 · gap 4 com ícone ou bolinha.
+  </p>
+</div>
+
+<!-- 1. Estilos -->
+<section class="section">
+  <header><h2>1 · Estilos <em>mesma escala de cor, densidade diferente</em></h2></header>
+  <div class="body">
+
+    <div>
+      <div class="sub">Solid · alta prioridade (status forte, contador)</div>
+      <div class="row">
+        <span class="badge b-success">Ativo</span>
+        <span class="badge b-warning">Pendente</span>
+        <span class="badge b-dest">Erro</span>
+        <span class="badge b-teal">WhatsApp</span>
+        <span class="badge b-blue">Email</span>
+        <span class="badge b-purple">Jornada</span>
+        <span class="badge b-orange">Hot</span>
+        <span class="badge b-primary">Novo</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sub">Soft · padrão em tabela e lista (baixo contraste visual)</div>
+      <div class="row">
+        <span class="badge b-soft-success">Convertido</span>
+        <span class="badge b-soft-warning">Pendente</span>
+        <span class="badge b-soft-dest">Atrasado</span>
+        <span class="badge b-soft-teal">WhatsApp</span>
+        <span class="badge b-soft-blue">Email</span>
+        <span class="badge b-soft-purple">Jornada</span>
+        <span class="badge b-soft-orange">Hot lead</span>
+        <span class="badge b-soft-primary">Novo</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sub">Outline · categorias e filtros</div>
+      <div class="row">
+        <span class="badge b-outline">Categoria</span>
+        <span class="badge b-outline">Financeiro</span>
+        <span class="badge b-outline">Suporte N2</span>
+        <span class="badge b-outline-primary">Filtro ativo</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 2. Com dot / ícone -->
+<section class="section">
+  <header><h2>2 · Com dot ou ícone</h2></header>
+  <div class="body">
+
+    <div>
+      <div class="sub">Status com dot (canal de agente, user presence)</div>
+      <div class="row">
+        <span class="badge b-soft-success"><span class="dot"></span>Online</span>
+        <span class="badge b-soft-warning"><span class="dot"></span>Pausado</span>
+        <span class="badge b-soft-dest"><span class="dot"></span>Offline</span>
+        <span class="badge b-outline"><span class="dot" style="background:var(--color-muted-foreground);"></span>Rascunho</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sub">Com ícone (tipo de canal, ações)</div>
+      <div class="row">
+        <span class="badge b-soft-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.9-5.7a9 9 0 1 1 3.8 3.7L3 21z"/></svg>
+          WhatsApp
+        </span>
+        <span class="badge b-soft-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Email
+        </span>
+        <span class="badge b-soft-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5 6 22l4-2 4 2-2.5-7.5"/><circle cx="12" cy="9" r="6"/></svg>
+          Destaque
+        </span>
+        <span class="badge b-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Selecionado
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 3. Usos definidos -->
+<section class="section">
+  <header><h2>3 · Quando usar cada cor</h2></header>
+  <div class="body">
+
+    <div class="use">
+      <div class="row"><span class="badge b-soft-success">Convertido</span><span class="badge b-soft-warning">Pendente</span><span class="badge b-soft-dest">Atrasado</span></div>
+      <div class="cxt">Status de conversa, lead, pagamento</div>
+      <div class="note">Soft por padrão — convive com muitas linhas em tabela sem roubar atenção. Solid só se o badge for o foco primário da linha.</div>
+    </div>
+
+    <div class="use">
+      <div class="row"><span class="badge b-soft-teal">WhatsApp</span><span class="badge b-soft-blue">Email</span><span class="badge b-soft-purple">Instagram</span></div>
+      <div class="cxt">Canal de comunicação</div>
+      <div class="note">Cores de canal fixas: teal=WhatsApp, blue=Email, purple=Instagram/DM, orange=SMS/voz. Não alternar.</div>
+    </div>
+
+    <div class="use">
+      <div class="row"><span class="badge b-outline">Financeiro</span><span class="badge b-outline">Suporte N2</span><span class="badge b-outline-primary">Filtro ativo</span></div>
+      <div class="cxt">Categoria / tag / filtro</div>
+      <div class="note">Outline porque são arbitrárias e sem semântica fixa. <code>b-outline-primary</code> marca seleção no filtro.</div>
+    </div>
+
+    <div class="use">
+      <div class="row"><span class="badge b-primary">Novo</span><span class="badge b-dest">3</span><span class="badge b-warning">Beta</span></div>
+      <div class="cxt">Contador · novidade · flag</div>
+      <div class="note">Solid. Alta prioridade visual. Usar com <b>parcimônia</b> — se tudo é "novo", nada é.</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <header><h2>4 · Decisão</h2></header>
+  <div class="body">
+    <div class="callout">
+      <b>Trocamos de radius?</b> Sim — antes estavam em <code>--radius-md</code> (6&nbsp;px), agora em <code>--radius-xs</code> (2&nbsp;px).
+      Resultado: badge parece selo técnico, não "pílula-mini". Em tabela com 20+ linhas, a densidade visual fica muito melhor.
+      Pílulas (999&nbsp;px) ficam reservadas para <b>switch, avatar, contador numérico em sidebar</b> — nunca status textual.
+    </div>
+  </div>
+</section>
+
+</div>
+</body></html>
