@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Inputs & Selects · Simplafy DS</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-sans);padding:32px 28px;}
+  .page{max-width:1180px;margin:0 auto;display:grid;gap:24px;}
+
+  .hero h1{margin:0 0 6px;font:700 22px/1.2 var(--font-display);letter-spacing:-0.01em;}
+  .hero p{margin:0;color:var(--color-muted-foreground);font-size:13px;line-height:1.55;max-width:760px;}
+  .hero code{font-family:var(--font-mono);background:var(--color-muted);padding:1px 5px;border-radius:var(--radius-xs);font-size:12px;}
+
+  .section{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;}
+  .section > header{padding:14px 18px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section h2{margin:0;font:600 12px/1 var(--font-display);letter-spacing:.05em;text-transform:uppercase;}
+  .section h2 em{font-style:normal;font-weight:500;color:var(--color-muted-foreground);font-size:11.5px;text-transform:none;letter-spacing:0;margin-left:8px;}
+  .section > .body{padding:20px 18px;display:grid;gap:18px;}
+
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .label{font-size:13px;font-weight:500;color:var(--color-foreground);display:flex;align-items:center;gap:6px;}
+  .label .opt{color:var(--color-muted-foreground);font-weight:400;font-size:12px;}
+  .hint{font-size:12px;color:var(--color-muted-foreground);line-height:1.4;}
+  .hint.err{color:var(--color-destructive);}
+
+  /* Controles — altura 40, radius 6 (var(--radius-md)) */
+  .ctrl{
+    height:40px;
+    width:100%;
+    border:1px solid var(--color-border);
+    background:var(--color-card);
+    padding:0 12px;
+    font:400 14px/1 var(--font-sans);
+    color:var(--color-foreground);
+    box-shadow:var(--shadow-sm);
+    outline:0;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+    border-radius:var(--radius-md);
+  }
+  .ctrl::placeholder{color:var(--color-muted-foreground);}
+  .ctrl:hover:not(:disabled):not([readonly]){border-color:color-mix(in oklab, var(--color-border) 60%, var(--color-foreground));}
+  .ctrl:focus,.ctrl.is-focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus);}
+  .ctrl:disabled,.ctrl[aria-disabled="true"]{background:color-mix(in oklab, var(--color-muted) 50%, var(--color-card));color:var(--color-muted-foreground);cursor:not-allowed;box-shadow:none;}
+  .ctrl.is-error{border-color:var(--color-destructive);}
+  .ctrl.is-error:focus{box-shadow:0 0 0 3px color-mix(in oklab, var(--color-destructive) 25%, transparent);}
+
+  textarea.ctrl{height:96px;padding:10px 12px;resize:vertical;line-height:1.45;}
+
+  select.ctrl{appearance:none;-webkit-appearance:none;padding-right:36px;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:right 16px center, right 11px center;background-size:5px 5px,5px 5px;background-repeat:no-repeat;cursor:pointer;}
+
+  .wrap{position:relative;}
+  .wrap .lead,.wrap .trail{position:absolute;top:50%;transform:translateY(-50%);color:var(--color-muted-foreground);font-size:14px;pointer-events:none;display:flex;align-items:center;}
+  .wrap .lead{left:12px;}
+  .wrap .trail{right:12px;}
+  .wrap .lead svg,.wrap .trail svg{width:16px;height:16px;}
+  .wrap.has-lead .ctrl{padding-left:38px;}
+  .wrap.has-trail .ctrl{padding-right:38px;}
+  .wrap .trail.clickable{pointer-events:auto;cursor:pointer;}
+  .wrap .trail.clickable:hover{color:var(--color-foreground);}
+
+  .prefix-group{display:flex;align-items:stretch;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-card);box-shadow:var(--shadow-sm);overflow:hidden;height:40px;}
+  .prefix-group:focus-within{border-color:var(--color-primary);box-shadow:var(--shadow-focus);}
+  .prefix-group .prefix{display:flex;align-items:center;padding:0 12px;background:color-mix(in oklab, var(--color-muted) 60%, var(--color-card));color:var(--color-muted-foreground);font:500 13px/1 var(--font-sans);border-right:1px solid var(--color-border);}
+  .prefix-group input{flex:1;border:0;outline:0;background:transparent;padding:0 12px;font:400 14px/1 var(--font-sans);color:var(--color-foreground);height:100%;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+
+  /* Escala radius, para documentar */
+  .scale{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .scale .s{border:1px solid var(--color-border);background:var(--color-card);padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .scale .chip{width:40px;height:40px;background:color-mix(in oklab, var(--color-primary) 14%, var(--color-card));border:1px solid color-mix(in oklab, var(--color-primary) 35%, transparent);}
+  .scale .s-label{font:600 11px/1 var(--font-display);letter-spacing:.05em;text-transform:uppercase;}
+  .scale .s-px{font-family:var(--font-mono);font-size:11px;color:var(--color-muted-foreground);}
+  .scale .s-use{font-size:11px;color:var(--color-muted-foreground);line-height:1.35;}
+
+  .callout{padding:14px 16px;border:1px dashed var(--color-border);border-radius:var(--radius-md);background:color-mix(in oklab, var(--color-muted) 40%, var(--color-card));font-size:12.5px;color:var(--color-muted-foreground);line-height:1.55;}
+  .callout b{color:var(--color-foreground);font-weight:600;}
+  .callout code{font-family:var(--font-mono);}
+
+  svg{display:block;}
+</style></head>
+
+<body>
+<div class="page">
+
+<div class="hero">
+  <h1>Inputs & Selects</h1>
+  <p>
+    Radius <b style="color:var(--color-foreground)">6&nbsp;px</b> (token <code>--radius-md</code>) em tudo que é input: Input, Select, Textarea, Prefix-group.
+    Altura unificada <b style="color:var(--color-foreground)">40&nbsp;px</b>. Proporção mais contida, menos "pílula" — casa com cards em 8&nbsp;px e badges em 2&nbsp;px.
+  </p>
+</div>
+
+<!-- Escala de radius (documentação rápida) -->
+<section class="section">
+  <header><h2>Escala de radius <em>nova, contida</em></h2></header>
+  <div class="body">
+    <div class="scale">
+      <div class="s"><div class="chip" style="border-radius:var(--radius-xs);"></div><div class="s-label">XS</div><div class="s-px">2&nbsp;px</div><div class="s-use">badges, barras</div></div>
+      <div class="s"><div class="chip" style="border-radius:var(--radius-sm);"></div><div class="s-label">SM</div><div class="s-px">4&nbsp;px</div><div class="s-use">nav-item, icon-btn</div></div>
+      <div class="s" style="outline:2px solid color-mix(in oklab, var(--color-primary) 60%, transparent);outline-offset:-2px;"><div class="chip" style="border-radius:var(--radius-md);"></div><div class="s-label" style="color:var(--color-primary);">MD ← aqui</div><div class="s-px">6&nbsp;px</div><div class="s-use">input, select, btn</div></div>
+      <div class="s"><div class="chip" style="border-radius:var(--radius-lg);"></div><div class="s-label">LG</div><div class="s-px">8&nbsp;px</div><div class="s-use">cards, sheets</div></div>
+      <div class="s"><div class="chip" style="border-radius:var(--radius-xl);"></div><div class="s-label">XL</div><div class="s-px">10&nbsp;px</div><div class="s-use">hero marketing</div></div>
+      <div class="s"><div class="chip" style="border-radius:var(--radius-full);"></div><div class="s-label">FULL</div><div class="s-px">pill</div><div class="s-use">switch, avatar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Variantes -->
+<section class="section">
+  <header><h2>Variantes <em>h=40 · radius=6</em></h2></header>
+  <div class="body">
+
+    <div class="grid-4">
+      <div class="field"><span class="label">Input</span><input class="ctrl" placeholder="Buscar contato…"></div>
+      <div class="field"><span class="label">Com valor</span><input class="ctrl" value="Ana Silva"></div>
+      <div class="field"><span class="label">Focus</span><input class="ctrl is-focus" value="Ativo"></div>
+      <div class="field"><span class="label">Disabled</span><input class="ctrl" value="Bloqueado" disabled></div>
+    </div>
+
+    <div class="grid-4">
+      <div class="field">
+        <span class="label">Com ícone à esquerda</span>
+        <div class="wrap has-lead">
+          <span class="lead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <input class="ctrl" placeholder="Buscar contato…">
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">Com ação à direita</span>
+        <div class="wrap has-trail">
+          <input class="ctrl" value="texto digitado">
+          <span class="trail clickable" title="Limpar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">Prefix-group</span>
+        <div class="prefix-group"><span class="prefix">R$</span><input value="1.250,00" inputmode="decimal"></div>
+      </div>
+      <div class="field">
+        <span class="label">Senha <span class="opt">(toggle)</span></span>
+        <div class="wrap has-trail">
+          <input class="ctrl" type="password" value="senhasecreta">
+          <span class="trail clickable" title="Mostrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="field">
+        <span class="label">Select (native)</span>
+        <select class="ctrl"><option>WhatsApp</option><option>Email</option><option>Instagram Direct</option></select>
+      </div>
+      <div class="field">
+        <span class="label">Select disabled</span>
+        <select class="ctrl" disabled><option>Aguardando aprovação</option></select>
+      </div>
+      <div class="field">
+        <span class="label">Erro de validação</span>
+        <input class="ctrl is-error" value="ana@" aria-invalid="true">
+        <span class="hint err">Informe um e-mail válido.</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="label">Textarea <span class="opt">(abre em 96px, resize vertical)</span></span>
+      <textarea class="ctrl" placeholder="Observações internas sobre este contato…"></textarea>
+    </div>
+
+  </div>
+</section>
+
+<!-- Decisões -->
+<section class="section">
+  <header><h2>Decisões</h2></header>
+  <div class="body">
+    <div class="grid-2">
+      <div class="callout">
+        <b>Altura 40 em tudo.</b> No <code>simplafy-ui</code> atual: Input=40 e Select=34. Unificar em 40 alinha com Button size md e elimina o pulo entre form-rows. Custa 1 linha de migração no <code>select.tsx</code>.
+      </div>
+      <div class="callout">
+        <b>Radius 6.</b> Hoje é 8–10. Baixar pra <code>--radius-md = 6px</code> deixa o produto mais contido e técnico, conversa com cards em 8 (ficam visivelmente mais arredondados que os campos — hierarquia). Badges em 2, pílulas só para switch e avatar.
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</body></html>

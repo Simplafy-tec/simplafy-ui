@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Fontes · Causten vs Inter vs Geist</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/causten" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;padding:32px 24px;background:var(--color-background);color:var(--color-foreground);font-family:Inter,system-ui;}
+  .hero{max-width:1280px;margin:0 auto 24px;}
+  .hero h1{font:700 26px/1.2 Inter;margin:0 0 6px;letter-spacing:-0.01em;}
+  .hero p{margin:0;color:var(--color-muted-foreground);font-size:13px;max-width:760px;line-height:1.55;}
+  .legend{display:flex;gap:12px;margin-top:14px;font-size:12px;}
+  .legend span{padding:4px 10px;border-radius:999px;border:1px solid var(--color-border);background:var(--color-card);}
+
+  .grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .col{border:1px solid var(--color-border);border-radius:14px;background:var(--color-card);overflow:hidden;}
+  .col h2{margin:0;padding:14px 18px;border-bottom:1px solid var(--color-border);font:600 13px/1 Inter;letter-spacing:.04em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+  .col h2 em{font-style:normal;font-weight:500;color:var(--color-muted-foreground);font-size:11px;text-transform:none;letter-spacing:0;}
+
+  .c-causten{font-family:'Causten',Inter,system-ui;}
+  .c-inter  {font-family:'Inter',system-ui;}
+  .c-geist  {font-family:'Geist',Inter,system-ui;}
+
+  .sec{padding:16px 18px;border-top:1px solid var(--color-border);}
+  .sec:first-of-type{border-top:0;}
+  .sec-label{font:500 10px/1 Inter;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted-foreground);margin-bottom:10px;}
+
+  /* Display */
+  .display-h{font-size:34px;font-weight:700;letter-spacing:-0.02em;line-height:1.05;margin:0;}
+  .display-s{font-size:14px;color:var(--color-muted-foreground);margin:6px 0 0;}
+
+  /* Body */
+  .body-copy{font-size:13.5px;line-height:1.6;margin:0;color:var(--color-foreground);}
+
+  /* UI bits */
+  .ui-h{font-size:18px;font-weight:600;margin:0 0 10px;letter-spacing:-0.005em;}
+  .ui-label{font-size:12px;font-weight:500;color:var(--color-muted-foreground);display:block;margin-bottom:6px;}
+  .ui-input{width:100%;height:34px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-background);padding:0 10px;font:500 13px/1 inherit;outline:none;color:inherit;}
+  .ui-input:focus{border-color:var(--color-primary);box-shadow:var(--shadow-focus);}
+  .ui-btns{display:flex;gap:8px;margin-top:10px;}
+  .ui-btn{height:34px;padding:0 14px;border-radius:8px;font:600 12.5px/1 inherit;border:1.5px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+  .ui-btn.primary{background:var(--color-primary);color:#fff;}
+  .ui-btn.outline{background:transparent;border-color:var(--color-border);color:var(--color-foreground);}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-muted-foreground);padding:6px 4px;border-bottom:1px solid var(--color-border);}
+  td{padding:8px 4px;border-bottom:1px solid var(--color-border);}
+  td.num{font-variant-numeric:tabular-nums;text-align:right;font-weight:500;}
+  tr:last-child td{border-bottom:0;}
+
+  /* Numbers */
+  .num-big{font-size:32px;font-weight:700;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;line-height:1;}
+  .num-row{display:flex;gap:18px;align-items:baseline;}
+  .num-row small{font-size:11px;color:var(--color-muted-foreground);text-transform:uppercase;letter-spacing:.06em;}
+
+  /* Code-ish small label */
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:999px;background:var(--color-primary-bg);color:var(--color-primary);font-size:11px;font-weight:600;}
+
+  /* Pros/Cons */
+  .pros{padding:14px 18px;background:color-mix(in oklab, var(--color-muted) 50%, transparent);border-top:1px solid var(--color-border);font-size:12px;line-height:1.55;}
+  .pros b{font-weight:600;}
+  .pros .p{color:var(--color-success);}
+  .pros .n{color:var(--color-destructive);}
+  .pros ul{margin:4px 0 8px 16px;padding:0;}
+  .pros ul:last-child{margin-bottom:0;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Fontes lado a lado · Causten vs Inter vs Geist</h1>
+  <p>Mesmos blocos de UI real em três famílias. Olhe primeiro a <b>tabela</b> e o <b>form</b> — é onde display fonts quebram. Depois compare o <b>display</b> — é onde Causten brilha.</p>
+  <div class="legend">
+    <span>🟣 Causten · atual marketing</span>
+    <span>🟢 Inter · atual produto</span>
+    <span>⚫ Geist · candidata</span>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- ─── CAUSTEN ─── -->
+  <section class="col c-causten">
+    <h2>Causten <em>display / marca</em></h2>
+
+    <div class="sec">
+      <div class="sec-label">Display · hero</div>
+      <h3 class="display-h">Seguros inteligentes para sua família</h3>
+      <p class="display-s">Gestão consolidada de apólices, sinistros e corretagem.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">UI · form</div>
+      <h4 class="ui-h">Novo contato</h4>
+      <label class="ui-label">Nome completo</label>
+      <input class="ui-input" value="Maria Silva Oliveira">
+      <div class="ui-btns">
+        <button class="ui-btn primary">Salvar alterações</button>
+        <button class="ui-btn outline">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">UI · tabela</div>
+      <table>
+        <thead><tr><th>Contato</th><th>Canal</th><th class="num">Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Maria Silva</td><td>WhatsApp</td><td class="num">R$ 1.248,90</td></tr>
+          <tr><td>João Oliveira</td><td>Email</td><td class="num">R$ 3.912,00</td></tr>
+          <tr><td>Ana Costa</td><td>WhatsApp</td><td class="num">R$ 847,55</td></tr>
+          <tr><td>Beatriz Lima</td><td>Email</td><td class="num">R$ 12.000,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">Métricas</div>
+      <div class="num-row">
+        <div><div class="num-big">128.493</div><small>conversas</small></div>
+        <div><div class="num-big">97,3%</div><small>SLA</small></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">Corpo de texto</div>
+      <p class="body-copy">A Simplafy consolida atendimento multicanal, CRM e automação em um único hub. O operador visualiza todas as conversas ativas, com contexto de histórico e propensão de fechamento calculada em tempo real pelos agentes. Tabelas, formulários e alertas seguem o mesmo sistema visual em todos os módulos.</p>
+    </div>
+
+    <div class="pros">
+      <b class="p">✓ Ótima</b> em hero, logo, capa de apresentação, material de marketing curto.<br>
+      <b class="n">✗ Legibilidade cai</b> em 13px (tabela/form), contadores fechados, licença paga.
+    </div>
+  </section>
+
+  <!-- ─── INTER ─── -->
+  <section class="col c-inter">
+    <h2>Inter <em>atual · produto</em></h2>
+
+    <div class="sec">
+      <div class="sec-label">Display · hero</div>
+      <h3 class="display-h">Seguros inteligentes para sua família</h3>
+      <p class="display-s">Gestão consolidada de apólices, sinistros e corretagem.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">UI · form</div>
+      <h4 class="ui-h">Novo contato</h4>
+      <label class="ui-label">Nome completo</label>
+      <input class="ui-input" value="Maria Silva Oliveira">
+      <div class="ui-btns">
+        <button class="ui-btn primary">Salvar alterações</button>
+        <button class="ui-btn outline">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">UI · tabela</div>
+      <table>
+        <thead><tr><th>Contato</th><th>Canal</th><th class="num">Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Maria Silva</td><td>WhatsApp</td><td class="num">R$ 1.248,90</td></tr>
+          <tr><td>João Oliveira</td><td>Email</td><td class="num">R$ 3.912,00</td></tr>
+          <tr><td>Ana Costa</td><td>WhatsApp</td><td class="num">R$ 847,55</td></tr>
+          <tr><td>Beatriz Lima</td><td>Email</td><td class="num">R$ 12.000,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">Métricas</div>
+      <div class="num-row">
+        <div><div class="num-big">128.493</div><small>conversas</small></div>
+        <div><div class="num-big">97,3%</div><small>SLA</small></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">Corpo de texto</div>
+      <p class="body-copy">A Simplafy consolida atendimento multicanal, CRM e automação em um único hub. O operador visualiza todas as conversas ativas, com contexto de histórico e propensão de fechamento calculada em tempo real pelos agentes. Tabelas, formulários e alertas seguem o mesmo sistema visual em todos os módulos.</p>
+    </div>
+
+    <div class="pros">
+      <b class="p">✓ Segura</b> em qualquer UI, tabular nums, gratuita, acessibilidade comprovada.<br>
+      <b class="n">✗ Ubíqua</b> — virou cara de "AI app genérico", pouco diferencial de marca.
+    </div>
+  </section>
+
+  <!-- ─── GEIST ─── -->
+  <section class="col c-geist">
+    <h2>Geist <em>candidata · produto</em></h2>
+
+    <div class="sec">
+      <div class="sec-label">Display · hero</div>
+      <h3 class="display-h">Seguros inteligentes para sua família</h3>
+      <p class="display-s">Gestão consolidada de apólices, sinistros e corretagem.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">UI · form</div>
+      <h4 class="ui-h">Novo contato</h4>
+      <label class="ui-label">Nome completo</label>
+      <input class="ui-input" value="Maria Silva Oliveira">
+      <div class="ui-btns">
+        <button class="ui-btn primary">Salvar alterações</button>
+        <button class="ui-btn outline">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">UI · tabela</div>
+      <table>
+        <thead><tr><th>Contato</th><th>Canal</th><th class="num">Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Maria Silva</td><td>WhatsApp</td><td class="num">R$ 1.248,90</td></tr>
+          <tr><td>João Oliveira</td><td>Email</td><td class="num">R$ 3.912,00</td></tr>
+          <tr><td>Ana Costa</td><td>WhatsApp</td><td class="num">R$ 847,55</td></tr>
+          <tr><td>Beatriz Lima</td><td>Email</td><td class="num">R$ 12.000,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">Métricas</div>
+      <div class="num-row">
+        <div><div class="num-big">128.493</div><small>conversas</small></div>
+        <div><div class="num-big">97,3%</div><small>SLA</small></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-label">Corpo de texto</div>
+      <p class="body-copy">A Simplafy consolida atendimento multicanal, CRM e automação em um único hub. O operador visualiza todas as conversas ativas, com contexto de histórico e propensão de fechamento calculada em tempo real pelos agentes. Tabelas, formulários e alertas seguem o mesmo sistema visual em todos os módulos.</p>
+    </div>
+
+    <div class="pros">
+      <b class="p">✓ Moderna</b>, variable, excelente tabular nums, gratuita, personalidade tech.<br>
+      <b class="n">✗ Menos testada</b> em volumes massivos, estética pode parecer "Vercel-like".
+    </div>
+  </section>
+
+</div>
+
+<div class="hero" style="margin-top:28px;">
+  <h1 style="font-size:18px;">Recomendação</h1>
+  <p>Sistema de <b>duas famílias</b>: <b class="c-causten" style="font-size:15px;">Causten</b> para marca (logo, hero de site, capa de decks, peças de marketing) · <b class="c-geist" style="font-size:15px;">Geist</b> ou <b class="c-inter" style="font-size:15px;">Inter</b> para produto (UI, tabelas, formulários, blog). Após escolher, eu atualizo <code>colors_and_type.css</code> com as duas variáveis (<code>--font-display</code> / <code>--font-sans</code>) e todos os previews herdam.</p>
+</div>
+
+</body>
+</html>

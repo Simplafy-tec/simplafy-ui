@@ -19,5 +19,5 @@ export default [
       "@typescript-eslint/no-explicit-any": "warn",
     },
   },
-  { ignores: ["dist/", "node_modules/", "storybook-static/", "stories/"] },
+  { ignores: ["dist/", "node_modules/", "storybook-static/", "stories/", "docs/"] },
 ];

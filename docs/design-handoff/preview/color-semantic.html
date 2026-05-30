@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-sans);}
+  body{padding:20px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .swatch{flex:1 1 calc(25% - 10px);border-radius:var(--radius-lg);border:1px solid var(--color-border);overflow:hidden;box-shadow:var(--shadow-sm);min-width:140px;}
+  .fill{height:64px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
+  .meta{padding:8px 12px;background:var(--color-card);}
+  .name{font-size:12px;font-weight:600;}
+  .val{font-size:11px;color:var(--color-muted-foreground);font-family:var(--font-mono);margin-top:2px;}
+</style></head>
+<body>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:var(--color-success);color:var(--color-success-foreground);">success</div><div class="meta"><div class="name">success</div><div class="val">ativo / convertido</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-warning);color:var(--color-warning-foreground);">warning</div><div class="meta"><div class="name">warning</div><div class="val">pendente / morno</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-destructive);color:var(--color-destructive-foreground);">destructive</div><div class="meta"><div class="name">destructive</div><div class="val">erro / expirado</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-teal);color:var(--color-teal-foreground);">teal</div><div class="meta"><div class="name">teal</div><div class="val">em andamento / whatsapp</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-blue);color:var(--color-blue-foreground);">blue</div><div class="meta"><div class="name">blue</div><div class="val">tipo agente / email</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-purple);color:var(--color-purple-foreground);">purple</div><div class="meta"><div class="name">purple</div><div class="val">jornada / premium</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-orange);color:var(--color-orange-foreground);">orange</div><div class="meta"><div class="name">orange</div><div class="val">hot / urgente</div></div></div>
+    <div class="swatch"><div class="fill" style="background:var(--color-secondary);color:var(--color-secondary-foreground);border:1px dashed var(--color-border);">secondary</div><div class="meta"><div class="name">secondary</div><div class="val">inativo / desabilitado</div></div></div>
+  </div>
+</body></html>

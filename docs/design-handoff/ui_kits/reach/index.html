@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Reach by Simpla.fy — Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./reach.css">
+<style>
+  /* página interna do showroom — não faz parte do kit */
+  .doc-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--fg-3);
+    margin-bottom: 8px;
+  }
+  .doc-block {
+    border: 1px dashed var(--line-1);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    background: var(--white);
+  }
+  [data-tone="warm"] .doc-block,
+  [data-tone="warm-2"] .doc-block { border-color: var(--reach-warm-line); }
+  [data-tone="dark"] .doc-block { border-color: var(--line-dark-1); background: rgba(255,255,255,0.02); }
+
+  .swatch {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--line-1);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--white);
+  }
+  .swatch .chip { height: 96px; }
+  .swatch .info { padding: 12px 14px; }
+  .swatch b { font-size: 13px; display: block; }
+  .swatch code { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+
+  .type-row {
+    border-bottom: 1px solid var(--line-2);
+    padding: 18px 0;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .k {
+    font-family: var(--font-mono); font-size: 11px; color: var(--fg-3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  .testimonial {
+    background: var(--white);
+    border: 1px solid var(--reach-warm-line);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+  }
+  .testimonial q {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--fg-1);
+    quotes: "“" "”";
+    display: block;
+    margin-bottom: 20px;
+  }
+  .testimonial-who {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .testimonial-who .ava {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: var(--reach-warm-deep);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px;
+  }
+  .testimonial-who small { display: block; color: var(--fg-3); font-size: 12px; }
+
+  .stat-card {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--line-1);
+    border-radius: var(--radius-xl);
+  }
+  .stat-card .n {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--fg-1);
+  }
+  .stat-card .n em { font-style: normal; color: var(--green-deep); }
+  .stat-card .l {
+    font-size: 14px;
+    color: var(--fg-3);
+  }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .step-list li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 18px 22px;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line-1);
+  }
+  .step-list li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-deep);
+    background: var(--glow-green);
+    border-radius: 999px;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-list b { display: block; margin-bottom: 4px; font-size: 15px; }
+  .step-list small { color: var(--fg-3); font-size: 13px; line-height: 1.5; }
+
+  /* section anchors header */
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; }
+  .sec-head .num { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════════════════════ -->
+<nav class="reach-nav">
+  <div class="reach-container reach-nav__inner">
+    <a href="#" class="reach-lockup reach-lockup--sm">
+      <span class="reach-mark reach-mark--static"><span class="reach-mark__dot"></span></span>
+      <span class="reach-lockup__text">
+        <span class="reach-lockup__name">Reach</span>
+        <span class="reach-lockup__by">by <b>Simpla.fy</b></span>
+      </span>
+    </a>
+    <div class="reach-nav__links">
+      <a href="#program">O programa</a>
+      <a href="#ongs">ONGs</a>
+      <a href="#how">Como funciona</a>
+      <a href="#apply">Candidatar-se</a>
+    </div>
+    <a href="#apply" class="reach-button reach-button--primary" style="margin-left:auto;height:40px;font-size:14px;">Inscrever ONG</a>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section reach-section--loose" data-tone="dark" id="hero">
+  <div class="reach-container">
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:center;">
+      <div>
+        <span class="reach-eyebrow" style="margin-bottom:24px;display:inline-flex;">Programa social Simplafy</span>
+        <h1 class="reach-hero" style="margin-bottom:20px;color:var(--fg-on-dark-1);">
+          Tecnologia pra quem <em>não deixa o Brasil&nbsp;parar</em>.
+        </h1>
+        <p class="reach-lead" style="font-size:20px;max-width:52ch;">
+          Oferecemos nosso tempo a quem faz o que importa. Conte com a gente pra construir e manter o seu site — e ter acesso às soluções de IA que ajudam a sua causa a chegar mais longe.
+        </p>
+        <p style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.04em;color:var(--green-soft);margin:24px 0 0;">— Digital support for people doing good.</p>
+        <div style="display:flex;gap:12px;margin-top:32px;">
+          <a href="#apply" class="reach-button reach-button--primary">Candidatar ONG</a>
+          <a href="#program" class="reach-button reach-button--secondary">Como funciona</a>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;">
+        <div class="reach-mark reach-mark--xl on-dark"><span class="reach-mark__dot"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     0. SUMÁRIO DA IDENTIDADE
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" id="dna">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">DNA da marca</span>
+        <h2 class="reach-display" style="margin-top:12px;">Reach é a Simplafy <em style="color:var(--green-deep);font-style:normal;">não deixando&nbsp;parar</em> quem faz o que importa.</h2>
+        <p class="reach-lead">Sub-marca. Mesma paleta, mesma tipografia, mesmo verde-neon. Diferença: o brand mark ganha um ripple — sinal que se estende — e a tipografia abre meio ponto. Menos comercial, mais editorial. Mantém peso institucional sem virar caridade.</p>
+      </div>
+      <span class="num">01 · DNA</span>
+    </div>
+
+    <div class="reach-grid reach-grid--3" style="margin-top:32px;">
+      <div class="reach-card">
+        <span class="reach-pill reach-pill--green">Herda</span>
+        <h3 class="reach-h3" style="margin-top:14px;">Paleta Simplafy</h3>
+        <p class="reach-body">Verde-neon #1DEF3B, ink #0B1B18, off-white #F5F7F4. Reach NÃO inventa cor de marca. Adiciona apenas um warm-cream pra acolher tom social.</p>
+      </div>
+      <div class="reach-card">
+        <span class="reach-pill reach-pill--green">Herda</span>
+        <h3 class="reach-h3" style="margin-top:14px;">Tipografia Simplafy</h3>
+        <p class="reach-body">Causten (display) + Geist (corpo). Mas Reach usa peso 600/700 — não 800 do site comercial. Editorial, não vendedora.</p>
+      </div>
+      <div class="reach-card">
+        <span class="reach-pill reach-pill--warm">Próprio</span>
+        <h3 class="reach-h3" style="margin-top:14px;">Brand mark com ripple</h3>
+        <p class="reach-body">Dot verde + 2 anéis concêntricos pulsando. O alcance da marca, literal. Vira animação no hero, vira selo estático no rodapé da ONG.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     1. BRAND MARK
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" data-tone="soft" id="mark">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">Brand mark</span>
+        <h2 class="reach-display" style="margin-top:12px;">O sinal que se <em style="color:var(--green-deep);font-style:normal;">estende</em>.</h2>
+        <p class="reach-lead">O dot verde da Simplafy ganha 2 anéis concêntricos pulsando pra fora. Diferentemente do .fy estático do produto, aqui o sinal se propaga — o que combina com o nome.</p>
+      </div>
+      <span class="num">02 · mark</span>
+    </div>
+
+    <div class="reach-grid reach-grid--4" style="margin-top:32px;">
+      <div class="doc-block" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:36px 20px;min-height:200px;">
+        <div class="reach-mark"><span class="reach-mark__dot"></span></div>
+        <div class="doc-label" style="margin:0;">Default · 48px</div>
+      </div>
+      <div class="doc-block" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:36px 20px;min-height:200px;">
+        <div class="reach-mark reach-mark--lg"><span class="reach-mark__dot"></span></div>
+        <div class="doc-label" style="margin:0;">Large · 88px</div>
+      </div>
+      <div class="doc-block" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:36px 20px;min-height:200px;">
+        <div class="reach-mark reach-mark--xl"><span class="reach-mark__dot"></span></div>
+        <div class="doc-label" style="margin:0;">XL · 128px (hero)</div>
+      </div>
+      <div class="doc-block" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:36px 20px;min-height:200px;background:var(--ink-1);color:var(--fg-on-dark-1);border-color:var(--line-dark-1);">
+        <div class="reach-mark reach-mark--lg on-dark"><span class="reach-mark__dot"></span></div>
+        <div class="doc-label" style="margin:0;color:var(--fg-on-dark-3);">Sobre ink</div>
+      </div>
+    </div>
+
+    <!-- Lockups -->
+    <h3 class="reach-h3" style="margin-top:48px;margin-bottom:20px;">Lockup</h3>
+    <div class="reach-grid reach-grid--3">
+      <div class="doc-block" style="display:flex;align-items:center;justify-content:center;padding:48px 24px;">
+        <a href="#" class="reach-lockup reach-lockup--sm">
+          <span class="reach-mark reach-mark--static"><span class="reach-mark__dot"></span></span>
+          <span class="reach-lockup__text">
+            <span class="reach-lockup__name">Reach</span>
+            <span class="reach-lockup__by">by <b>Simpla.fy</b></span>
+          </span>
+        </a>
+      </div>
+      <div class="doc-block" style="display:flex;align-items:center;justify-content:center;padding:48px 24px;">
+        <a href="#" class="reach-lockup">
+          <span class="reach-mark"><span class="reach-mark__dot"></span></span>
+          <span class="reach-lockup__text">
+            <span class="reach-lockup__name">Reach</span>
+            <span class="reach-lockup__by">by <b>Simpla.fy</b></span>
+          </span>
+        </a>
+      </div>
+      <div class="doc-block" style="display:flex;align-items:center;justify-content:center;padding:48px 24px;background:var(--ink-1);border-color:var(--line-dark-1);" data-tone="dark">
+        <a href="#" class="reach-lockup reach-lockup--lg">
+          <span class="reach-mark reach-mark--lg on-dark"><span class="reach-mark__dot"></span></span>
+          <span class="reach-lockup__text">
+            <span class="reach-lockup__name">Reach</span>
+            <span class="reach-lockup__by">by <b>Simpla.fy</b></span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     2. CORES
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" id="colors">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">Paleta</span>
+        <h2 class="reach-display" style="margin-top:12px;">Cores</h2>
+        <p class="reach-lead">Reach herda toda a paleta canônica do <code style="font-family:var(--font-mono);background:var(--soft);padding:2px 6px;border-radius:4px;font-size:13px;">tokens.css</code>. O único token <b>próprio</b> é <code style="font-family:var(--font-mono);background:var(--soft);padding:2px 6px;border-radius:4px;font-size:13px;">--reach-warm</code> — cream pra acolher contexto social. Use apenas em testimonials e "Sobre o programa". Nunca em CTA.</p>
+      </div>
+      <span class="num">03 · colors</span>
+    </div>
+
+    <h3 class="reach-h3" style="margin-top:24px;margin-bottom:16px;">Herdadas — Simplafy</h3>
+    <div class="reach-grid reach-grid--4">
+      <div class="swatch"><div class="chip" style="background:#1DEF3B;"></div><div class="info"><b>Brand green</b><code>#1DEF3B · --green</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#22C55E;"></div><div class="info"><b>Green deep</b><code>#22C55E · --green-deep</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#0B1B18;"></div><div class="info"><b>Ink</b><code>#0B1B18 · --ink-1</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#F5F7F4;border-bottom:1px solid var(--line-1);"></div><div class="info"><b>Soft</b><code>#F5F7F4 · --soft</code></div></div>
+    </div>
+
+    <h3 class="reach-h3" style="margin-top:36px;margin-bottom:16px;">Próprias do Reach</h3>
+    <div class="reach-grid reach-grid--4">
+      <div class="swatch"><div class="chip" style="background:#F4ECDC;border-bottom:1px solid var(--reach-warm-line);"></div><div class="info"><b>Warm cream</b><code>#F4ECDC · --reach-warm</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#FAF3E4;border-bottom:1px solid var(--reach-warm-line);"></div><div class="info"><b>Warm cream 2</b><code>#FAF3E4 · --reach-warm-2</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#C9A06B;"></div><div class="info"><b>Warm deep</b><code>#C9A06B · --reach-warm-deep</code></div></div>
+      <div class="swatch"><div class="chip" style="background:rgba(201,160,107,0.22);border-bottom:1px solid var(--reach-warm-line);"></div><div class="info"><b>Warm line</b><code>rgba(.., 0.22)</code></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     3. TIPOGRAFIA
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" data-tone="warm-2" id="type">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">Tipografia</span>
+        <h2 class="reach-display" style="margin-top:12px;">Causten <em style="color:var(--green-deep);font-style:normal;">600/700</em>. Geist no corpo.</h2>
+        <p class="reach-lead">A Simplafy comercial usa Causten <b>800</b> no hero — vendedora. Reach abre pra <b>700</b> e em alguns lugares <b>600</b>. Lê como peça editorial de impacto social, não como anúncio de SaaS.</p>
+      </div>
+      <span class="num">04 · type</span>
+    </div>
+
+    <div class="doc-block" style="margin-top:24px;padding:32px 36px;">
+      <div class="type-row">
+        <span class="k">Hero · 700</span>
+        <h1 class="reach-hero" style="font-size:64px;">Tecnologia pra quem não deixa o Brasil&nbsp;parar.</h1>
+      </div>
+      <div class="type-row">
+        <span class="k">Display · 600</span>
+        <h2 class="reach-display" style="margin:0;">Quem faz o que importa não pode parar. A Simplafy chega lá.</h2>
+      </div>
+      <div class="type-row">
+        <span class="k">H1 · 700</span>
+        <h3 class="reach-h1" style="margin:0;">Como uma ONG entra no programa</h3>
+      </div>
+      <div class="type-row">
+        <span class="k">H2 · 600</span>
+        <h4 class="reach-h2" style="margin:0;">Quem somos & por que existimos</h4>
+      </div>
+      <div class="type-row">
+        <span class="k">H3 · Geist 600</span>
+        <h5 class="reach-h3" style="margin:0;">Critérios de elegibilidade</h5>
+      </div>
+      <div class="type-row">
+        <span class="k">Lead · 18px</span>
+        <p class="reach-lead" style="margin:0;max-width:none;">Oferecemos nosso tempo a quem não deixa o Brasil parar. Conte com a gente pra construir e manter o seu site — e ter acesso às soluções de IA que ajudam a sua causa a chegar mais longe.</p>
+      </div>
+      <div class="type-row">
+        <span class="k">Body · 16px</span>
+        <p class="reach-body" style="margin:0;">Toda ONG aprovada recebe um domínio, um site institucional configurado e um agente Fy operando no WhatsApp em até 30 dias. A manutenção é nossa.</p>
+      </div>
+      <div class="type-row">
+        <span class="k">Eyebrow</span>
+        <span class="reach-eyebrow">Programa social Simplafy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     4. COMPONENTES
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" id="components">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">Componentes</span>
+        <h2 class="reach-display" style="margin-top:12px;">Componentes</h2>
+      </div>
+      <span class="num">05 · components</span>
+    </div>
+
+    <!-- Buttons -->
+    <h3 class="reach-h3" style="margin-bottom:14px;">Botão</h3>
+    <div class="doc-block" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:36px;">
+      <button class="reach-button reach-button--primary">Candidatar ONG</button>
+      <button class="reach-button reach-button--secondary">Como funciona</button>
+      <span style="color:var(--fg-3);font-size:13px;margin-left:auto;font-family:var(--font-mono);">.reach-button --primary / --secondary</span>
+    </div>
+    <div class="doc-block" data-tone="dark" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:36px;background:var(--ink-1);">
+      <button class="reach-button reach-button--primary">Candidatar ONG</button>
+      <button class="reach-button reach-button--secondary">Como funciona</button>
+      <span style="color:var(--fg-on-dark-3);font-size:13px;margin-left:auto;font-family:var(--font-mono);">primary inverte sobre ink → verde</span>
+    </div>
+
+    <!-- Pills -->
+    <h3 class="reach-h3" style="margin-bottom:14px;">Pill / Badge</h3>
+    <div class="doc-block" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;">
+      <span class="reach-pill">ONG apoiada</span>
+      <span class="reach-pill reach-pill--green">No ar desde 2026</span>
+      <span class="reach-pill reach-pill--warm">Causa social</span>
+      <span class="reach-pill reach-pill--dark">Inscrições abertas</span>
+    </div>
+
+    <!-- Cards -->
+    <h3 class="reach-h3" style="margin-bottom:14px;">Card</h3>
+    <div class="reach-grid reach-grid--3" style="margin-bottom:36px;">
+      <div class="reach-card">
+        <span class="reach-pill reach-pill--green">Educação</span>
+        <h3 class="reach-h3" style="margin-top:16px;">Casa do Pavão</h3>
+        <p class="reach-body">Reforço escolar para 240 crianças em comunidade no Recife.</p>
+      </div>
+      <div class="reach-card reach-card--featured">
+        <span class="reach-pill reach-pill--warm">Saúde</span>
+        <h3 class="reach-h3" style="margin-top:16px;">Mãos que Cuidam</h3>
+        <p class="reach-body">Atendimento médico domiciliar a idosos em situação de vulnerabilidade.</p>
+      </div>
+      <div class="reach-card">
+        <span class="reach-pill">Ambiental</span>
+        <h3 class="reach-h3" style="margin-top:16px;">Verde de Quintal</h3>
+        <p class="reach-body">Hortas comunitárias urbanas em 12 bairros de Porto Alegre.</p>
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <h3 class="reach-h3" style="margin-bottom:14px;">Stat card</h3>
+    <div class="reach-grid reach-grid--3" style="margin-bottom:36px;">
+      <div class="stat-card"><span class="n"><em>28</em></span><span class="l">ONGs no ar pelo Reach</span></div>
+      <div class="stat-card"><span class="n">11<em>k</em></span><span class="l">atendimentos via Fy em 2026</span></div>
+      <div class="stat-card"><span class="n">100%</span><span class="l">do tempo dedicado a quem não pode parar</span></div>
+    </div>
+
+    <!-- Steps -->
+    <h3 class="reach-h3" style="margin-bottom:14px;">Lista numerada (passos)</h3>
+    <ol class="step-list" style="margin-bottom:36px;">
+      <li>
+        <div>
+          <b>Inscrição da ONG</b>
+          <small>Você preenche o formulário com a missão, CNPJ e relatório anual. Resposta em até 7 dias úteis.</small>
+        </div>
+      </li>
+      <li>
+        <div>
+          <b>Aprovação & onboarding</b>
+          <small>Time Reach faz uma chamada de 30 min para entender canais, perfis de atendimento e tom da causa.</small>
+        </div>
+      </li>
+      <li>
+        <div>
+          <b>No ar em 30 dias</b>
+          <small>Domínio, site institucional e agente Fy configurado no WhatsApp. Manutenção contínua por nossa conta.</small>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     5. TESTIMONIAL — warm tone
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" data-tone="warm" id="voice-warm">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">Section tone · warm</span>
+        <h2 class="reach-display" style="margin-top:12px;">Use warm quando o conteúdo é <em style="color:#8A6A35;font-style:normal;">humano, não comercial</em>.</h2>
+        <p class="reach-lead">Testimonials, histórias de ONGs apoiadas, "Sobre o programa". Background cream, mantém cards brancos por cima. Lê quente sem perder a sobriedade da marca.</p>
+      </div>
+      <span class="num">06 · warm tone</span>
+    </div>
+
+    <div class="reach-grid reach-grid--2" style="margin-top:24px;">
+      <div class="testimonial">
+        <q>Antes do Reach, eu respondia 60 mensagens por dia no WhatsApp da ONG sozinha. Hoje a Fy responde 80% — eu cuido do que só gente cuida.</q>
+        <div class="testimonial-who">
+          <span class="ava">MC</span>
+          <div>
+            <b style="font-size:14px;">Marcela Costa</b>
+            <small>Casa do Pavão · Recife</small>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <q>Tínhamos uma página no Facebook de 2018. O site novo abriu portas com 3 fundações — uma já virou patrocinadora.</q>
+        <div class="testimonial-who">
+          <span class="ava">JR</span>
+          <div>
+            <b style="font-size:14px;">João Ribeiro</b>
+            <small>Verde de Quintal · Porto Alegre</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     6. SECTION TONES
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section" id="tones">
+  <div class="reach-container">
+    <div class="sec-head">
+      <div>
+        <span class="reach-eyebrow">Layout</span>
+        <h2 class="reach-display" style="margin-top:12px;">Tons de seção</h2>
+        <p class="reach-lead">5 tons compõem a página inteira. Alterne deliberadamente — não use 3 brancos seguidos. A composição é parte da identidade.</p>
+      </div>
+      <span class="num">07 · tones</span>
+    </div>
+
+    <div class="reach-grid reach-grid--2" style="margin-top:24px;">
+      <div class="doc-block" style="padding:0;overflow:hidden;">
+        <div style="height:120px;background:var(--white);border-bottom:1px solid var(--line-2);"></div>
+        <div style="padding:14px 18px;"><b style="font-size:14px;">default · white</b><br><small style="color:var(--fg-3);font-family:var(--font-mono);">tom base</small></div>
+      </div>
+      <div class="doc-block" style="padding:0;overflow:hidden;">
+        <div style="height:120px;background:var(--soft);"></div>
+        <div style="padding:14px 18px;"><b style="font-size:14px;">soft</b><br><small style="color:var(--fg-3);font-family:var(--font-mono);">data-tone="soft" — alternada</small></div>
+      </div>
+      <div class="doc-block" style="padding:0;overflow:hidden;">
+        <div style="height:120px;background:var(--reach-warm);"></div>
+        <div style="padding:14px 18px;"><b style="font-size:14px;">warm</b><br><small style="color:var(--fg-3);font-family:var(--font-mono);">data-tone="warm" — humano</small></div>
+      </div>
+      <div class="doc-block" style="padding:0;overflow:hidden;">
+        <div style="height:120px;background:var(--reach-warm-2);"></div>
+        <div style="padding:14px 18px;"><b style="font-size:14px;">warm-2</b><br><small style="color:var(--fg-3);font-family:var(--font-mono);">data-tone="warm-2" — versão leve</small></div>
+      </div>
+      <div class="doc-block" style="padding:0;overflow:hidden;grid-column:span 2;">
+        <div style="height:120px;background:var(--ink-1);"></div>
+        <div style="padding:14px 18px;"><b style="font-size:14px;">dark</b><br><small style="color:var(--fg-3);font-family:var(--font-mono);">data-tone="dark" — hero, footer, capa de PDF, OG image</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     7. CTA bloc + footer
+════════════════════════════════════════════════════════════════════════ -->
+<section class="reach-section reach-section--tight" data-tone="dark" id="apply">
+  <div class="reach-container" style="text-align:center;">
+    <div class="reach-mark reach-mark--xl on-dark" style="margin:0 auto 32px;"><span class="reach-mark__dot"></span></div>
+    <h2 class="reach-display" style="max-width:24ch;margin:0 auto 20px;color:var(--fg-on-dark-1);">A sua ONG <em style="color:var(--green-bright);font-style:normal;">também pode estar no ar</em>.</h2>
+    <p class="reach-lead" style="max-width:48ch;margin:0 auto 32px;color:var(--fg-on-dark-2);">Inscrições abertas o ano inteiro. Sem fila, sem prazo. Resposta do time Reach em até 7 dias úteis.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="#" class="reach-button reach-button--primary">Inscrever minha ONG</a>
+      <a href="#" class="reach-button reach-button--secondary">Falar com o time Reach</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════════════════ -->
+<footer class="reach-footer">
+  <div class="reach-container">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;">
+      <div>
+        <div class="reach-lockup reach-lockup--sm" style="margin-bottom:14px;">
+          <span class="reach-mark reach-mark--static on-dark"><span class="reach-mark__dot"></span></span>
+          <span class="reach-lockup__text">
+            <span class="reach-lockup__name">Reach</span>
+            <span class="reach-lockup__by">by <b>Simpla.fy</b></span>
+          </span>
+        </div>
+        <p style="color:var(--fg-on-dark-3);font-size:13px;max-width:36ch;margin:0;">Tempo, site e IA dedicados às organizações que não deixam o Brasil parar. <span style="color:var(--green-soft);">Digital support for people doing good.</span></p>
+      </div>
+      <div>
+        <h4>Programa</h4>
+        <a href="#">Como funciona</a>
+        <a href="#">Critérios</a>
+        <a href="#">ONGs no ar</a>
+      </div>
+      <div>
+        <h4>ONGs</h4>
+        <a href="#">Inscrever</a>
+        <a href="#">Painel</a>
+        <a href="#">Suporte</a>
+      </div>
+      <div>
+        <h4>Simplafy</h4>
+        <a href="#">simplafy.com.br</a>
+        <a href="#">Sobre nós</a>
+        <a href="#">Imprensa</a>
+      </div>
+    </div>
+    <div class="reach-footer__bottom">
+      <span>© 2026 Simplafy · CNPJ 00.000.000/0001-00</span>
+      <span>Reach DS · v0.1.0</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

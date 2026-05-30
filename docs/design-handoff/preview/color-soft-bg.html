@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Soft backgrounds — Simplafy DS</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 14px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  h1 {
+    font: 700 28px/1.2 var(--font-display);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .sub { color: var(--color-muted-foreground); font-size: 13px; line-height: 1.55; margin: 0; max-width: 640px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .row {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    background: var(--color-card);
+  }
+  .row-title { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .dot { width: 14px; height: 14px; border-radius: 999px; }
+  .dot-primary { background: oklch(0.72 0.19 150); }
+  .dot-teal { background: oklch(0.78 0.13 175); }
+  .dot-blue { background: oklch(0.77 0.13 230); }
+  .dot-purple { background: oklch(0.62 0.22 295); }
+  .dot-amber { background: hsl(38 92% 50%); }
+  .dot-orange { background: oklch(0.72 0.19 50); }
+  .dot-red { background: oklch(0.58 0.22 27); }
+  .name { font: 600 13px/1 var(--font-sans); }
+  .var { font: 500 11px/1 var(--font-mono); color: var(--color-muted-foreground); margin-left: auto; }
+  .samples { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font: 500 12px/1 var(--font-sans);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font: 500 13px/1.2 var(--font-sans);
+  }
+
+  .chip-primary { background: var(--color-primary-bg); color: oklch(0.4 0.12 150); }
+  .chip-teal    { background: var(--color-teal-bg);    color: oklch(0.35 0.08 175); }
+  .chip-blue    { background: var(--color-blue-bg);    color: oklch(0.35 0.10 230); }
+  .chip-purple  { background: var(--color-purple-bg);  color: oklch(0.35 0.16 295); }
+  .chip-amber   { background: var(--color-amber-bg);   color: hsl(30 85% 30%); }
+  .chip-orange  { background: var(--color-orange-bg);  color: oklch(0.4 0.14 50); }
+  .chip-red     { background: var(--color-red-bg);     color: oklch(0.35 0.18 27); }
+
+  .footnote {
+    margin-top: 32px;
+    padding: 16px;
+    border-left: 3px solid var(--color-primary);
+    background: var(--color-primary-bg);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--color-foreground);
+  }
+  .footnote code {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font: 500 11.5px/1 var(--font-mono);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Soft backgrounds</h1>
+  <p class="sub">
+    Tints de baixa opacidade (0.12 light / 0.15 dark) derivados das 7 cores
+    semânticas. Para chips de filtro, status pills discretos, linhas de tabela
+    destacadas e containers sutis que não competem com a cor cheia do Badge.
+    Origem: <code style="font:500 11.5px/1 var(--font-mono)">simplafy-saude/apps/portal/src/index.css</code>.
+  </p>
+</header>
+
+<div class="grid">
+  <!-- primary-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-primary"></span>
+      <span class="name">Primary</span>
+      <span class="var">--color-primary-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-primary">● Ativo</span>
+      <span class="chip chip-primary">Convertido</span>
+      <span class="pill chip-primary">◉ 12 leads novos</span>
+    </div>
+  </div>
+
+  <!-- teal-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-teal"></span>
+      <span class="name">Teal</span>
+      <span class="var">--color-teal-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-teal">Em progresso</span>
+      <span class="chip chip-teal">Canal WhatsApp</span>
+      <span class="pill chip-teal">✓ 4 automações ativas</span>
+    </div>
+  </div>
+
+  <!-- blue-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-blue"></span>
+      <span class="name">Blue</span>
+      <span class="var">--color-blue-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-blue">Tipo Agente</span>
+      <span class="chip chip-blue">Canal Email</span>
+      <span class="pill chip-blue">ℹ Treinamento em curso</span>
+    </div>
+  </div>
+
+  <!-- purple-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-purple"></span>
+      <span class="name">Purple</span>
+      <span class="var">--color-purple-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-purple">Tipo Jornada</span>
+      <span class="chip chip-purple">Premium</span>
+      <span class="pill chip-purple">★ Plano Clínica Plus</span>
+    </div>
+  </div>
+
+  <!-- amber-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-amber"></span>
+      <span class="name">Amber <span style="color:var(--color-muted-foreground);font-weight:400;">(warning)</span></span>
+      <span class="var">--color-amber-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-amber">Aguardando</span>
+      <span class="chip chip-amber">Temperatura Morno</span>
+      <span class="pill chip-amber">⚠ 3 apólices vencendo</span>
+    </div>
+  </div>
+
+  <!-- orange-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-orange"></span>
+      <span class="name">Orange</span>
+      <span class="var">--color-orange-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-orange">Lead Hot</span>
+      <span class="chip chip-orange">Urgente</span>
+      <span class="pill chip-orange">🔥 Expiração próxima</span>
+    </div>
+  </div>
+
+  <!-- red-bg -->
+  <div class="row">
+    <div class="row-title">
+      <span class="dot dot-red"></span>
+      <span class="name">Red <span style="color:var(--color-muted-foreground);font-weight:400;">(destructive)</span></span>
+      <span class="var">--color-red-bg</span>
+    </div>
+    <div class="samples">
+      <span class="chip chip-red">Erro</span>
+      <span class="chip chip-red">Expirado</span>
+      <span class="pill chip-red">✕ Falha no envio</span>
+    </div>
+  </div>
+</div>
+
+<div class="footnote">
+  <strong>Regra:</strong> use <code>bg-primary-bg</code> / <code>bg-teal-bg</code> etc. apenas para containers e <em>hover states</em>.
+  Para stickers de status com peso visual cheio, continue usando <code>&lt;Badge variant="success|teal|blue|..."&gt;</code> —
+  o soft-bg é a versão "quiet" dos mesmos semantics.
+</div>
+
+</div>
+</body>
+</html>
