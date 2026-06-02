@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--color-muted);color:var(--color-foreground);font-family:var(--font-sans);padding:32px;}
+  .row{display:flex;gap:20px;}
+  .cell{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .box{width:100%;height:72px;background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);}
+  .name{font-size:11px;font-weight:600;}
+  .val{font-size:10px;color:var(--color-muted-foreground);font-family:var(--font-mono);text-align:center;}
+</style></head>
+<body>
+  <div class="row">
+    <div class="cell"><div class="box" style="box-shadow:var(--shadow-sm);"></div><div class="name">shadow-sm</div><div class="val">cards · inputs · buttons</div></div>
+    <div class="cell"><div class="box" style="box-shadow:var(--shadow-md);"></div><div class="name">shadow-md</div><div class="val">popover · dropdown · select</div></div>
+    <div class="cell"><div class="box" style="box-shadow:var(--shadow-lg);"></div><div class="name">shadow-lg</div><div class="val">dialog · sheet backdrop</div></div>
+    <div class="cell"><div class="box" style="box-shadow:var(--shadow-focus);border-color:var(--color-primary);"></div><div class="name">shadow-focus</div><div class="val">3px ring · primary/20</div></div>
+  </div>
+</body></html>

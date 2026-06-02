@@ -2,6 +2,19 @@
 
 Design System do ecossistema Simplafy — componentes, tokens semânticos, Tailwind 4 preset.
 
+
+## Design System — referência canônica (marca + kits)
+
+| O quê | Onde |
+|-------|------|
+| **Spec visual completa** | [`docs/design-system/`](docs/design-system/) |
+| Tokens | [`docs/design-system/tokens.css`](docs/design-system/tokens.css) |
+| Kits por produto | [`docs/design-system/ui_kits/_index.md`](docs/design-system/ui_kits/_index.md) |
+| Componentes npm | `src/` (este repo) — ver [`COMPONENTS.md`](COMPONENTS.md) |
+| Storybook | https://design.simplafy.com.br |
+
+**Regra:** código de produção consome `@simplafy-tec/ui`; decisões de cor/tipo/kits vêm de `docs/design-system/`.
+
 ## Instalação
 
 ```bash
