@@ -1,0 +1,222 @@
+/* ══════════════════════════════════════════════════════════════════════════
+ *
+ *   ███████╗██╗███╗   ███╗██████╗ ██╗      █████╗ ███████╗██╗   ██╗
+ *   ██╔════╝██║████╗ ████║██╔══██╗██║     ██╔══██╗██╔════╝╚██╗ ██╔╝
+ *   ███████╗██║██╔████╔██║██████╔╝██║     ███████║█████╗   ╚████╔╝
+ *   ╚════██║██║██║╚██╔╝██║██╔═══╝ ██║     ██╔══██║██╔══╝    ╚██╔╝
+ *   ███████║██║██║ ╚═╝ ██║██║     ███████╗██║  ██║██║        ██║
+ *   ╚══════╝╚═╝╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝        ╚═╝
+ *
+ *   DESIGN TOKENS — ARQUIVO CANÔNICO DA MARCA
+ *
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * Este é o ÚNICO arquivo que define a marca Simplafy.
+ * É consumido por TODOS os produtos:
+ *
+ *     tokens.css                      ← AQUI (raiz do DS, primitivos)
+ *       ├─ ui_kits/site/site.css       — site marketing (simplafy.com.br)
+ *       ├─ ui_kits/hub/                — Hub SaaS (workspace logado)
+ *       ├─ ui_kits/saude/              — Simplafy Saúde (portal clínico)
+ *       └─ ui_kits/seguros/            — Simplafy Seguros (broker)
+ *
+ * REGRAS DE OURO
+ *  • NUNCA inventar nova cor de marca em um kit. Se faltar token, ADD AQUI.
+ *  • NUNCA mudar token sem alinhar com todos os kits que consomem.
+ *  • Kits podem ADICIONAR vocabulário próprio (ex: --hub-shell-w),
+ *    mas não podem CONTRADIZER um token primitivo.
+ *  • Mudou aqui → bumpa a versão no header abaixo.
+ *
+ * VERSÃO: 1.0.1 — 2026-05-22
+ *         v1.0.0 (2026-05-19): extraído auditando o site v2
+ *         v1.0.1 (2026-05-22): corrige caminhos no header pra refletir
+ *                              estrutura real do DS central
+ *
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  WEBFONTS                                                ║
+   ║  Causten é local (marca proprietária). Geist é do Google.║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+@font-face { font-family:"Causten"; font-weight:300; src:url("./fonts/Causten-Light.ttf")     format("truetype"); font-display:swap; }
+@font-face { font-family:"Causten"; font-weight:400; src:url("./fonts/Causten-Regular.ttf")   format("truetype"); font-display:swap; }
+@font-face { font-family:"Causten"; font-weight:500; src:url("./fonts/Causten-Medium.ttf")    format("truetype"); font-display:swap; }
+@font-face { font-family:"Causten"; font-weight:600; src:url("./fonts/Causten-SemiBold.ttf")  format("truetype"); font-display:swap; }
+@font-face { font-family:"Causten"; font-weight:700; src:url("./fonts/Causten-Bold.ttf")      format("truetype"); font-display:swap; }
+@font-face { font-family:"Causten"; font-weight:800; src:url("./fonts/Causten-ExtraBold.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"Causten"; font-weight:900; src:url("./fonts/Causten-Black.ttf")     format("truetype"); font-display:swap; }
+
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
+
+
+:root {
+  /* ══════════════════════════════════════════════════════════
+     1. BRAND — GREEN
+     ──────────────────────────────────────────────────────────
+     4 tons. Cada um tem 1 papel só. Não trocar por estética.
+     ══════════════════════════════════════════════════════════ */
+
+  /* verde vivo de tela — CTAs primários, dots "online", glow */
+  --green:         #1DEF3B;
+
+  /* verde pistache — eyebrows sobre dark, accents largos, soft brand */
+  --green-soft:    #9DE85B;
+
+  /* verde sóbrio — texto/ícone sobre fundo claro (acessível AA) */
+  --green-deep:    #16a34a;
+
+  /* verde intermediário — superfícies, mockups, badges */
+  --green-mid:     #22c55e;
+
+  /* verde hover — clareia o primário em interações */
+  --green-hover:   #34d399;
+
+  /* gradiente padrão de palavras em destaque (<Mark>) */
+  --green-grad: linear-gradient(180deg, #9DE85B 0%, #1DEF3B 100%);
+
+
+  /* ══════════════════════════════════════════════════════════
+     2. BRAND — INK (preto-esverdeado)
+     ──────────────────────────────────────────────────────────
+     A "voz escura" da marca. Não é preto puro — tem cast verde.
+     ══════════════════════════════════════════════════════════ */
+  --ink-1:  #0B1B18;   /* base — hero, navbar dark, footer, agent avatars */
+  --ink-2:  #0D201D;   /* layer acima — CTAs sec, pricing destacado */
+  --ink-3:  #14322C;   /* gradient end, accents dentro de cards dark */
+
+
+  /* ══════════════════════════════════════════════════════════
+     3. BRAND — ACCENT (papel cuidadosamente restrito)
+     ──────────────────────────────────────────────────────────
+     Teal é o único accent além do verde. Use para pares (badge
+     "TRIAL" no CTA, accent dentro de seções monocromáticas).
+     ══════════════════════════════════════════════════════════ */
+  --teal:        #33D1AD;
+  --teal-bg:     rgba(45, 212, 191, 0.14);
+
+
+  /* ══════════════════════════════════════════════════════════
+     4. NEUTROS — SUPERFÍCIES + TEXTO
+     ──────────────────────────────────────────────────────────
+     2 pares ortogonais: fundos claros e tons de texto sobre eles;
+     fundos escuros (ink) e tons de texto sobre eles.
+     ══════════════════════════════════════════════════════════ */
+
+  /* fundos claros */
+  --white:    #FFFFFF;
+  --soft:     #F5F7F4;   /* seção alternada / cards aninhados */
+  --soft-2:   #F7FAF8;   /* gradient end para cards mockup */
+  --soft-3:   #F0F3F1;   /* chrome interno de mockups */
+
+  /* texto sobre claro */
+  --fg-1:     #0b1b18;   /* primário — H1/H2/H3, links */
+  --fg-2:     #3b423f;   /* corpo, descrições */
+  --fg-3:     #6b746f;   /* captions, "antes do agente" */
+  --fg-4:     #8a948e;   /* meta, mono-IDs, eyebrows dim */
+
+  /* texto sobre escuro (ink-1/ink-2) */
+  --fg-on-dark-1: #ecf0f5;
+  --fg-on-dark-2: #d1d6dc;
+  --fg-on-dark-3: #b8c0c9;
+  --fg-on-dark-4: #8a948e;
+  --fg-on-dark-5: #6b746f;
+
+
+  /* ══════════════════════════════════════════════════════════
+     5. STATUS — 3 cores apenas
+     ──────────────────────────────────────────────────────────
+     Success é o próprio --green. Não criar outras semânticas.
+     ══════════════════════════════════════════════════════════ */
+  --warn:   #f59e0b;
+  --error:  #dc2626;
+  --info:   #38bdf8;   /* raro — mockups (cards do builder, dashboard) */
+
+
+  /* ══════════════════════════════════════════════════════════
+     6. HAIRLINES — bordas e divisores
+     ──────────────────────────────────────────────────────────
+     Use SEMPRE estes. Nunca escrever rgba(0,0,0,0.07) à mão.
+     ══════════════════════════════════════════════════════════ */
+
+  --line-1:        rgba(11, 27, 24, 0.08);   /* borda padrão de card claro */
+  --line-2:        rgba(11, 27, 24, 0.06);   /* divisor fraco no claro */
+  --line-3:        rgba(0, 0, 0, 0.04);      /* hover-bg ghost no claro */
+
+  --line-dark-1:   rgba(255, 255, 255, 0.08); /* borda de card sobre escuro */
+  --line-dark-2:   rgba(255, 255, 255, 0.06); /* divisor fraco no escuro */
+  --line-dark-3:   rgba(255, 255, 255, 0.14); /* borda forte (botão sec dark) */
+
+  --glow-green:    rgba(29, 239, 59, 0.08);   /* fundo card "ativo" */
+  --glow-green-2:  rgba(29, 239, 59, 0.30);   /* borda card "ativo" */
+
+
+  /* ══════════════════════════════════════════════════════════
+     7. RADIUS — régua FECHADA
+     ──────────────────────────────────────────────────────────
+     Se um valor não está aqui, está errado. Sem 4px, sem 12px.
+     ══════════════════════════════════════════════════════════ */
+  --radius-xs:    6px;     /* tags micro, pills internos de mockup */
+  --radius-sm:    8px;     /* inputs, tags, dropdown items */
+  --radius-md:    10px;    /* avatares quadrados, surfaces pequenas */
+  --radius-lg:    14px;    /* card padrão */
+  --radius-xl:    16px;    /* card grande, hero panels, antes/depois */
+  --radius-2xl:   18px;    /* card featured (pricing, casos) */
+  --radius-3xl:   24px;    /* CTA blocks grandes, hero do casos-list */
+  --radius-pill:  999px;   /* botões, badges, dots, eyebrow dot */
+
+
+  /* ══════════════════════════════════════════════════════════
+     8. SHADOWS — low-shadow é parte da marca
+     ──────────────────────────────────────────────────────────
+     Não inventar mais. Esses 4 cobrem o site inteiro.
+     ══════════════════════════════════════════════════════════ */
+  --shadow-sm:   0 1px 1px rgba(0, 0, 0, 0.13);
+  --shadow-md:   0 10px 24px -18px rgba(11, 27, 24, 0.20);
+  --shadow-lg:   0 24px 60px -24px rgba(11, 27, 24, 0.25);
+  --shadow-hero: 0 40px 90px -20px rgba(0, 0, 0, 0.6),
+                 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+
+  /* ══════════════════════════════════════════════════════════
+     9. TYPE — FAMILIES
+     ──────────────────────────────────────────────────────────
+     Causten = marca (hero, lockups, marketing titles)
+     Geist   = UI (page titles, body, app surfaces)
+     Mono    = números (R$, contadores), IDs, código
+     ══════════════════════════════════════════════════════════ */
+  --font-display: "Causten", "Geist", system-ui, sans-serif;
+  --font-sans:    "Geist", system-ui, -apple-system,
+                  Segoe UI, Roboto, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, SFMono-Regular,
+                  "SF Mono", Menlo, Consolas, monospace;
+
+
+  /* ══════════════════════════════════════════════════════════
+     10. TYPE — TRACKING (letter-spacing)
+     ══════════════════════════════════════════════════════════ */
+  --tracking-display:  -0.035em;   /* hero, display */
+  --tracking-h:        -0.02em;    /* h1/h2 */
+  --tracking-tight:    -0.01em;    /* botões, h3 */
+  --tracking-eyebrow:  0.14em;     /* uppercase eyebrows */
+  --tracking-mono:     0.04em;     /* mono caps, KPIs */
+
+
+  /* ══════════════════════════════════════════════════════════
+     11. ALIASES (retrocompat com vocabulário pré-tokens.css)
+     ──────────────────────────────────────────────────────────
+     Mantém código antigo do site funcionando enquanto migra.
+     NÃO use em código novo. Listado pra documentação.
+     ══════════════════════════════════════════════════════════ */
+  --brand-green:        var(--green);
+  --brand-green-soft:   var(--green-soft);
+  --brand-teal:         var(--teal);
+  --brand-ink-1:        var(--ink-1);
+  --brand-ink-2:        var(--ink-2);
+  --brand-ink-3:        var(--ink-3);
+  --brand-white:        var(--white);
+  --brand-black:        #000000;
+
+  --font-display-brand: var(--font-display);
+}

@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>Hub Kit — Showroom · Simplafy Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./hub.css">
+<style>
+/* ── Showroom chrome (não faz parte do kit, é só o layout dessa página) ── */
+body { overflow-y: scroll; }
+.sr-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  min-height: 100vh;
+}
+.sr-head {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 16px;
+  padding: 28px 0 22px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 32px;
+}
+.sr-head .logo img { height: 26px; }
+.sr-head .meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+.sr-head .sp { flex: 1; }
+.sr-head a.back {
+  font-size: 12.5px; color: var(--color-muted-foreground);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.sr-head a.back:hover { color: var(--color-foreground); }
+
+.sr-toc {
+  position: sticky; top: 28px;
+  align-self: start;
+  padding-right: 16px;
+}
+.sr-toc h4 {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--color-muted-foreground);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+.sr-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.sr-toc + .sr-toc { margin-top: 22px; }
+.sr-toc a {
+  display: block;
+  padding: 4px 8px;
+  font-size: 12.5px;
+  color: var(--color-muted-foreground);
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: color .12s, border-color .12s, background .12s;
+}
+.sr-toc a:hover {
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-foreground) 5%, transparent);
+}
+.sr-toc a.act {
+  color: var(--accent-vivid);
+  border-left-color: var(--accent-vivid);
+}
+
+.sr-body { padding-bottom: 80px; }
+.sr-intro h1 {
+  font-family: var(--font-display-brand);
+  font-weight: 800;
+  font-size: 48px;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  margin: 0 0 14px;
+  max-width: 720px;
+}
+.sr-intro h1 .mark { color: var(--accent-vivid); }
+.sr-intro p.lede {
+  font-size: 15.5px;
+  color: var(--color-muted-foreground);
+  max-width: 620px;
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+.sr-intro p.lede strong { color: var(--color-foreground); font-weight: 600; }
+
+.sr-status {
+  display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0;
+}
+
+.sr-section {
+  margin-top: 64px;
+  scroll-margin-top: 24px;
+}
+.sr-section-h {
+  display: flex; align-items: baseline; gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+.sr-section-h .num {
+  font-family: var(--font-mono);
+  font-size: 11.5px; font-weight: 600;
+  color: var(--color-muted-foreground);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.sr-section-h h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.sr-section-h p {
+  margin: 0; font-size: 13px; color: var(--color-muted-foreground);
+  margin-left: auto;
+  max-width: 360px;
+  text-align: right;
+}
+
+.sr-component {
+  margin-bottom: 32px;
+  scroll-margin-top: 24px;
+}
+.sr-component .cmp-h {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 10px;
+}
+.sr-component .cmp-h h3 {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 600;
+  margin: 0;
+}
+.sr-component .cmp-h .tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-muted-foreground);
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--color-foreground) 6%, transparent);
+}
+.sr-component .cmp-h .pin {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--color-muted-foreground);
+  font-family: var(--font-mono);
+}
+.sr-component .cmp-desc {
+  font-size: 13px;
+  color: var(--color-muted-foreground);
+  margin: 0 0 14px;
+  max-width: 580px;
+  line-height: 1.5;
+}
+
+.demo {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 50%,
+      color-mix(in oklab, var(--color-foreground) 1.5%, transparent),
+      transparent 70%),
+    var(--color-card);
+  padding: 28px;
+  min-height: 80px;
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.demo.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+.demo.center { justify-content: center; }
+.demo.col { flex-direction: column; align-items: stretch; }
+.demo .demo-lab {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Token swatches */
+.swatches {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+.sw {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-card);
+  cursor: pointer;
+  transition: border-color .12s;
+}
+.sw:hover { border-color: var(--accent-vivid); }
+.sw .clr { height: 56px; }
+.sw .meta { padding: 8px 10px; }
+.sw .name { font-size: 12px; font-weight: 600; }
+.sw .val {
+  font-family: var(--font-mono); font-size: 10.5px;
+  color: var(--color-muted-foreground);
+  margin-top: 2px;
+}
+
+/* Type sample */
+.type-sample {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.type-sample .row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  align-items: baseline;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+.type-sample .row:last-child { border-bottom: 0; }
+.type-sample .tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.type-sample .smp { line-height: 1.1; }
+.type-sample .smp.hero { font-family: var(--font-display-brand); font-weight: 800; font-size: 48px; letter-spacing: -0.025em; line-height: 1.0; }
+.type-sample .smp.display { font-family: var(--font-display-brand); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.05; }
+.type-sample .smp.h1 { font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: -0.015em; line-height: 1.15; }
+.type-sample .smp.h2 { font-family: var(--font-display); font-weight: 600; font-size: 18px; line-height: 1.25; }
+.type-sample .smp.body { font-family: var(--font-sans); font-size: 14px; line-height: 1.5; }
+.type-sample .smp.cap { font-family: var(--font-sans); font-size: 12px; color: var(--color-muted-foreground); }
+.type-sample .smp.mono { font-family: var(--font-mono); font-size: 13px; }
+
+/* Mini shell preview */
+.mini-shell {
+  width: 100%;
+  height: 320px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+}
+.mini-shell .sb {
+  background: var(--color-sidebar);
+  border-right: 1px solid var(--color-sidebar-border);
+  padding: 10px 8px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.mini-shell .sb-it {
+  height: 26px; border-radius: 5px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--color-muted-foreground);
+}
+.mini-shell .sb-it.act {
+  background: var(--color-sidebar-accent);
+  color: var(--color-sidebar-accent-foreground);
+  position: relative;
+}
+.mini-shell .sb-it.act::before {
+  content: "";
+  position: absolute;
+  left: -8px; top: 4px; bottom: 4px;
+  width: 2px;
+  background: var(--accent-vivid);
+  border-radius: 2px;
+}
+.mini-shell .sb-it .dt {
+  width: 12px; height: 12px; border-radius: 3px;
+  background: currentColor; opacity: 0.4;
+}
+.mini-shell .sb-it.act .dt { opacity: 1; }
+.mini-shell .pg {
+  display: flex; flex-direction: column;
+}
+.mini-shell .tb {
+  height: 38px;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 14px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px;
+  color: var(--color-muted-foreground);
+}
+.mini-shell .tb .right { margin-left: auto; display: flex; gap: 4px; }
+.mini-shell .tb .ic {
+  width: 22px; height: 22px; border-radius: 4px;
+  background: color-mix(in oklab, var(--color-foreground) 6%, transparent);
+}
+.mini-shell .main {
+  flex: 1;
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--color-background);
+}
+.mini-shell .h1 {
+  font-family: var(--font-display-brand);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+.mini-shell .h1 .mk { color: var(--accent-vivid); }
+.mini-shell .ey {
+  font-size: 9px; font-weight: 600;
+  color: var(--accent-vivid);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.mini-shell .ey::before {
+  content: ""; width: 5px; height: 5px; border-radius: 999px; background: currentColor;
+}
+
+/* Pattern grid (page hero pattern, etc.) */
+.pattern-block {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-card);
+}
+.pattern-block-h {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex; align-items: baseline; gap: 10px;
+}
+.pattern-block-h .pat-name { font-weight: 600; font-size: 13px; }
+.pattern-block-h .pat-when {
+  font-size: 11.5px; color: var(--color-muted-foreground);
+  margin-left: auto;
+}
+.pattern-block-body { padding: 24px; }
+
+/* Code hint */
+.code-hint {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--color-foreground) 2%, transparent);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+.code-hint .k { color: var(--accent-vivid); font-weight: 600; }
+
+@media (max-width: 900px) {
+  .sr-wrap { grid-template-columns: 1fr; gap: 24px; padding: 0 20px; }
+  .sr-toc { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="sr-wrap">
+
+  <!-- Header -->
+  <div class="sr-head">
+    <div class="logo">
+      <img id="logo-img" src="../../logos/hub_aberto_escuro.svg" alt="Simplafy Hub"/>
+    </div>
+    <div class="meta">Hub Kit · v0.1 · Mai 2026</div>
+    <div class="sp"></div>
+    <a class="back" href="../_index.md">← Mapa dos kits</a>
+    <div class="theme-toggle">
+      <button id="t-light" title="Tema claro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <button id="t-dark" class="active" title="Tema escuro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Side TOC -->
+  <nav class="sr-toc">
+    <h4>Fundamentos</h4>
+    <ul>
+      <li><a href="#sobre">Sobre o kit</a></li>
+      <li><a href="#cor">Cor</a></li>
+      <li><a href="#tipo">Tipografia</a></li>
+      <li><a href="#radius">Radius &amp; spacing</a></li>
+    </ul>
+    <h4 style="margin-top:22px">Layout</h4>
+    <ul>
+      <li><a href="#shell">Shell</a></li>
+      <li><a href="#page-hero">Page hero</a></li>
+    </ul>
+    <h4 style="margin-top:22px">Inputs</h4>
+    <ul>
+      <li><a href="#buttons">Botões</a></li>
+      <li><a href="#field">Campos &amp; field</a></li>
+      <li><a href="#search">Search input</a></li>
+      <li><a href="#tabs">Tab group</a></li>
+      <li><a href="#switch">Switch</a></li>
+      <li><a href="#chip-input">Chip input</a></li>
+      <li><a href="#prompt-block">Prompt block</a></li>
+      <li><a href="#theme">Theme toggle</a></li>
+    </ul>
+    <h4 style="margin-top:22px">Display</h4>
+    <ul>
+      <li><a href="#pill">Pill</a></li>
+      <li><a href="#agent-card">Agent card</a></li>
+      <li><a href="#score">Score widget</a></li>
+      <li><a href="#tools">Tool card</a></li>
+      <li><a href="#kpi">KPI inline</a></li>
+      <li><a href="#kb">KB item</a></li>
+    </ul>
+    <h4 style="margin-top:22px">Surfaces</h4>
+    <ul>
+      <li><a href="#empty">Empty state</a></li>
+      <li><a href="#templates">Templates drawer</a></li>
+      <li><a href="#command">Command palette</a></li>
+    </ul>
+  </nav>
+
+  <!-- Body -->
+  <main class="sr-body">
+
+    <section id="sobre" class="sr-intro">
+      <div class="eyebrow">Simplafy · Hub Kit</div>
+      <h1>O vocabulário visual do <span class="mark">SaaS Simplafy Hub</span>.</h1>
+      <p class="lede">
+        Este kit é o "sabor SaaS" da marca Simplafy. Ele <strong>não inventa cor, tipo ou brand</strong> — tudo isso vive no DS canônico do site. Aqui ficam só os <strong>componentes específicos de produto</strong>: shell, drawers, agent card, score widget, prompt block, command palette, e os padrões de página.
+      </p>
+      <div class="sr-status">
+        <span class="pill warn dot">v0.1 — em construção</span>
+        <span class="pill muted dot">Aguarda tokens.css canônico</span>
+        <span class="pill teal dot">Linguagem aplicada em direcao-a/b</span>
+      </div>
+      <p class="lede" style="margin-top:18px">
+        <strong>Como ler:</strong> cada componente abaixo mostra (1) o que faz, (2) preview ao vivo no tema atual, (3) quando usar. Alterne o tema no header pra validar nos dois.
+      </p>
+    </section>
+
+    <!-- ── FOUNDATIONS ─────────────────────────────────────── -->
+
+    <section id="cor" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">01</span>
+        <h2>Cor</h2>
+        <p>Tokens herdados do DS, com decisões de aplicação específicas do Hub.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Brand &amp; ink</h3>
+          <span class="tag">brand-*</span>
+          <span class="pin">do tokens.css canônico</span>
+        </div>
+        <p class="cmp-desc">A base de superfície do Hub no modo escuro. <strong>Não</strong> usa os neutros cinza-azul de um shadcn padrão — usa a paleta ink verde-petróleo da Simplafy.</p>
+        <div class="demo">
+          <div class="swatches" style="width:100%">
+            <div class="sw"><div class="clr" style="background:var(--brand-ink-1)"></div><div class="meta"><div class="name">ink-1</div><div class="val">#0B1B18 · page bg (dark)</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--brand-ink-2)"></div><div class="meta"><div class="name">ink-2</div><div class="val">#0d201d · sidebar (dark)</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--brand-ink-3)"></div><div class="meta"><div class="name">ink-3</div><div class="val">#14322c · cards (dark)</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--brand-green)"></div><div class="meta"><div class="name">brand-green</div><div class="val">#1DEF3B · CTA dark + accent</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--brand-green-soft)"></div><div class="meta"><div class="name">brand-green-soft</div><div class="val">#9DE85B · áreas grandes</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--brand-teal)"></div><div class="meta"><div class="name">brand-teal</div><div class="val">#33D1AD · accent secundário</div></div></div>
+          </div>
+        </div>
+        <div class="code-hint">No <span class="k">[data-theme="dark"]</span> do Hub:
+  <span class="k">--color-background</span> ← var(--brand-ink-1)
+  <span class="k">--color-sidebar</span>    ← var(--brand-ink-2)
+  <span class="k">--color-card</span>       ← var(--brand-ink-3)
+  <span class="k">--accent-vivid</span>     ← var(--brand-green)</div>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Semantic</h3>
+          <span class="tag">--color-*</span>
+        </div>
+        <p class="cmp-desc">Status (success/warn/destructive) e categóricas (teal/blue/purple/orange). Use em badge/pill cheio quando precisa peso visual; use a versão <code>-bg</code> quando precisa container quieto.</p>
+        <div class="demo">
+          <div class="swatches" style="width:100%">
+            <div class="sw"><div class="clr" style="background:var(--color-primary)"></div><div class="meta"><div class="name">primary</div><div class="val">#22C55E · CTAs (light)</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-success)"></div><div class="meta"><div class="name">success</div><div class="val">Ativo, OK</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-warning)"></div><div class="meta"><div class="name">warning</div><div class="val">Pendente, alerta</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-destructive)"></div><div class="meta"><div class="name">destructive</div><div class="val">Erro, deletar</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-teal)"></div><div class="meta"><div class="name">teal</div><div class="val">Canal WhatsApp</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-blue)"></div><div class="meta"><div class="name">blue</div><div class="val">Email, sistema</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-purple)"></div><div class="meta"><div class="name">purple</div><div class="val">Premium, jornada</div></div></div>
+            <div class="sw"><div class="clr" style="background:var(--color-orange)"></div><div class="meta"><div class="name">orange</div><div class="val">Hot, urgência</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPE -->
+    <section id="tipo" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">02</span>
+        <h2>Tipografia</h2>
+        <p>Causten = brand (hero/marketing-y dentro do app). Geist = UI. Geist Mono = código, IDs, R$, números.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Escala tipográfica do Hub</h3>
+          <span class="tag">var(--font-display-brand) · var(--font-sans)</span>
+        </div>
+        <p class="cmp-desc">A escala do site usa Causten até 80px. No Hub, Causten fica restrito a <strong>page hero</strong> (heros de página, splash, empty states grandes). Tudo mais é Geist.</p>
+        <div class="demo">
+          <div class="type-sample" style="width:100%">
+            <div class="row"><span class="tag">hero</span><div class="smp hero">Os agentes que <span style="color:var(--accent-vivid)">trabalham junto</span>.</div></div>
+            <div class="row"><span class="tag">display</span><div class="smp display">Simplafy Hub Kit</div></div>
+            <div class="row"><span class="tag">h1</span><div class="smp h1">Configuração do agente</div></div>
+            <div class="row"><span class="tag">h2</span><div class="smp h2">Persona &amp; comportamento</div></div>
+            <div class="row"><span class="tag">body</span><div class="smp body">Defina a persona — tom de voz, papel, limites de conversa. É o que o agente "é".</div></div>
+            <div class="row"><span class="tag">caption</span><div class="smp cap">Salvo automaticamente há 4 segundos</div></div>
+            <div class="row"><span class="tag">mono</span><div class="smp mono">agent_id: bot1 · v11 · 412 tokens</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="radius" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">03</span>
+        <h2>Radius &amp; spacing</h2>
+        <p>Escala contida do DS, aplicada com critério.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Radius scale</h3>
+          <span class="tag">--r-xs · sm · md · lg · xl · pill</span>
+        </div>
+        <p class="cmp-desc">Cada elemento tem um raio dedicado. Não inventar valores intermediários.</p>
+        <div class="demo grid">
+          <div style="border:1px solid var(--color-border); padding:14px; border-radius:var(--r-xs); background:var(--color-card)"><div style="font-size:12px; font-weight:600">xs · 4px</div><div style="font-size:11px; color:var(--color-muted-foreground)">badges, bar-fill</div></div>
+          <div style="border:1px solid var(--color-border); padding:14px; border-radius:var(--r-sm); background:var(--color-card)"><div style="font-size:12px; font-weight:600">sm · 6px</div><div style="font-size:11px; color:var(--color-muted-foreground)">nav-item, ibtn</div></div>
+          <div style="border:1px solid var(--color-border); padding:14px; border-radius:var(--r-md); background:var(--color-card)"><div style="font-size:12px; font-weight:600">md · 8px</div><div style="font-size:11px; color:var(--color-muted-foreground)">botões, inputs</div></div>
+          <div style="border:1px solid var(--color-border); padding:14px; border-radius:var(--r-lg); background:var(--color-card)"><div style="font-size:12px; font-weight:600">lg · 10px</div><div style="font-size:11px; color:var(--color-muted-foreground)">cards, popovers</div></div>
+          <div style="border:1px solid var(--color-border); padding:14px; border-radius:var(--r-xl); background:var(--color-card)"><div style="font-size:12px; font-weight:600">xl · 14px</div><div style="font-size:11px; color:var(--color-muted-foreground)">agent card, KPI card</div></div>
+          <div style="border:1px solid var(--color-border); padding:14px; border-radius:var(--r-pill); background:var(--color-card)"><div style="font-size:12px; font-weight:600">pill · 999px</div><div style="font-size:11px; color:var(--color-muted-foreground)">switch, pill, avatar</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAYOUT ─────────────────────────────────────── -->
+
+    <section id="shell" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">04</span>
+        <h2>Layout</h2>
+        <p>Esqueleto de página: sidebar + topbar + conteúdo.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Shell</h3>
+          <span class="tag">.app · .sb · .tb · .page</span>
+          <span class="pin">presente em todas as telas</span>
+        </div>
+        <p class="cmp-desc">Sidebar à esquerda com seções (Negócios, Operações, Aplicativos), busca global (⌘K), perfil no rodapé. Topbar minimal com workspace context à esquerda, ações à direita.</p>
+        <div class="demo">
+          <div class="mini-shell" style="width:100%">
+            <div class="sb">
+              <div class="sb-it"><div class="dt"></div><span>Dashboard</span></div>
+              <div class="sb-it"><div class="dt"></div><span>Chat</span></div>
+              <div class="sb-it"><div class="dt"></div><span>CRM</span></div>
+              <div class="sb-it act"><div class="dt"></div><span>Agentes</span></div>
+              <div class="sb-it"><div class="dt"></div><span>Configurações</span></div>
+            </div>
+            <div class="pg">
+              <div class="tb">
+                <span style="font-weight:600; color:var(--color-foreground)">Simplafy</span><span style="opacity:0.4">·</span><span>Espaço Produção</span>
+                <div class="right"><div class="ic"></div><div class="ic"></div></div>
+              </div>
+              <div class="main">
+                <div class="ey">Simplafy Hub · Agentes</div>
+                <div class="h1">Os agentes que <span class="mk">trabalham junto</span>.</div>
+                <div style="font-size:11.5px; color:var(--color-muted-foreground); max-width:340px">Cada agente é uma persona com instruções, ferramentas e base de conhecimento próprios.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-hero" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">05</span>
+        <h2>Page hero</h2>
+        <p>Padrão de abertura de página: eyebrow + Causten + lead + ações.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Hero com eyebrow + mark</h3>
+          <span class="tag">.list-hero · .eyebrow · h1 .mark</span>
+          <span class="pin">só nas telas-raiz (Agentes, Chat, CRM)</span>
+        </div>
+        <p class="cmp-desc">No dark mode, recebe um glow ambiente sutil (radial brand-green a 10% blur 40px) — herança direta do hero do site. <strong>Não usar em telas internas</strong> (editor, detalhe). Causten 30-44px no Hub (vs. 60-80 no site).</p>
+        <div class="demo col" style="padding:0; min-height:0">
+          <div class="list-hero" style="border:0; padding:36px 32px">
+            <div>
+              <div class="eyebrow">Simplafy Hub · Agentes</div>
+              <h1>Os agentes que <span class="mark">trabalham junto</span> com seu time.</h1>
+              <p>Cada agente é uma persona com instruções, ferramentas e base de conhecimento próprios. Aqui você cria, ativa e monitora — sem virar dependente de engenharia.</p>
+            </div>
+            <div class="h-actions">
+              <button class="btn btn-outline">Importar</button>
+              <button class="btn btn-primary">Novo agente</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── INPUTS ─────────────────────────────────────── -->
+
+    <section id="buttons" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">06</span>
+        <h2>Inputs</h2>
+        <p>Tudo o que o usuário toca pra fazer alguma coisa.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Botões</h3>
+          <span class="tag">.btn · .btn-primary · .btn-outline · .btn-ghost · .btn-sm</span>
+        </div>
+        <p class="cmp-desc">Primary = ação primária da tela (apenas 1). No dark, o primary usa brand-green (neon) com glow sutil. Outline = ação secundária. Ghost = ação terciária / contextual.</p>
+        <div class="demo">
+          <button class="btn btn-primary">Publicar v12</button>
+          <button class="btn btn-outline">Importar</button>
+          <button class="btn btn-ghost">Cancelar</button>
+          <button class="btn btn-primary btn-sm">+ Novo</button>
+          <button class="btn btn-outline btn-sm">Histórico</button>
+          <button class="btn btn-ghost btn-sm">Pré-visualizar</button>
+        </div>
+      </div>
+
+      <div class="sr-component" id="field">
+        <div class="cmp-h">
+          <h3>Field (label + input)</h3>
+          <span class="tag">.field · label · input/select/textarea</span>
+        </div>
+        <p class="cmp-desc">Label uppercase letter-spacing pra hierarquia clara. Inputs com radius-sm e foco com ring verde 18%.</p>
+        <div class="demo grid">
+          <div class="field">
+            <label>Nome do agente</label>
+            <input value="Agente Bot1"/>
+          </div>
+          <div class="field">
+            <label>Modelo</label>
+            <select><option>Claude Sonnet 4.5</option><option>Claude Opus 4</option></select>
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label>Descrição interna</label>
+            <input placeholder="Como sua equipe descreve esse agente"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="search">
+        <div class="cmp-h">
+          <h3>Search input</h3>
+          <span class="tag">.search-input</span>
+        </div>
+        <p class="cmp-desc">Ícone de busca + input. Usado em toolbars de listagem (Agentes, Chat, CRM).</p>
+        <div class="demo">
+          <div class="search-input">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input placeholder="Buscar agente, canal ou ferramenta…"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="tabs">
+        <div class="cmp-h">
+          <h3>Tab group</h3>
+          <span class="tag">.tab-group · .tab · .cnt</span>
+        </div>
+        <p class="cmp-desc">Segmented control para filtros de listagem (Todos / Ativos / Inativos). Não usar pra navegação primária (use sidebar pra isso).</p>
+        <div class="demo">
+          <div class="tab-group">
+            <button class="tab active">Todos <span class="cnt">12</span></button>
+            <button class="tab">Ativos <span class="cnt">8</span></button>
+            <button class="tab">Inativos <span class="cnt">3</span></button>
+            <button class="tab">Rascunhos <span class="cnt">1</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="switch">
+        <div class="cmp-h">
+          <h3>Switch</h3>
+          <span class="tag">.switch.on</span>
+        </div>
+        <p class="cmp-desc">Toggle binário. Usado pra ativar/desativar agente, guardrails, ferramentas.</p>
+        <div class="demo">
+          <button class="switch on" title="Ativado"></button>
+          <button class="switch" title="Desativado"></button>
+        </div>
+      </div>
+
+      <div class="sr-component" id="chip-input">
+        <div class="cmp-h">
+          <h3>Chip input</h3>
+          <span class="tag">.chip-input · .chip · .chip .x</span>
+        </div>
+        <p class="cmp-desc">Lista de tags editável. Enter pra adicionar, X pra remover.</p>
+        <div class="demo">
+          <div class="chip-input" style="width:100%; max-width:520px">
+            <span class="chip">planos<span class="x">×</span></span>
+            <span class="chip">agendamento<span class="x">×</span></span>
+            <span class="chip">unidades<span class="x">×</span></span>
+            <input placeholder="adicionar tema…"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="prompt-block">
+        <div class="cmp-h">
+          <h3>Prompt block</h3>
+          <span class="tag">.prompt-block · .gutter · .prompt-foot</span>
+          <span class="pin">específico do editor de agente</span>
+        </div>
+        <p class="cmp-desc">Textarea estilo IDE com linha numerada, header com versão e footer com ações. Usado pra Prompt de Identidade e Prompt de Sistema.</p>
+        <div class="demo col" style="padding:18px">
+          <div class="prompt-block" style="width:100%">
+            <div class="prompt-block-head">
+              <span class="dot"></span>
+              <span>prompt</span>
+              <span style="margin-left:8px">·</span>
+              <span>markdown</span>
+              <span class="spacer"></span>
+              <span class="v">v11</span>
+            </div>
+            <div class="prompt-body">
+              <pre class="gutter">1
+2
+3</pre>
+              <textarea rows="3">Você é Dudu, atendente virtual da Simplafy.
+Tom amigável, sem promessas vagas.
+Português-BR informal mas respeitoso.</textarea>
+            </div>
+            <div class="prompt-foot">
+              <span>147 caracteres · salvo há 4s</span>
+              <span class="spacer"></span>
+              <button class="btn btn-ghost btn-sm">Histórico</button>
+              <button class="btn btn-ghost btn-sm">Analisar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="theme">
+        <div class="cmp-h">
+          <h3>Theme toggle</h3>
+          <span class="tag">.theme-toggle</span>
+        </div>
+        <p class="cmp-desc">Pílula com ☀/🌙 — tema escuro é primeira classe, não secundário. Atalho: <code>T</code>.</p>
+        <div class="demo">
+          <div class="theme-toggle">
+            <button title="Tema claro">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            </button>
+            <button class="active" title="Tema escuro">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DISPLAY ─────────────────────────────────────── -->
+
+    <section id="pill" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">07</span>
+        <h2>Display</h2>
+        <p>Elementos pra mostrar dados, status e relações.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Pill</h3>
+          <span class="tag">.pill · .pill.dot · .pill.success · .pill.teal · .pill.warn</span>
+        </div>
+        <p class="cmp-desc">Tag soft com borda e tint de cor. Variante <code>.dot</code> adiciona indicador. Usar pra status (ativo/inativo), canal, versão, métrica.</p>
+        <div class="demo">
+          <span class="pill success dot">Ativo</span>
+          <span class="pill warn dot">Rascunho</span>
+          <span class="pill muted dot">Inativo</span>
+          <span class="pill teal">WhatsApp</span>
+          <span class="pill blue">Email</span>
+          <span class="pill purple">Premium</span>
+          <span class="pill">8 ferramentas</span>
+          <span class="pill">v11</span>
+        </div>
+      </div>
+
+      <div class="sr-component" id="agent-card">
+        <div class="cmp-h">
+          <h3>Agent card</h3>
+          <span class="tag">.acard</span>
+          <span class="pin">listagem de agentes</span>
+        </div>
+        <p class="cmp-desc">Card com avatar, nome, descrição, meta-chips (canal/ferramentas/KB), 3 KPIs (msgs/resolução/CSAT) e footer com modelo + actions + switch. Estado "draft" recebe leve tint amarelo.</p>
+        <div class="demo grid" style="padding:18px">
+          <article class="acard active">
+            <div class="acard-status"><span class="pill success dot">Ativo</span></div>
+            <div class="acard-head">
+              <div class="acard-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="2" y="8" width="20" height="13" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div>
+              <div class="acard-title">
+                <h3 class="acard-name">Agente Bot1</h3>
+                <p class="acard-desc">Atendimento WhatsApp · qualifica leads e responde dúvidas.</p>
+              </div>
+            </div>
+            <div class="acard-meta">
+              <span class="pill teal">WhatsApp</span>
+              <span class="pill">8 ferr.</span>
+              <span class="pill">3 fontes</span>
+            </div>
+            <div class="acard-kpis">
+              <div class="acard-kpi up"><div class="v">1.247</div><div class="l">Msgs · 7d</div></div>
+              <div class="acard-kpi"><div class="v">82%</div><div class="l">Resolução</div></div>
+              <div class="acard-kpi"><div class="v">4.6</div><div class="l">CSAT</div></div>
+            </div>
+            <div class="acard-foot">
+              <span class="acard-model">Claude Sonnet 4.5</span>
+              <div class="spacer"></div>
+              <button class="acard-switch" title="Pausar"></button>
+            </div>
+          </article>
+
+          <article class="acard draft">
+            <div class="acard-status"><span class="pill warn dot">Rascunho</span></div>
+            <div class="acard-head">
+              <div class="acard-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="2" y="8" width="20" height="13" rx="2"/></svg></div>
+              <div class="acard-title">
+                <h3 class="acard-name">Novo agente</h3>
+                <p class="acard-desc">Sem descrição</p>
+              </div>
+            </div>
+            <div class="acard-meta">
+              <span class="pill muted">Sem canal</span>
+              <span class="pill">0 ferr.</span>
+              <span class="pill">0 fontes</span>
+            </div>
+            <div class="acard-kpis">
+              <div class="acard-kpi"><div class="v">—</div><div class="l">Msgs · 7d</div></div>
+              <div class="acard-kpi"><div class="v">—</div><div class="l">Resolução</div></div>
+              <div class="acard-kpi"><div class="v">—</div><div class="l">CSAT</div></div>
+            </div>
+            <div class="acard-foot">
+              <span class="acard-model">Claude Sonnet 4.5</span>
+              <div class="spacer"></div>
+              <button class="acard-switch" title="Ativar"></button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="sr-component" id="score">
+        <div class="cmp-h">
+          <h3>Score widget</h3>
+          <span class="tag">.score-card · .score-ring · .score-breakdown</span>
+          <span class="pin">topo da TOC do editor</span>
+        </div>
+        <p class="cmp-desc">"Termômetro" do agente — score 0-100 com breakdown em 5 critérios. Cor muda: verde (≥75), amarelo (≥50), vermelho (&lt;50). Ressuscita visualmente o sinal de saúde do agente.</p>
+        <div class="demo col" style="padding:18px">
+          <div class="score-card" style="max-width:300px">
+            <div class="score-row">
+              <div class="score-ring" style="--val:78; --col:var(--accent-vivid)">
+                <span class="v">78<small>/100</small></span>
+              </div>
+              <div class="score-meta">
+                <div class="h">Qualidade do agente</div>
+                <div class="l">Pronto pra produção</div>
+              </div>
+            </div>
+            <div class="score-breakdown">
+              <div class="score-bk"><span class="lab">Persona definida</span><span class="bar"><span class="fill" style="width:90%"></span></span><span class="pct">90</span></div>
+              <div class="score-bk"><span class="lab">Regras de sistema</span><span class="bar"><span class="fill" style="width:80%"></span></span><span class="pct">80</span></div>
+              <div class="score-bk"><span class="lab">Guardrails ativos</span><span class="bar"><span class="fill" style="width:75%"></span></span><span class="pct">75</span></div>
+              <div class="score-bk"><span class="lab">Ferramentas conectadas</span><span class="bar"><span class="fill warn" style="width:60%"></span></span><span class="pct">60</span></div>
+              <div class="score-bk"><span class="lab">Base de conhecimento</span><span class="bar"><span class="fill warn" style="width:50%"></span></span><span class="pct">50</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="tools">
+        <div class="cmp-h">
+          <h3>Tool card</h3>
+          <span class="tag">.tool-card · .tool-card.on</span>
+          <span class="pin">seção Ferramentas do editor</span>
+        </div>
+        <p class="cmp-desc">Card seleção de ferramenta MCP. Estado <code>.on</code> recebe borda primary e fundo tint.</p>
+        <div class="demo grid" style="padding:18px">
+          <div class="tool-card on">
+            <div class="ico">📧</div>
+            <div class="body">
+              <div class="nm">Gmail</div>
+              <div class="ds">Enviar, ler e arquivar e-mails.</div>
+            </div>
+            <button class="switch on"></button>
+          </div>
+          <div class="tool-card">
+            <div class="ico">📅</div>
+            <div class="body">
+              <div class="nm">Google Calendar</div>
+              <div class="ds">Criar, mover e listar eventos.</div>
+            </div>
+            <button class="switch"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="kpi">
+        <div class="cmp-h">
+          <h3>KPI card</h3>
+          <span class="tag">card + número grande</span>
+          <span class="pin">dashboard</span>
+        </div>
+        <p class="cmp-desc">Métrica única bem destacada. Número em <code>font-display</code>, ícone tint à direita, delta opcional embaixo.</p>
+        <div class="demo grid" style="padding:18px">
+          <div style="background:var(--color-card); border:1px solid var(--color-border); border-radius:var(--r-xl); padding:18px">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px">
+              <span style="font-size:12.5px; color:var(--color-muted-foreground)">Leads totais</span>
+              <div style="width:32px; height:32px; border-radius:var(--r-sm); background:var(--color-primary-bg); color:var(--color-primary); display:flex; align-items:center; justify-content:center">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+            </div>
+            <div style="font-family:var(--font-display); font-size:28px; font-weight:700; letter-spacing:-0.01em">65</div>
+            <div style="font-size:11.5px; color:var(--color-muted-foreground); margin-top:4px">+8 vs. semana passada</div>
+          </div>
+          <div style="background:var(--color-card); border:1px solid var(--color-border); border-radius:var(--r-xl); padding:18px">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px">
+              <span style="font-size:12.5px; color:var(--color-muted-foreground)">Resolução média</span>
+              <div style="width:32px; height:32px; border-radius:var(--r-sm); background:var(--color-primary-bg); color:var(--color-primary); display:flex; align-items:center; justify-content:center">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 13.5 8.5 19 10 13.5 11.5 12 17 10.5 11.5 5 10 10.5 8.5z"/></svg>
+              </div>
+            </div>
+            <div style="font-family:var(--font-display); font-size:28px; font-weight:700; letter-spacing:-0.01em">78%</div>
+            <div style="font-size:11.5px; color:var(--color-muted-foreground); margin-top:4px">+4 pts no mês</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="kb">
+        <div class="cmp-h">
+          <h3>KB item</h3>
+          <span class="tag">.kb-item · .kb-drop</span>
+        </div>
+        <p class="cmp-desc">Linha de arquivo da base de conhecimento + área de drop ao final.</p>
+        <div class="demo col" style="padding:18px">
+          <div class="kb-list" style="width:100%">
+            <div class="kb-item">
+              <div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="nm">FAQ-planos-2026.pdf</div>
+              <span class="sz">412 KB</span>
+            </div>
+            <div class="kb-item">
+              <div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+              <div class="nm">manual-atendimento.docx</div>
+              <span class="sz">1.2 MB</span>
+            </div>
+            <div class="kb-drop">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Arraste arquivos aqui ou clique pra enviar
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SURFACES ─────────────────────────────────────── -->
+
+    <section id="empty" class="sr-section">
+      <div class="sr-section-h">
+        <span class="num">08</span>
+        <h2>Surfaces</h2>
+        <p>Containers, painéis e modais.</p>
+      </div>
+
+      <div class="sr-component">
+        <div class="cmp-h">
+          <h3>Empty state</h3>
+          <span class="tag">.stub</span>
+        </div>
+        <p class="cmp-desc">Estado vazio com ícone, título em <code>font-display</code>, copy curta e CTA quando aplicável. <strong>Nunca</strong> deixe tela vazia sem isso.</p>
+        <div class="demo">
+          <div class="stub" style="width:100%; padding:40px 24px">
+            <div class="em" style="background:var(--color-primary-bg); color:var(--color-primary)">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="2" y="8" width="20" height="13" rx="2"/></svg>
+            </div>
+            <h3>Nenhum agente ainda</h3>
+            <p style="max-width:380px">Crie seu primeiro agente em segundos. Comece de um template ou em branco — você pode adaptar depois.</p>
+            <button class="btn btn-primary" style="margin-top:14px">+ Novo agente</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="templates">
+        <div class="cmp-h">
+          <h3>Templates drawer</h3>
+          <span class="tag">.tpl-backdrop · .tpl-drawer · .tpl-card</span>
+          <span class="pin">editor de agente</span>
+        </div>
+        <p class="cmp-desc">Drawer da direita com biblioteca de templates. Cada template tem emoji + nome + descrição + tags. Click aplica no agente atual e fecha.</p>
+        <div class="demo col" style="padding:18px">
+          <div class="tpl-list" style="width:100%; max-width:420px; padding:0">
+            <div class="tpl-card">
+              <div class="em">🩺</div>
+              <div class="b">
+                <div class="nm">Atendimento de clínica</div>
+                <div class="ds">Recepciona pacientes, agenda consultas, responde dúvidas de planos.</div>
+                <div class="tags">
+                  <span class="t">saúde</span><span class="t">agendamento</span><span class="t">WhatsApp</span>
+                </div>
+              </div>
+            </div>
+            <div class="tpl-card">
+              <div class="em">💼</div>
+              <div class="b">
+                <div class="nm">SDR — Qualificação de leads</div>
+                <div class="ds">Aborda leads de entrada, qualifica com BANT e agenda reunião.</div>
+                <div class="tags">
+                  <span class="t">vendas</span><span class="t">B2B</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-component" id="command">
+        <div class="cmp-h">
+          <h3>Command palette</h3>
+          <span class="tag">.cmd-modal · .cmd-item</span>
+          <span class="pin">⌘K em qualquer tela</span>
+        </div>
+        <p class="cmp-desc">Acesso por teclado a navegação e ações. Grupos categorizados, atalhos de teclado à direita.</p>
+        <div class="demo col" style="padding:18px">
+          <div class="cmd-modal" style="position:relative; width:100%; max-width:480px">
+            <div class="cmd-search">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input placeholder="Buscar ou comandar…"/>
+              <span class="pill muted" style="font-size:10px; padding:1px 6px">esc</span>
+            </div>
+            <div class="cmd-group">
+              <div class="cmd-group-h">Ir para</div>
+              <div class="cmd-item sel">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="2" y="8" width="20" height="13" rx="2"/></svg>
+                <span class="nm">Agentes</span>
+                <span class="kbd">g a</span>
+              </div>
+              <div class="cmd-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span class="nm">Chat</span>
+                <span class="kbd">g c</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="margin-top:80px; padding-top:24px; border-top:1px solid var(--color-border); display:flex; align-items:center; gap:12px; font-size:11.5px; color:var(--color-muted-foreground); font-family:var(--font-mono)">
+      <span>Hub Kit v0.1 · Em construção · Aguarda tokens.css canônico</span>
+      <span style="flex:1"></span>
+      <span>T para alternar tema</span>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const html = document.documentElement;
+  const btnL = document.getElementById("t-light");
+  const btnD = document.getElementById("t-dark");
+  const logo = document.getElementById("logo-img");
+  function setTheme(t) {
+    html.setAttribute("data-theme", t);
+    btnL.classList.toggle("active", t === "light");
+    btnD.classList.toggle("active", t === "dark");
+    logo.src = t === "dark" ? "../../logos/hub_aberto_escuro.svg" : "../../logos/hub_aberto_claro.svg";
+  }
+  btnL.addEventListener("click", () => setTheme("light"));
+  btnD.addEventListener("click", () => setTheme("dark"));
+  document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "t" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
+      setTheme(html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    }
+  });
+
+  // Scrollspy TOC
+  const sections = document.querySelectorAll(".sr-section, .sr-intro");
+  const links = document.querySelectorAll(".sr-toc a");
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        const id = en.target.id;
+        links.forEach(a => a.classList.toggle("act", a.getAttribute("href") === "#" + id));
+      }
+    });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

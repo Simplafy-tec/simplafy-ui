@@ -1,0 +1,127 @@
+/* ══════════════════════════════════════════════════════════════════════════
+ *
+ *   SIMPLAFY SEGUROS KIT — vocabulário visual de corretora / broker
+ *
+ * ──────────────────────────────────────────────────────────────────────────
+ *   Vive em cima do tokens.css canônico (cor, tipo, radius, brand).
+ *   Aqui ficam só as camadas de alias produto (--color-*) e os accents
+ *   setoriais (orange + amber dominam Seguros — "lead quente", "renovação
+ *   próxima", "sinistro").
+ *
+ *   ATENÇÃO: Seguros vai ser absorvido pelo Hub v2 (ADR-001 v8). Este kit
+ *   existe pra documentar os padrões de domínio (pipeline kanban, KPI strip
+ *   de carteira, busca por CPF/CNPJ) até a migração estar feita.
+ *   Ver: ui_kits/seguros/CAPTURED.md
+ *
+ *   Importação:
+ *     <link rel="stylesheet" href="seguros.css">
+ *
+ *   Não importe tokens.css separadamente — este arquivo já faz isso.
+ *
+ *   VERSÃO: 0.1.0 — 2026-05-23 (primeira extração, espelha hub.css)
+ *           consome tokens v1.1.0
+ *
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+@import url("../../tokens.css");
+
+/* ── Tokens-de-produto adicionais (vocabulário próprio de Seguros) ──
+   Não contradizem tokens primitivos — só estendem com palavras-chave
+   que só fazem sentido no portal de corretora. */
+:root {
+  /* Layout (igual ao hub) */
+  --seguros-sidebar-w: 240px;
+  --seguros-sidebar-collapsed: 64px;
+  --seguros-topbar-h: 56px;
+
+  /* ── Aliases produto (light theme padrão) ───────────────────── */
+  --color-background: var(--white);
+  --color-foreground: var(--fg-1);
+  --color-card: var(--white);
+  --color-card-foreground: var(--fg-1);
+  --color-popover: var(--white);
+  --color-popover-foreground: var(--fg-1);
+  --color-muted: var(--soft);
+  --color-muted-foreground: var(--fg-3);
+  --color-border: var(--line-1);
+  --color-border-light: var(--line-2);
+  --color-input: var(--line-1);
+
+  --color-sidebar: var(--soft);
+  --color-sidebar-foreground: var(--fg-1);
+  --color-sidebar-border: var(--line-1);
+  --color-sidebar-accent: rgba(34, 197, 94, 0.10);
+  --color-sidebar-accent-foreground: var(--green-deep);
+
+  /* Primary do produto: verde Simplafy padrão (Seguros NÃO troca o primary
+     — o accent setorial vive em --color-orange abaixo, usado em badges
+     "Hot", "Urgente", "Renovação próxima") */
+  --color-primary: var(--green-mid);
+  --color-primary-foreground: var(--white);
+  --color-primary-hover: var(--green-deep);
+  --color-primary-bg: rgba(34, 197, 94, 0.12);
+  --color-primary-gradient-end: var(--green-hover);
+
+  --color-success: var(--green-mid);
+  --color-success-foreground: var(--white);
+  --color-warning: var(--warn);
+  --color-warning-foreground: var(--fg-1);
+  --color-destructive: var(--error);
+  --color-destructive-foreground: var(--white);
+
+  /* ── Accent setorial Seguros: orange + amber ─────────────────
+     Seguros usa orange ("Hot", "Lead quente") e amber ("Pendente",
+     "Renovação") com mais frequência que outros kits. */
+  --color-orange: var(--orange);
+  --color-orange-foreground: var(--white);
+  --color-orange-bg: rgba(249, 115, 22, 0.12);
+
+  --color-amber-bg: rgba(245, 158, 11, 0.12);
+
+  --color-teal: var(--teal);
+  --color-teal-foreground: var(--fg-1);
+  --color-teal-bg: var(--teal-bg);
+
+  --color-blue: var(--info);
+  --color-blue-foreground: var(--fg-1);
+  --color-blue-bg: rgba(56, 189, 248, 0.12);
+
+  --color-purple: var(--purple);
+  --color-purple-foreground: var(--white);
+  --color-purple-bg: rgba(168, 85, 247, 0.12);
+
+  --color-red-bg: rgba(239, 68, 68, 0.12);
+
+  /* App display alias — Seguros usa Geist (não Causten) em UI */
+  --font-display-app: var(--font-sans);
+
+  /* Sombras + focus ring (faltam no tokens primitivos, vivem aqui) */
+  --shadow-focus: 0 0 0 3px rgba(34, 197, 94, 0.20);
+
+  /* Acento vivo: produto sempre usa primary */
+  --accent-vivid: var(--color-primary);
+  --accent-vivid-bg: var(--color-primary-bg);
+
+  /* Retrocompat: --radius-full é usado em código legado; mapeia pra pill */
+  --radius-full: var(--radius-pill);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  Reset mínimo (mesmo do hub.css — comportamento consistente entre kits)
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button, input, textarea, select { font-family: inherit; font-size: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+input, textarea, select { outline: none; }
