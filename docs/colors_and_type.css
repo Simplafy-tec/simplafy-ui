@@ -171,12 +171,22 @@
   /* ── Brand raw hexes (from Figma METADATA) ── */
   --brand-green: #1DEF3B;          /* vivid "screen" green — hero surfaces/CTAs */
   --brand-green-soft: #9DE85B;     /* softer pistachio — large color fields */
+  --green-bright: #34F555;         /* hover neon do --green em dark (CTAs neon) — patch v1.1.0 */
   --brand-teal: #33D1AD;
   --brand-ink-1: #0B1B18;          /* near-black w/ green cast — dark hero bg */
   --brand-ink-2: #0D201D;
   --brand-ink-3: #14322C;
   --brand-white: #FFFFFF;
   --brand-black: #000000;
+
+  /* ── STATUS + CATEGÓRICAS — primitivos canônicos (sync docs/design-system/tokens.css v1.1.0) ──
+     Categóricas: sem semântica de status. Use em pills, tags, indicadores categóricos. */
+  --purple: #a855f7;               /* Hub: Premium, Jornada, tipo especial */
+  --orange: #f97316;               /* Hub: Lead Hot, Urgente, temperatura quente */
+
+  /* ── HAIRLINES + glows — primitivos canônicos (sync docs/design-system/tokens.css v1.1.0) ── */
+  --glow-green-strong: rgba(29, 239, 59, 0.18); /* ambient glow atrás de hero */
+  --glow-green-cta:    rgba(29, 239, 59, 0.28); /* glow do CTA primary em dark hover */
 
   /* ── Radius scale (contida, Nov 2026) ── */
   --radius-xs: 0.125rem;  /* 2px  — badges, chart bars */
