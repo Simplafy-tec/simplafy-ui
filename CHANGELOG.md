@@ -10,6 +10,16 @@
 - **`metric-card.tsx`** — valor numérico KPI corrigido de `font-display` para `font-sans` (Geist). Causten é pesada demais para KPI numérico (DS 2.0.0 Risco 5).
 - **`package.json`** — `files` inclui `src/fonts/` para publicar as TTFs da Causten junto ao pacote.
 
+## [2.1.0] — 2026-06-20
+
+### Adicionado
+
+- **`ProviderLogo`** — logos oficiais SVG (gdrive, dropbox, onedrive, box, s3, ftp) para tiles e cards de integração. (Hub#5.2.13.9)
+- **`AccessBadge` / `AccessNote`** — distinção visual conta conectada vs link de terceiro. (Hub#5.2.13.9)
+- **`SyncPill`** — pill de estado de sincronização (ativo, sincronizando, erro, desativado) com util `.spin`. (Hub#5.2.13.9)
+- **`OAuthConsent`** — bloco unificado de autorização OAuth para canais e fontes de conhecimento. (Hub#5.2.13.9)
+- Util **`.spin`** em `globals.css` (keyframe + reduced-motion).
+
 ## [1.2.0] — 2026-05-29
 
 ### Adicionado
