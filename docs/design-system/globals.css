@@ -1,7 +1,12 @@
-@import "tailwindcss";
-
-/* Tailwind v4 não escaneia node_modules por padrão — incluir o fonte do pacote para gerar utilitários usados em componentes (ex.: Button gradient). */
-@source "./**/*.{ts,tsx}";
+/* ───────────────────────────────────────────────────────────────────
+ * NOTE: No app build (Next.js + Tailwind v4), a primeira linha deste
+ * arquivo é `@import "tailwindcss";` seguida de `@source "./**/*.{ts,tsx}";`.
+ * Elas foram removidas AQUI (no projeto DS) porque o compilador do DS
+ * segue a cadeia de @import e o pacote bare `tailwindcss` não existe
+ * neste ambiente — só no node_modules do app. O registro de tokens via
+ * @theme abaixo é o que importa pro DS e está intacto.
+ * Ao publicar o pacote, reponha as duas linhas no topo.
+ * ─────────────────────────────────────────────────────────────────── */
 
 /* Tema manual via classe no <html> (useTheme), não só media query do SO — senão dark:* não casa com .dark */
 @custom-variant dark (&:where(.dark, .dark *));

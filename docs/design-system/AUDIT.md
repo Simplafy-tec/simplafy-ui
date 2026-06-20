@@ -161,3 +161,24 @@ divergir** do canônico (radius, sombra e fontes são herdados).
 Os ~20 previews em `preview/*` continuam linkando `colors_and_type.css` e
 seguem funcionando — agora herdando valores canônicos. Sweep pra apontar
 direto pro `tokens.css` é opcional (cosmético), não mais urgente.
+
+### ✅ Soft-bg promovido a primitivo canônico (v1.2.0)
+
+Resolvido em 2026-06-20. Antes só `--teal-bg` era primitivo; os irmãos
+(`--info-bg`, `--purple-bg`, `--orange-bg`, `--warn-bg`/`--amber-bg`,
+`--error-bg`/`--red-bg`, `--green-bg`/`--primary-bg`) viviam redefinidos à mão
+no shim e em cada kit — risco de divergência. Agora a **família soft-bg completa
+é primitiva em `tokens.css §5`**, e o shim + os 4 kits (`hub`, `saude`, `seguros`
+e o shim) apontam pra ela via `var(--*-bg)`. Também entrou o util `spin`
+(`@keyframes` + `.spin`, com `prefers-reduced-motion`) como utilitário do DS.
+Origem: `DS-PROPOSALS` (Saúde + Hub). Additive, backward-compatible.
+
+### ✅ Cópias de app/duplicatas removidas da superfície do DS
+
+Resolvido em 2026-06-20. A árvore `src/` (duplicata do pacote `components/`),
+o app de produto `apps/web` + `apps/portal` (código consumidor, zero `@dsCard`)
+e o `@import "tailwindcss"` não-resolvível do `globals.css` causavam colisões de
+export e erros de bundle no compilador do DS. Removidos/corrigidos — o DS voltou
+a conter só o que é DS. Os componentes React do pacote (`components/*`) dependem
+de npm e são empacotados via `/design-sync` no Claude Code (no preview in-browser
+aparecem como "npm import dropped" — esperado, não é defeito).

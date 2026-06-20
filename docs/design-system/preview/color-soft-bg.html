@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- @dsCard group="Colors" name="Soft backgrounds" subtitle="Família canônica (v1.2.0): --green/teal/info/warn/error/purple/orange-bg — tints quiet p/ chips, pills, containers" viewport="1040x720" -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8" />
@@ -90,10 +91,12 @@
 <header>
   <h1>Soft backgrounds</h1>
   <p class="sub">
-    Tints de baixa opacidade (0.12 light / 0.15 dark) derivados das 7 cores
-    semânticas. Para chips de filtro, status pills discretos, linhas de tabela
+    Tints de baixa opacidade (0.12–0.14) derivados das cores semânticas.
+    Para chips de filtro, status pills discretos, linhas de tabela
     destacadas e containers sutis que não competem com a cor cheia do Badge.
-    Origem: <code style="font:500 11.5px/1 var(--font-mono)">simplafy-saude/apps/portal/src/index.css</code>.
+    <strong>Família canônica em <code style="font:500 11.5px/1 var(--font-mono)">tokens.css</code> desde v1.2.0</strong>
+    (<code style="font:500 11.5px/1 var(--font-mono)">--green-bg</code>, <code style="font:500 11.5px/1 var(--font-mono)">--info-bg</code>, <code style="font:500 11.5px/1 var(--font-mono)">--warn-bg</code>…);
+    os aliases <code style="font:500 11.5px/1 var(--font-mono)">--color-*-bg</code> abaixo apontam pra ela.
   </p>
 </header>
 
@@ -198,9 +201,9 @@
 </div>
 
 <div class="footnote">
-  <strong>Regra:</strong> use <code>bg-primary-bg</code> / <code>bg-teal-bg</code> etc. apenas para containers e <em>hover states</em>.
+  <strong>Regra:</strong> use os soft-bg (<code>--green-bg</code> / <code>--teal-bg</code> / <code>--info-bg</code> …) apenas para containers e <em>hover states</em>.
   Para stickers de status com peso visual cheio, continue usando <code>&lt;Badge variant="success|teal|blue|..."&gt;</code> —
-  o soft-bg é a versão "quiet" dos mesmos semantics.
+  o soft-bg é a versão "quiet" dos mesmos semantics. Os <code>--color-*-bg</code> (vocabulário shadcn dos kits) apontam pros primitivos da raiz.
 </div>
 
 </div>
