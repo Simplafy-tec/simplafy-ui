@@ -97,4 +97,4 @@ Cada kit é versionado independente, MAS seu major bate com o major do `tokens.c
 - `tokens.css v1.x` ⇄ todos os kits 1.x compatíveis
 - `tokens.css v2.0` ⇄ requer kits 2.x (breaking change na marca)
 
-Por ora `tokens.css` está em **v1.1.0**.
+Por ora `tokens.css` está em **v1.2.0** (família soft-bg completa + util `spin`, additive sobre 1.1.0).

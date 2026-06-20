@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="SyncStatePill" subtitle="Ativo / Sincronizando / Erro / Desativado — variante de Pill + util .spin canônico. Origem: DS-PROPOSALS" viewport="760x300" -->
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Sync-state Pill · Simplafy DS</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--color-muted);color:var(--color-foreground);font-family:var(--font-sans);padding:28px;}
+  h3{font-family:var(--font-display);font-weight:700;font-size:15px;margin:0 0 4px;letter-spacing:-0.01em;}
+  .sub{font-size:12px;color:var(--color-muted-foreground);margin:0 0 18px;max-width:62ch;line-height:1.5;}
+
+  /* O componente: variante de pill, ícone + texto (não só cor) */
+  .ds-sync-pill{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:11px;font-weight:600;padding:3px 9px;
+    border-radius:var(--radius-pill);border:1px solid var(--color-border);
+  }
+  .ds-sync-pill svg{width:12px;height:12px;}
+  .ds-sync-pill.active{color:var(--color-success);border-color:color-mix(in oklab, var(--color-success) 30%, var(--color-border));background:var(--color-primary-bg);}
+  .ds-sync-pill.syncing{color:var(--color-teal);border-color:color-mix(in oklab, var(--color-teal) 30%, var(--color-border));background:var(--color-teal-bg);}
+  .ds-sync-pill.error{color:var(--color-destructive);border-color:color-mix(in oklab, var(--color-destructive) 30%, var(--color-border));background:var(--color-red-bg);}
+  .ds-sync-pill.disabled{color:var(--color-muted-foreground);background:var(--color-muted);}
+
+  table{border-collapse:collapse;width:100%;margin-top:8px;background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;}
+  td{padding:11px 16px;border-bottom:1px solid var(--color-border-light);font-size:12px;color:var(--color-muted-foreground);}
+  tr:last-child td{border-bottom:0;}
+  td:first-child{width:160px;}
+  td code{font-family:var(--font-mono);background:var(--color-muted);padding:1px 5px;border-radius:4px;font-size:10.5px;}
+</style></head>
+<body>
+  <h3>Sync-state pill</h3>
+  <p class="sub">Estado de saúde da sincronização. Variante de <code style="font-family:var(--font-mono)">Pill</code> com <b>ícone + texto</b> (acessível, não só cor). O estado <i>sincronizando</i> usa o util canônico <code style="font-family:var(--font-mono)">.spin</code>.</p>
+
+  <table>
+    <tr>
+      <td><span class="ds-sync-pill active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Ativo</span></td>
+      <td>Sincronizando normalmente. Tom <code>success</code>.</td>
+    </tr>
+    <tr>
+      <td><span class="ds-sync-pill syncing"><svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Sincronizando</span></td>
+      <td>Em progresso. Ícone <code>refresh-cw</code> girando (<code>.spin</code>). Tom <code>teal</code>.</td>
+    </tr>
+    <tr>
+      <td><span class="ds-sync-pill error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Erro</span></td>
+      <td>Falha na última sync. Tom <code>destructive</code>.</td>
+    </tr>
+    <tr>
+      <td><span class="ds-sync-pill disabled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Desativado</span></td>
+      <td>Sync pausada pelo usuário. Tom <code>muted</code>.</td>
+    </tr>
+  </table>
+</body></html>

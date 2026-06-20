@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="ProviderTile" subtitle="Logo/tile de provedor — cor da marca do 3º como DADO (não token). Origem: DS-PROPOSALS Saúde+Hub" viewport="760x340" -->
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Provider Tile · Simplafy DS</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--color-muted);color:var(--color-foreground);font-family:var(--font-sans);padding:28px;}
+  h3{font-family:var(--font-display);font-weight:700;font-size:15px;margin:0 0 4px;letter-spacing:-0.01em;}
+  .sub{font-size:12px;color:var(--color-muted-foreground);margin:0 0 18px;max-width:60ch;line-height:1.5;}
+  .row{display:flex;gap:14px;flex-wrap:wrap;}
+  .item{display:flex;flex-direction:column;align-items:center;gap:8px;width:88px;}
+  /* O componente: cor da marca do provedor entra inline (dado), igual --doc-color-* */
+  .ds-provider-tile{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:48px;height:48px;border-radius:var(--radius-sm);flex-shrink:0;
+    border:1px solid var(--color-border);
+  }
+  .item .nm{font-size:11px;color:var(--color-muted-foreground);text-align:center;}
+  .item .nm b{display:block;color:var(--color-foreground);font-weight:600;font-size:12px;}
+  svg{width:22px;height:22px;}
+  .note{margin-top:20px;font-size:11.5px;color:var(--color-muted-foreground);background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:12px 14px;line-height:1.55;}
+  .note code{font-family:var(--font-mono);background:var(--color-muted);padding:1px 5px;border-radius:4px;font-size:10.5px;}
+</style></head>
+<body>
+  <h3>Provider tile</h3>
+  <p class="sub">Tile quadrado com a marca de cada provedor de file-sharing. A cor é <b>dado do provedor</b> (igual <code style="font-family:var(--font-mono)">--doc-color-*</code>) aplicada via <code style="font-family:var(--font-mono)">color-mix</code> — nunca um token de marca. Ícone = lucide.</p>
+
+  <div class="row">
+    <div class="item">
+      <span class="ds-provider-tile" style="background:color-mix(in oklab, #1FA463 16%, transparent);color:#1FA463;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+      </span>
+      <span class="nm"><b>Drive</b>google_drive</span>
+    </div>
+    <div class="item">
+      <span class="ds-provider-tile" style="background:color-mix(in oklab, #0364B8 16%, transparent);color:#0364B8;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0 0-9h-1.8A7 7 0 1 0 4 15.3"/></svg>
+      </span>
+      <span class="nm"><b>OneDrive</b>onedrive</span>
+    </div>
+    <div class="item">
+      <span class="ds-provider-tile" style="background:color-mix(in oklab, #0061FF 16%, transparent);color:#0061FF;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
+      </span>
+      <span class="nm"><b>Dropbox</b>dropbox</span>
+    </div>
+    <div class="item">
+      <span class="ds-provider-tile" style="background:color-mix(in oklab, #0061D5 16%, transparent);color:#0061D5;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/></svg>
+      </span>
+      <span class="nm"><b>Box</b>box</span>
+    </div>
+    <div class="item">
+      <span class="ds-provider-tile" style="background:color-mix(in oklab, var(--color-muted-foreground) 16%, transparent);color:var(--color-muted-foreground);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+      </span>
+      <span class="nm"><b>FTP</b>ftp</span>
+    </div>
+    <div class="item">
+      <span class="ds-provider-tile" style="background:color-mix(in oklab, #E25444 16%, transparent);color:#E25444;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+      </span>
+      <span class="nm"><b>S3</b>s3</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <b style="color:var(--color-foreground)">Regra:</b> a cor da marca do provedor é <b>dado</b>, não token. <code>background: color-mix(in oklab, {p.brand} 16%, transparent)</code> + <code>color: {p.brand}</code>. <b>Não criar</b> <code>--color-dropbox</code>. No Hub a versão final usa o logo de marca real (<code>&lt;ProviderLogo&gt;</code>); este tile-tingido é o fallback quando não há SVG oficial.
+  </div>
+</body></html>

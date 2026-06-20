@@ -88,14 +88,15 @@
   --color-sidebar-accent-foreground: var(--green-deep);
   --color-sidebar-ring:             var(--green-mid);
 
-  /* ── Soft backgrounds (tints quiet, 0.12 no claro) ── */
-  --color-primary-bg: rgb(34 197 94 / 0.12);
+  /* ── Soft backgrounds → apontam pros primitivos da raiz (tokens.css §5).
+     NÃO redefinir valores aqui; só mapear o vocabulário --color-* → primitivo. ── */
+  --color-primary-bg: var(--green-bg);
   --color-teal-bg:    var(--teal-bg);
-  --color-blue-bg:    rgb(56 189 248 / 0.12);
-  --color-purple-bg:  rgb(168 85 247 / 0.12);
-  --color-amber-bg:   rgb(245 158 11 / 0.12);
-  --color-orange-bg:  rgb(249 115 22 / 0.12);
-  --color-red-bg:     rgb(239 68 68 / 0.12);
+  --color-blue-bg:    var(--info-bg);
+  --color-purple-bg:  var(--purple-bg);
+  --color-amber-bg:   var(--warn-bg);
+  --color-orange-bg:  var(--orange-bg);
+  --color-red-bg:     var(--error-bg);
 
   /* ── Page background (atrás do conteúdo) ── */
   --color-page-bg: var(--soft);

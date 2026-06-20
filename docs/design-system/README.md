@@ -1,5 +1,3 @@
-> **Local canônico no monorepo:** `simplafy-ui/docs/design-system/` — fonte de verdade de **marca e kits** para Hub v2, Saúde, Site, Reach e demais superfícies. Pacote npm de produção: `src/` (`@simplafy-tec/ui`). Índice: [`../README.md`](../README.md).
-
 # Simplafy Design System
 
 > Documento-guia para construir qualquer artefato visual Simplafy — produto, site, deck, social.
@@ -7,6 +5,21 @@
 Este projeto é a **verdade única** para cor, tipografia, espaçamento, componentes, logos e voz Simplafy. Onde o código legado (Hub, Saúde, site) divergir, este DS tem razão, e [`MIGRATION.md`](MIGRATION.md) diz como convergir.
 
 > **Porta de entrada:** comece sempre por [`tokens.css`](tokens.css) (primitivos da marca) + [`ui_kits/_index.md`](ui_kits/_index.md) (mapa dos kits). Não escreva CSS sem ler os dois.
+
+---
+
+## Para agentes — leia primeiro (TL;DR)
+
+Se você é um agente prestes a construir algo Simplafy:
+
+1. **Importe `tokens.css`** (primitivos) + o `<kit>.css` do contexto. O kit já re-importa os tokens — nunca redefina cor/raio/fonte.
+2. **Escolha o kit** pelo contexto em [`ui_kits/_index.md`](ui_kits/_index.md): `site` (marketing), `hub` (SaaS logado), `saude`, `seguros`, `reach` (programa social).
+3. **Nunca hardcode** cor, raio, fonte, sombra. Falta um valor? ADD em `tokens.css` primeiro (governação abaixo), nunca no kit/tela.
+4. **Idioma pt-BR** em todo texto visível. Nunca pt-PT.
+5. **Componentes React** (`@simplafy-tec/ui`, em `components/`) dependem de npm (Radix/lucide). No preview in-browser do DS eles aparecem como ~20 "npm import dropped" — **isso é esperado, não é defeito**. O bundle real sai via `/design-sync` no Claude Code. Os **tokens, kits e cards `@dsCard`** (HTML/CSS) renderizam normalmente.
+6. **O DS não muda quando você constrói uma tela.** Tela consome o DS. Se a tela revela um buraco real (token faltando, componente recorrente), o buraco se preenche **no DS** com governança — nunca hardcode na tela.
+
+Estado atual: **`tokens.css` v1.2.0** · 5 kits · 31 cards `@dsCard` · `check_design_system` limpo.
 
 ---
 
@@ -33,10 +46,12 @@ Todos compartilham: **verde de marca**, **Causten** (logo + marketing: hero, cap
 
 | Arquivo | Contém |
 | --- | --- |
-| [`tokens.css`](tokens.css) | ⭐ **Primitivos da marca** — cor, tipo, radius, tracking, sombra, brand. Única fonte de verdade. |
+| [`tokens.css`](tokens.css) | ⭐ **Primitivos da marca** — cor, tipo, radius, tracking, sombra, brand, soft-bg, util `spin`. Única fonte de verdade. **v1.2.0** |
 | [`ui_kits/`](ui_kits/) | Um kit por superfície (site, hub, saude, seguros, reach). Cada um herda `tokens.css` e adiciona vocabulário próprio. |
 | [`ui_kits/_index.md`](ui_kits/_index.md) | Mapa de orientação — qual kit usar em cada contexto. |
-| [`preview/`](preview/) | ~20 cards visuais de cada token e componente. |
+| [`ui_kits/hub/PATTERNS.md`](ui_kits/hub/PATTERNS.md) | ⭐ Fonte de verdade das **interações** do Hub (drawers, toast, ícones, "em breve"). Leia antes de telas de produto. |
+| [`preview/`](preview/) | Cards visuais de cada token e componente (renderizados no DS tab). |
+| [`components/`](components/) | Pacote React `@simplafy-tec/ui` (shadcn/Radix). Build via `/design-sync`. |
 | [`assets/logos/`](assets/logos/) | Logos Simplafy + lockups setoriais (SVG). |
 | [`fonts/`](fonts/) | Causten (7 pesos, Light→Black). |
 | [`AUDIT.md`](AUDIT.md) | O que está inconsistente hoje em cada superfície. |
@@ -49,7 +64,7 @@ Todos compartilham: **verde de marca**, **Causten** (logo + marketing: hero, cap
 
 | Repo | Caminho | Porquê espelhar aqui |
 | --- | --- | --- |
-| `Simplafy-tec/simplafy-ui` | `src/globals.css`, `src/components/*` | Código canônico do DS; é o que o Hub v2 consome em produção |
+| `Simplafy-tec/simplafy-ui` | `globals.css`, `components/*`, `index.ts` | Código canônico do pacote React; é o que o Hub v2 consome em produção. Vive na **raiz** deste projeto. |
 | `Simplafy-tec/simplafy-saude` | `apps/portal/src/index.css` | Tokens extras (`*-bg`, `chart-*`, `doc-color-*`) nascidos no Saúde |
 | `Simplafy-tec/simplafy-site` | `index.html` CSS inline | Estética marketing (dark, neon, rounded) |
 
@@ -70,7 +85,10 @@ var(--fg-on-dark-1/2/3) /* hierarquia de texto sobre ink */
 
 /* Semantic + accents setoriais */
 --teal · --info(blue) · --purple · --orange · --warn · --error
---{accent}-bg         /* tint quiet para containers/hover */
+
+/* Soft-bg — tints quiet (0.12–0.14) p/ containers, hovers, badges quiet.
+   Família completa e CANÔNICA na raiz (v1.2.0). Use estes, nunca rgba à mão. */
+--green-bg · --teal-bg · --info-bg · --warn-bg · --error-bg · --purple-bg · --orange-bg
 
 /* Distinção sem peso semântico */
 --chart-1..5          /* gráficos */
@@ -94,9 +112,12 @@ var(--radius-pill)= 999px  /* botões, badges, dots, eyebrow */
 
 /* Sombra — só 4, não inventar mais */
 --shadow-sm · --shadow-md · --shadow-lg · --shadow-hero
+
+/* Util de animação (v1.2.0) — loaders, sync "sincronizando", refresh */
+.spin                 /* @keyframes spin + classe; respeita reduced-motion */
 ```
 
-> ⚠️ Há uma **inconsistência aberta de radius** entre `tokens.css` e `MIGRATION.md §1.1` — ver fim do `AUDIT.md`. Use sempre os **nomes** (`--radius-lg`), nunca os números.
+> **Radius:** use sempre os **nomes** (`--radius-lg`), nunca os números. Escala canônica confirmada (xs6/sm8/md10/lg14/xl16/2xl18/3xl24/pill999) — ver `AUDIT.md`.
 
 ---
 
@@ -106,7 +127,7 @@ var(--radius-pill)= 999px  /* botões, badges, dots, eyebrow */
 2. **Não inventar cor de marca dentro de um kit.** Falta token → ADD na raiz, bumpa a versão, alinha com todos os kits.
 3. **Duas famílias só:** **Causten** = marca (logo, hero de site, OG, decks). **Geist** = produto (page titles, body, app). **Geist Mono** = números/IDs/código. Não usar Sora, Inter, Roboto.
 4. **Verde:** `#1DEF3B` é brand-green (marketing/logo/dark). `#22C55E` é primary do produto (CTA no light). Não importar o `#14D77D` legado do site.
-5. **Semantic badge vs soft-bg:** badge cheio quando precisa peso visual; `--{accent}-bg` em containers/hovers quiet.
+5. **Semantic badge vs soft-bg:** badge cheio quando precisa peso visual; soft-bg (`--info-bg`, `--teal-bg`, `--warn-bg`…) em containers/hovers quiet. A família soft-bg é canônica na raiz (v1.2.0) — nunca redefinir `rgba` à mão no kit.
 6. **Ícone pack único:** `lucide-react`. Nunca misturar com Heroicons, Phosphor, FontAwesome.
 7. **Tom de voz:** direto, **pt-BR** (nunca pt-PT), sem promessas vagas de IA. Ver [`preview/brand-voice.html`](preview/brand-voice.html).
 
@@ -132,10 +153,14 @@ var(--radius-pill)= 999px  /* botões, badges, dots, eyebrow */
 
 ## Versionamento
 
-`tokens.css` está em **v1.1.0**. Cada kit é versionado independente, mas seu major bate com o major dos tokens:
+`tokens.css` está em **v1.2.0**. Cada kit é versionado independente, mas seu major bate com o major dos tokens:
 
 - `tokens.css v1.x` ⇄ kits 0.x/1.x compatíveis
 - `tokens.css v2.0` ⇄ requer kits 2.x (breaking change na marca)
+
+Histórico recente:
+- **v1.2.0** — família soft-bg completa na raiz (`--green-bg`/`--info-bg`/`--warn-bg`/`--error-bg`/`--purple-bg`/`--orange-bg`) + util `spin`. Origem: DS-PROPOSALS (Saúde + Hub). Additive.
+- **v1.1.0** — categóricas (`--purple`/`--orange`), `--green-bright`, glows.
 
 ---
 

@@ -48,7 +48,7 @@
   --color-primary: var(--green-mid);
   --color-primary-foreground: var(--white);
   --color-primary-hover: var(--green-deep);
-  --color-primary-bg: rgba(34, 197, 94, 0.12);
+  --color-primary-bg: var(--green-bg);
   --color-success: var(--green-mid);
   --color-success-foreground: var(--white);
   --color-warning: var(--warn);
@@ -60,15 +60,15 @@
   --color-teal-bg: var(--teal-bg);
   --color-blue: var(--info);
   --color-blue-foreground: var(--fg-1);
-  --color-blue-bg: rgba(56, 189, 248, 0.12);
+  --color-blue-bg: var(--info-bg);
   --color-purple: var(--purple);
   --color-purple-foreground: var(--white);
-  --color-purple-bg: rgba(168, 85, 247, 0.12);
+  --color-purple-bg: var(--purple-bg);
   --color-orange: var(--orange);
   --color-orange-foreground: var(--white);
-  --color-orange-bg: rgba(249, 115, 22, 0.12);
-  --color-amber-bg: rgba(245, 158, 11, 0.12);
-  --color-red-bg: rgba(239, 68, 68, 0.12);
+  --color-orange-bg: var(--orange-bg);
+  --color-amber-bg: var(--warn-bg);
+  --color-red-bg: var(--error-bg);
   --color-primary-gradient-end: var(--green-mid);
 
   /* App display alias — Hub usa Geist (não Causten) em UI */
