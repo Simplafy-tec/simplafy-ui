@@ -142,6 +142,36 @@ export {
   type SettingsSectionHeadingProps,
 } from "./components/settings-page";
 
+
+// Hub — integrações (KB, canais, OAuth)
+export {
+  ProviderLogo,
+  type ProviderLogoProps,
+  type ProviderLogoId,
+} from "./components/provider-logo";
+export {
+  AccessBadge,
+  accessBadgeVariants,
+  type AccessBadgeProps,
+  type AccessKind,
+} from "./components/access-badge";
+export {
+  AccessNote,
+  accessNoteVariants,
+  type AccessNoteProps,
+} from "./components/access-note";
+export {
+  SyncPill,
+  syncPillVariants,
+  type SyncPillProps,
+  type SyncPillStatus,
+} from "./components/sync-pill";
+export {
+  OAuthConsent,
+  type OAuthConsentProps,
+  type OAuthConsentState,
+} from "./components/oauth-consent";
+
 // Hooks
 export { useDebounce } from "./hooks/use-debounce";
 export { useMediaQuery } from "./hooks/use-media-query";
