@@ -44,7 +44,7 @@
 
   /* Muted */
   --color-muted: oklch(0.97 0.002 265);
-  --color-muted-foreground: oklch(0.55 0.01 265);
+  --color-muted-foreground: #666e69;
 
   /* Accent */
   --color-accent: oklch(0.97 0.002 265);
@@ -152,7 +152,7 @@
     --color-secondary: #161b26;
     --color-secondary-foreground: #ecf0f5;
     --color-muted: #161b26;
-    --color-muted-foreground: #94a3b8;
+    --color-muted-foreground: #949e98;
     --color-accent: #161b26;
     --color-accent-foreground: #ecf0f5;
 

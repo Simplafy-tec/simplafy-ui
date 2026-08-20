@@ -126,17 +126,32 @@
   --soft-2:   #F7FAF8;   /* gradient end para cards mockup */
   --soft-3:   #F0F3F1;   /* chrome interno de mockups */
 
-  /* texto sobre claro */
+  /* texto sobre claro
+     ─────────────────────────────────────────────────────────────────────────
+     CONTRATO DE CONTRASTE (verificado 2026-08-19)
+     fg-1 · fg-2 · fg-3 → TEXTO DE CONTEÚDO. Passam AA (≥4.5) sobre as três
+       superfícies claras: --white, --soft e --soft-3. Use pra qualquer coisa
+       que precise ser lida (títulos, corpo, captions, labels, meta legível).
+     fg-4 → DECORATIVO. 3.13 sobre --white, 2.80 sobre --soft-3: NÃO passa AA.
+       Só pra grafismo, divisor textual ou estado desabilitado — nunca texto
+       que o usuário precise ler. Se for conteúdo, use fg-3.
+     Ao mexer em qualquer tom aqui, meça contra as TRÊS superfícies — foi a
+     falta disso que deixou fg-3 em 4.48 sobre --soft até 2026-08-19. */
   --fg-1:     #0b1b18;   /* primário — H1/H2/H3, links */
   --fg-2:     #3b423f;   /* corpo, descrições */
-  --fg-3:     #6b746f;   /* captions, "antes do agente" */
+  --fg-3:     #666e69;   /* captions, "antes do agente" — escurecido de #6b746f: falhava
+                            AA (4.48) sobre o próprio --soft (#F5F7F4) deste DS e sobre
+                            qualquer fundo tintado. Agora ≥4.70 em branco, --soft e --soft-3. */
   --fg-4:     #8a948e;   /* meta, mono-IDs, eyebrows dim */
 
-  /* texto sobre escuro (ink-1/ink-2) */
+  /* texto sobre escuro (ink-1/ink-2)
+     Mesmo contrato: fg-on-dark-1..4 são CONTEÚDO (passam AA sobre --ink-1,
+     --ink-2 e --ink-3); fg-on-dark-5 é DECORATIVO (2.86 sobre --ink-3). */
   --fg-on-dark-1: #ecf0f5;
   --fg-on-dark-2: #d1d6dc;
   --fg-on-dark-3: #b8c0c9;
-  --fg-on-dark-4: #8a948e;
+  --fg-on-dark-4: #949e98;  /* clareado de #8a948e: falhava AA (4.41) sobre --ink-3, a
+                               superfície de card do tema escuro. Agora ≥4.99 em ink-1/2/3. */
   --fg-on-dark-5: #6b746f;
 
 
