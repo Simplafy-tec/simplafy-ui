@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.1] — 2026-08-24
+
+### Corrigido
+
+- **`globals.css`** — `@import url(...)` das fontes Geist/Geist Mono movido da linha 96 para o topo do arquivo, antes de `@import "tailwindcss"`. O Tailwind v4 expande o import do Tailwind em blocos `@layer` com conteúdo real; com o import de fonte depois disso, o CSS final violava `@import rules must precede all rules aside from @charset and @layer statements` e o Turbopack (`next dev`) derrubava toda rota do app consumidor com 500. URL e pesos inalterados; `@font-face` da Causten intocados. (issue#2395)
+
 ## [2.0.0] — 2026-05-29
 
 ### Alterado
