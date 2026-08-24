@@ -1,3 +1,8 @@
+/* Geist + Geist Mono (Google Fonts) — TEM que ficar antes de @import "tailwindcss".
+   O Tailwind v4 expande esse import em blocos @layer com conteúdo real; um @import
+   depois disso viola "@import rules must precede all rules aside from @charset and
+   @layer statements" e o Turbopack (next dev) derruba toda rota com 500 (issue#2395). */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
 /* Tailwind v4 não escaneia node_modules por padrão — incluir o fonte do pacote para gerar utilitários usados em componentes (ex.: Button gradient). */
@@ -91,10 +96,8 @@
    Causten: fonte proprietária da marca Simplafy — 7 pesos, incluída no
    pacote em src/fonts/ (path relativo sobrevive ao build/publish).
    TODO: avaliar hospedar Causten em CDN/R2 — ADR-026 Risco
-   Geist + Geist Mono: Google Fonts (UI corpo / mono).
+   Geist + Geist Mono: Google Fonts — o @import mora no topo do arquivo (issue#2395).
    ----------------------------------------------------------------------- */
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
-
 @font-face { font-family:"Causten"; font-weight:300; src:url("./fonts/Causten-Light.ttf")     format("truetype"); font-display:swap; }
 @font-face { font-family:"Causten"; font-weight:400; src:url("./fonts/Causten-Regular.ttf")   format("truetype"); font-display:swap; }
 @font-face { font-family:"Causten"; font-weight:500; src:url("./fonts/Causten-Medium.ttf")    format("truetype"); font-display:swap; }
