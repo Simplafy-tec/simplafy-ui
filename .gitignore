@@ -4,3 +4,10 @@ storybook-static/
 *.tsbuildinfo
 .env
 .env.local
+
+# Worktrees e scratch de agente — nunca versionar.
+# Cada agente cria a sua worktree em .worktrees/ (CLAUDE.md §Git/PR/Worktree);
+# .bmad-tmp/ é para onde o _bmad/bmm/config.yaml aponta os artefatos efêmeros
+# (planning/implementation/knowledge). Efêmero não se versiona — ADR-013 D3.
+.worktrees/
+.bmad-tmp/
