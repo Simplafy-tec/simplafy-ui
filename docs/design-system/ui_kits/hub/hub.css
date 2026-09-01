@@ -111,6 +111,14 @@
 
   --accent-vivid: var(--green);
   --accent-vivid-bg: rgba(29, 239, 59, 0.12);
+
+  /* Destructive — o par INVERTE junto no escuro. --error (#dc2626) como texto
+     sobre ink reprova (2.86 sobre --ink-3); --error-on-dark (#f87171) passa
+     (4.99 sobre --ink-3), mas aí o preenchimento não pode mais levar --white
+     por cima (2.77) e passa a levar --ink-1 (6.41). Trocar só um dos dois
+     deixa o botão destrutivo PIOR do que estava. */
+  --color-destructive: var(--error-on-dark);
+  --color-destructive-foreground: var(--ink-1);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -140,12 +148,12 @@ input, textarea { outline: none; }
   --shell-topbar-h: 56px;
   /* --r-* são aliases retrocompat → SEMPRE apontam pra escala canônica
      do tokens.css §7. Não usar valores px próprios (contradiz o canônico). */
-  --r-xs: var(--radius-xs);   /* 6px  */
-  --r-sm: var(--radius-sm);   /* 8px  */
-  --r-md: var(--radius-md);   /* 10px */
-  --r-lg: var(--radius-lg);   /* 14px */
-  --r-xl: var(--radius-xl);   /* 16px */
-  --r-pill: var(--radius-pill); /* 999px */
+  --r-xs: var(--radius-xs);   /* 3px  — checkbox, chip de variável */
+  --r-sm: var(--radius-sm);   /* 4px  — botões pequenos, ibtn, tags */
+  --r-md: var(--radius-md);   /* 5px  — inputs, botões, cards de lista */
+  --r-lg: var(--radius-lg);   /* 7px  — cards de conteúdo */
+  --r-xl: var(--radius-xl);   /* 10px — cards de destaque, drawers */
+  --r-pill: var(--radius-pill); /* 999px — forma intencional, não acompanha a escala */
 }
 
 /* App shell */
@@ -903,7 +911,9 @@ input, textarea { outline: none; }
   display: flex; align-items: center; justify-content: center;
   color: var(--color-muted-foreground); cursor: pointer;
 }
-.chip .x:hover { background: var(--color-destructive); color: white; }
+/* `color: white` cravado aqui não acompanhava a inversão do par no escuro e
+   ficava em 2.77 sobre --error-on-dark. Usa o token do foreground. */
+.chip .x:hover { background: var(--color-destructive); color: var(--color-destructive-foreground); }
 
 .chip-input {
   display: flex; flex-wrap: wrap; gap: 6px;

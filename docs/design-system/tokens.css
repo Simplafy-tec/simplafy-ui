@@ -126,18 +126,51 @@
   --soft-2:   #F7FAF8;   /* gradient end para cards mockup */
   --soft-3:   #F0F3F1;   /* chrome interno de mockups */
 
-  /* texto sobre claro */
-  --fg-1:     #0b1b18;   /* primário — H1/H2/H3, links */
-  --fg-2:     #3b423f;   /* corpo, descrições */
-  --fg-3:     #6b746f;   /* captions, "antes do agente" */
-  --fg-4:     #8a948e;   /* meta, mono-IDs, eyebrows dim */
+  /* ── CONTRATO: CONTEÚDO × DECORATIVO ────────────────────────────────
+     Vale para as duas escadas de texto abaixo, e não é convenção — é o que
+     impede o defeito de voltar.
 
-  /* texto sobre escuro (ink-1/ink-2) */
-  --fg-on-dark-1: #ecf0f5;
-  --fg-on-dark-2: #d1d6dc;
-  --fg-on-dark-3: #b8c0c9;
-  --fg-on-dark-4: #8a948e;
-  --fg-on-dark-5: #6b746f;
+     CONTEÚDO  — os TRÊS primeiros níveis de cada escada (--fg-1..3 e
+       --fg-on-dark-1..3, mais --fg-on-dark-4). Passam AA (≥ 4.5) sobre as TRÊS
+       superfícies do próprio tema. Qualquer coisa que o usuário precise LER —
+       título, corpo, caption, label, texto de apoio, valor de campo — usa estes.
+
+     DECORATIVO — o ÚLTIMO nível de cada escada (--fg-4 e --fg-on-dark-5).
+       NÃO passam AA. Só grafismo, divisor textual, marca d'água e estado
+       desabilitado. NUNCA texto que precise ser lido. Se é conteúdo, suba um
+       degrau (--fg-3 / --fg-on-dark-4).
+
+     ⚠️ Ao mexer em QUALQUER tom aqui, meça contra as TRÊS superfícies do tema,
+     não contra uma. Foi calibrar só contra branco que deixou --fg-3 em 4.48
+     sobre --soft, e calibrar só contra --ink-1 que deixou --fg-on-dark-4 em
+     4.41 sobre --ink-3.
+     ⚠️ E componha o alpha ANTES de medir: superfície translúcida (o `muted` do
+     Hub é branco a 4% SOBRE o card, não branco puro) tem contraste diferente do
+     que a cor sugere. Tratar como opaca inverte o resultado e esconde a falha.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  /* texto sobre claro — superfícies: --white, --soft, --soft-3 */
+  --fg-1:     #0b1b18;   /* primário — H1/H2/H3, links                CONTEÚDO */
+  --fg-2:     #3b423f;   /* corpo, descrições                          CONTEÚDO */
+  --fg-3:     #666e69;   /* captions, "antes do agente"                CONTEÚDO
+                            escurecido de #6b746f, que reprovava AA sobre as
+                            superfícies recuadas: 4.48 sobre --soft e 4.32 sobre
+                            --soft-3. Agora 5.25 · 4.87 · 4.70. */
+  --fg-4:     #8a948e;   /* meta, mono-IDs, eyebrows dim             DECORATIVO
+                            3.13 sobre --white, 2.80 sobre --soft-3: não é texto. */
+
+  /* texto sobre escuro — superfícies: --ink-1, --ink-2, --ink-3 */
+  --fg-on-dark-1: #ecf0f5;   /*                                       CONTEÚDO */
+  --fg-on-dark-2: #d1d6dc;   /*                                       CONTEÚDO */
+  --fg-on-dark-3: #b8c0c9;   /*                                       CONTEÚDO */
+  --fg-on-dark-4: #969f99;   /* CONTEÚDO — clareado de #8a948e, que dava 4.41
+                                sobre --ink-3 (a superfície de card do escuro).
+                                Agora 6.52 ink-1 · 6.22 ink-2 · 5.07 ink-3, e
+                                4.52 sobre o `muted` COMPOSTO do Hub (#1d3a34).
+                                ⚠️ #949e98 parece equivalente e não é: 4.45 na
+                                superfície composta — reprova. */
+  --fg-on-dark-5: #6b746f;   /*                                     DECORATIVO
+                                2.86 sobre --ink-3: nunca texto. */
 
 
   /* ══════════════════════════════════════════════════════════
@@ -150,7 +183,15 @@
 
   /* status — semânticos */
   --warn:   #f59e0b;
-  --error:  #dc2626;
+  --error:  #dc2626;   /* tema CLARO. Como TEXTO só sobre superfície clara
+                          (4.83 sobre --white); como PREENCHIMENTO leva --white
+                          por cima (4.83). Sobre ink REPROVA — use o de baixo. */
+  --error-on-dark: #f87171;  /* mesmo vermelho, legível sobre as superfícies ink:
+                          6.41 sobre --ink-1 · 6.12 --ink-2 · 4.99 --ink-3.
+                          ⚠️ Como PREENCHIMENTO o par INVERTE: leva --ink-1 por
+                          cima (6.41), NUNCA --white (2.77 — reprova). Não existe
+                          um vermelho só que sirva aos dois temas: texto sobre ink
+                          exige clarear, branco por cima exige escurecer. */
   --info:   #38bdf8;   /* raro — mockups (cards do builder, dashboard) */
 
   /* categóricas — NÃO carregam semântica de status.
@@ -196,14 +237,20 @@
      ──────────────────────────────────────────────────────────
      Se um valor não está aqui, está errado. Sem 4px, sem 12px.
      ══════════════════════════════════════════════════════════ */
-  --radius-xs:    6px;     /* tags micro, pills internos de mockup */
-  --radius-sm:    8px;     /* inputs, tags, dropdown items */
-  --radius-md:    10px;    /* avatares quadrados, surfaces pequenas */
-  --radius-lg:    14px;    /* card padrão */
-  --radius-xl:    16px;    /* card grande, hero panels, antes/depois */
-  --radius-2xl:   18px;    /* card featured (pricing, casos) */
-  --radius-3xl:   24px;    /* CTA blocks grandes, hero do casos-list */
-  --radius-pill:  999px;   /* botões, badges, dots, eyebrow dot */
+  /* Escala enxugada ~35% em 26/08/2026 — motivo registrado no SPEC-UI.md do
+     protótipo [Hub] SaaS: "os componentes estavam abaulados demais".
+     Os aliases --r-* dos kits apontam pra cá 1:1 POR NOME (--r-md ≡ --radius-md);
+     ver ui_kits/hub/hub.css. Nunca mapeie por valor. */
+  --radius-xs:    3px;     /* checkbox, chip de variável        (era 6px) */
+  --radius-sm:    4px;     /* botões pequenos, ibtn, tags       (era 8px) */
+  --radius-md:    5px;     /* inputs, botões, cards de lista    (era 10px) */
+  --radius-lg:    7px;     /* cards de conteúdo                 (era 14px) */
+  --radius-xl:    10px;    /* cards de destaque, drawers        (era 16px) */
+  --radius-2xl:   18px;    /* card featured (pricing, casos) — sem degrau
+                              correspondente no protótipo, mantido */
+  --radius-3xl:   24px;    /* CTA blocks grandes — idem, mantido */
+  --radius-pill:  999px;   /* FORMA intencional (botão-pill, badge, dot), não
+                              raio: nunca acompanha o encolhimento */
 
 
   /* ══════════════════════════════════════════════════════════

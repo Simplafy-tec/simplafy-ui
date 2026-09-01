@@ -47,16 +47,26 @@
   --color-secondary: oklch(0.97 0.002 265);
   --color-secondary-foreground: oklch(0.205 0.02 265);
 
-  /* Muted */
+  /* Muted — o foreground é CONTEÚDO (ver contrato no fim deste bloco @theme) */
   --color-muted: oklch(0.97 0.002 265);
-  --color-muted-foreground: oklch(0.55 0.01 265);
+  /* --fg-3 do tokens.css. Era oklch(0.55 0.01 265) = #6f7278, que reprova AA sobre
+     as superfícies recuadas da marca: 4.48 sobre --soft #F5F7F4 e 4.32 sobre
+     --soft-3 #F0F3F1. Passava só sobre branco puro (4.82) — a única superfície
+     contra a qual havia sido calibrado. Agora: 5.25 branco · 4.87 soft · 4.70 soft-3. */
+  --color-muted-foreground: #666e69;
 
   /* Accent */
   --color-accent: oklch(0.97 0.002 265);
   --color-accent-foreground: oklch(0.205 0.02 265);
 
-  /* Destructive */
-  --color-destructive: oklch(0.58 0.22 27);
+  /* Destructive — no CLARO o vermelho é o mesmo nos dois papéis.
+     --error do tokens.css (#dc2626). Como TEXTO serve sobre superfície branca
+     (4.83); como PREENCHIMENTO leva branco por cima (4.83). Era
+     oklch(0.58 0.22 27) = #df2225, que é o mesmo vermelho com 0.05 a menos.
+     ⚠️ Sobre as superfícies recuadas (--soft 4.48 / --soft-3 4.32) este vermelho
+     NÃO passa AA como texto — é limitação herdada do canônico, registrada na
+     Hub#5.2.13.11, não resolvida aqui. */
+  --color-destructive: #dc2626;
   --color-destructive-foreground: oklch(0.98 0 0);
 
   /* Semantic */
@@ -120,12 +130,37 @@
 /* ── Non-color CSS vars (radius + layout) ───────────────────────── */
 @layer base {
   :root {
-    /* Escala canônica DS v1.2.0 — tokens.css §7 */
-    --radius-xs:   6px;
-    --radius-sm:   8px;
-    --radius-md:   10px;
-    --radius-lg:   14px;
-    --radius-xl:   16px;
+    /*
+     * Escala canônica DS v1.3.0 — tokens.css §7.
+     *
+     * Enxugada ~35% em 26/08/2026 pelo protótipo [Hub] SaaS. Motivo registrado
+     * no SPEC-UI.md dele, palavra dele: "os componentes estavam abaulados demais".
+     *
+     * MAPA `--r-*` (protótipo) → `--radius-*` (aqui): é 1:1 POR NOME, e isso está
+     * escrito no próprio DS — `docs/design-system/ui_kits/hub/hub.css:141-148`:
+     * "--r-* são aliases retrocompat → SEMPRE apontam pra escala canônica do
+     * tokens.css §7". Ou seja: --r-md ≡ --radius-md, e assim por diante.
+     *
+     * ⚠️ NÃO mapeie por VALOR. Na régua velha --r-md (8px) valia o mesmo que
+     * --radius-sm (8px), e um consumidor concluiu daí que "--r-md é o --radius-sm
+     * da DS" (simplafy-hub-v2 apps/web/src/app/globals.css, bloco INPUT RADIUS).
+     * Era coincidência de número, não equivalência — e quebrou no encolhimento.
+     *
+     *   --r-xs 3px → --radius-xs   checkbox, chip de variável
+     *   --r-sm 4px → --radius-sm   botões pequenos, ibtn, tags
+     *   --r-md 5px → --radius-md   inputs, botões, cards de lista
+     *   --r-lg 7px → --radius-lg   cards de conteúdo
+     *   --r-xl 10px→ --radius-xl   cards de destaque, drawers
+     *
+     * --radius-2xl / --radius-3xl não têm degrau correspondente no protótipo —
+     * ficam como estão de propósito (fora do escopo da Hub#5.2.13.12).
+     * --radius-pill é FORMA intencional (botão-pill, badge), não raio: nunca muda.
+     */
+    --radius-xs:   3px;
+    --radius-sm:   4px;
+    --radius-md:   5px;
+    --radius-lg:   7px;
+    --radius-xl:   10px;
     --radius-2xl:  18px;
     --radius-3xl:  24px;
     --radius-pill: 999px;
@@ -155,12 +190,30 @@
     --color-secondary: #161b26;
     --color-secondary-foreground: #ecf0f5;
     --color-muted: #161b26;
-    --color-muted-foreground: #94a3b8;
+    /* --fg-on-dark-4 do tokens.css. Era #94a3b8 (azul-cinza, fora da paleta ink
+       da marca). Medido sobre as superfícies escuras REAIS dos consumidores:
+       6.94 aqui (#0e1117) · 5.89 card (#1c2130) · 6.33 muted (#161b26), e no Hub,
+       que sobrescreve para a paleta ink: 6.52 ink-1 · 5.07 ink-3 · 6.22 ink-2 ·
+       4.52 sobre a superfície muted COMPOSTA (branco 4% sobre card = #1d3a34).
+       ⚠️ Compor o alpha antes de medir: #949e98 dá 4.52 sobre o card opaco e
+       4.45 sobre a composta — reprova. Foi por isso que este token é #969f99. */
+    --color-muted-foreground: #969f99;
     --color-accent: #161b26;
     --color-accent-foreground: #ecf0f5;
 
-    --color-destructive: oklch(0.65 0.22 27);
-    --color-destructive-foreground: oklch(0.145 0 0);
+    /* Destructive no ESCURO — o par inverte JUNTO, e isso não é detalhe.
+       Não existe um vermelho único que sirva aos dois papéis: para o texto passar
+       AA sobre ink é preciso clarear; para o branco passar por cima é preciso
+       escurecer. Conjuntos disjuntos.
+       Era oklch(0.65 0.22 27) = #f9423d, que como TEXTO dá 3.86 sobre o card ink-3
+       do Hub (#14322c) — e o escuro é o tema DEFAULT do produto, então essa era a
+       cor de toda mensagem de erro.
+       Agora --error-on-dark (#f87171): 6.41 ink-1 · 6.12 ink-2 · 4.99 ink-3.
+       ⚠️ Trocar SÓ a cor do texto deixaria o botão destrutivo com branco sobre
+       #f87171 = 2.77, PIOR do que estava. Por isso o foreground vira --ink-1
+       (6.41 por cima do preenchimento). */
+    --color-destructive: #f87171;
+    --color-destructive-foreground: #0b1b18;
     --color-success: oklch(0.72 0.19 150);
     --color-success-foreground: oklch(0.145 0 0);
     --color-warning: oklch(0.85 0.16 85);
