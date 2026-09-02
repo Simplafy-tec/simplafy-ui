@@ -9,19 +9,33 @@ on:
 jobs:
   quality:
     # ⚠️ `ubuntu-latest` AQUI É DELIBERADO — NÃO troque por `${{ vars.CI_RUNNER }}`.
-    # Exceção documentada do ADR-015 v4, pelo mesmo motivo do `evolution-api`.
+    # Exceção documentada do ADR-015 v4, na mesma forma do precedente vivo em
+    # `simplafy-infra/.github/workflows/perimeter-scan.yml:4-7,41` (label literal
+    # no workflow + comentário dizendo por quê, e "Não trocar por
+    # ${{ vars.CI_RUNNER }}" escrito no arquivo). Lá o motivo é outro — o scan
+    # precisa enxergar de fora da rede confiável —, mas o formato é este.
+    #
+    # ⚠️ NÃO use o `evolution-api` como precedente: ele mantém
+    # `runs-on: ${{ vars.CI_RUNNER }}` e resolve pela variável de repositório, e
+    # a doc de CI ainda manda movê-lo para o `ci-2` — instrução que quebraria
+    # aquele repo pelo mesmo motivo descrito abaixo (correção em issue#2548).
     #
     # `simplafy-ui` é um repositório PÚBLICO, e o grupo de runners da org tem
     # `allows_public_repositories: false`. Um job apontado para as VMs
-    # self-hosted NUNCA É ATRIBUÍDO: fica `queued` para sempre e não vira
-    # vermelho — não existe sinal de erro nenhum.
+    # self-hosted NUNCA É ATRIBUÍDO: fica `queued` sem dono e termina
+    # CANCELADO — nunca vermelho, nunca com mensagem de erro. (O job desta PR
+    # foi cancelado à mão depois de 205 min; deixado sozinho, o GitHub encerra
+    # por tempo. Nos dois caminhos o resultado é `cancelled`, não `failure`.)
     #
     # Medido em 2026-09-02 (PR simplafy-ui#20, run 33672287470):
     #
     #   $ gh api /repos/Simplafy-tec/simplafy-ui/actions/runs/33672287470/jobs
     #   {"name":"quality","labels":["simplafy-ci-2"],"status":"queued",
     #    "runner_name":"","runner_group_name":"",
-    #    "created_at":"2026-09-02T19:16:16Z"}          <- 205 min em fila
+    #    "created_at":"2026-09-02T19:16:16Z"}          <- 205 min sem dono
+    #   (estado final do mesmo job, conferido depois: "status":"completed",
+    #    "conclusion":"cancelled" — `runner_name` vazio é a assinatura de
+    #    "nunca atribuído"; não é fila cheia, é recusa)
     #
     #   $ gh api /orgs/Simplafy-tec/actions/runner-groups/1
     #   {"name":"Default","visibility":"all","allows_public_repositories":false}
