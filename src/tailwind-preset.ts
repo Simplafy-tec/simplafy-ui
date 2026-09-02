@@ -85,6 +85,7 @@ export const simplafyPreset = {
         },
       },
       borderRadius: {
+        '2xs': 'var(--radius-2xs)',
         xs:   'var(--radius-xs)',
         sm:   'var(--radius-sm)',
         md:   'var(--radius-md)',

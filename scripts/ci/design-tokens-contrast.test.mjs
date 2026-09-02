@@ -17,9 +17,23 @@
  * Hub sobrescreve), e superfície translúcida é COMPOSTA antes de medir.
  *
  * ⚠️ A composição do alpha não é detalhe. `--color-muted` no escuro do Hub é
- * branco a 4% SOBRE o card, não branco puro. Medido como opaco, `#949e98` parece
- * passar (4.52 sobre o card); composto, dá 4.45 e reprova. Foi exatamente esse
- * atalho que colocou um valor reprovado numa PR de acessibilidade.
+ * branco a 4% SOBRE o card, não branco puro. Medido como opaco, `#949e98`
+ * (valor da PR#15) dá 4.9944 sobre o card — parece aprovado; composto (branco
+ * 4% sobre o card), dá 4.4541 e reprova. Foi exatamente esse atalho que
+ * colocou um valor reprovado numa PR de acessibilidade.
+ *
+ * ⚠️ Ler o token não é ler o literal. `--color-destructive-foreground` claro é
+ * `oklch(0.98 0 0)`, não `#ffffff` — os dois têm luminância diferente, e a
+ * margem sobre AA muda conforme qual dos dois se mede. Este arquivo converte
+ * `oklch()` para sRGB (Björn Ottosson, mesma fórmula do CSS Color 4) em vez de
+ * hardcodar o valor que "parece" ser.
+ *
+ * ⚠️ Ler `src/globals.css` e `docs/design-system/tokens.css` não basta: o kit
+ * do Hub (`docs/design-system/ui_kits/hub/hub.css`) define seu PRÓPRIO par
+ * destructive escuro via `var(--error-on-dark)` / `var(--ink-1)`, e esse par
+ * nunca era lido por este arquivo — a mesma armadilha do AC2 (branco por cima
+ * do fill) podia entrar ali sem o teste perceber. Este arquivo resolve os
+ * `var()` do kit contra `tokens.css` e mede o resultado.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -27,6 +41,7 @@ import test from 'node:test';
 
 const globalsPath = new URL('../../src/globals.css', import.meta.url);
 const tokensPath = new URL('../../docs/design-system/tokens.css', import.meta.url);
+const hubKitPath = new URL('../../docs/design-system/ui_kits/hub/hub.css', import.meta.url);
 
 const AA = 4.5;
 
@@ -54,6 +69,61 @@ function compor([r, g, b], alpha, fundoHex) {
   return `#${saida.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
+/**
+ * `oklch(L C H)` → hex sRGB (Björn Ottosson / CSS Color 4). Devolve o valor
+ * inalterado se não casar o formato — quem chama decide se isso é hex já ou
+ * um formato que ainda não sabemos converter.
+ */
+function oklchParaHex(valor) {
+  const m = valor.match(/^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/);
+  if (!m) return null;
+  const L = Number(m[1]);
+  const C = Number(m[2]);
+  const H = (Number(m[3]) * Math.PI) / 180;
+  const a = C * Math.cos(H);
+  const b = C * Math.sin(H);
+
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.2914855480 * b;
+
+  const l = l_ ** 3;
+  const mm = m_ ** 3;
+  const s = s_ ** 3;
+
+  const rLin = 4.0767416621 * l - 3.3077115913 * mm + 0.2309699292 * s;
+  const gLin = -1.2684380046 * l + 2.6097574011 * mm - 0.3413193965 * s;
+  const bLin = -0.0041960863 * l - 0.7034186147 * mm + 1.7076147010 * s;
+
+  const gama = (c) => {
+    const clamped = Math.min(1, Math.max(0, c));
+    return clamped <= 0.0031308 ? 12.92 * clamped : 1.055 * clamped ** (1 / 2.4) - 0.055;
+  };
+  const toHex = (c) => Math.round(gama(c) * 255).toString(16).padStart(2, '0');
+  return `#${toHex(rLin)}${toHex(gLin)}${toHex(bLin)}`;
+}
+
+const CORES_NOMEADAS = { white: '#ffffff', black: '#000000' };
+
+/**
+ * Normaliza um valor bruto de token pra hex comparável: resolve `var(--x)`
+ * contra o `:root` de `tokensCss` (até 5 saltos, cobre encadeamento), converte
+ * `oklch()` e nomes de cor CSS conhecidos. Um valor que já é hex passa direto.
+ */
+function normalizarCor(valorBruto, tokensCss) {
+  let atual = valorBruto.trim().toLowerCase();
+  for (let saltos = 0; saltos < 5 && atual.startsWith('var('); saltos += 1) {
+    const nomeVar = atual.match(/^var\((--[\w-]+)\)$/)?.[1];
+    assert.ok(nomeVar, `valor var() malformado: ${atual}`);
+    atual = lerToken(tokensCss, ':root', nomeVar);
+  }
+  if (atual.startsWith('#')) return atual;
+  if (CORES_NOMEADAS[atual]) return CORES_NOMEADAS[atual];
+  const hex = oklchParaHex(atual);
+  assert.ok(hex, `não sei converter "${atual}" pra hex — normalizarCor precisa de um caso novo`);
+  return hex;
+}
+
 /** Lê o valor efetivo de um token dentro de um seletor — o último vence, como no CSS. */
 function lerToken(css, seletor, token) {
   const esc = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -77,6 +147,9 @@ function exigirAA(rotulo, frente, superficies) {
 }
 
 // Superfícies da paleta ink (o Hub sobrescreve os tokens do pacote para elas).
+// Origem: simplafy-hub-v2/apps/web/src/app/globals.css:186-189 (bloco `html.dark`),
+// que ainda espelha estes valores em hex cravado em vez de consumir o pacote —
+// se o Hub trocar --color-card lá, nada aqui percebe automaticamente.
 const INK = { 'ink-1 (página)': '#0b1b18', 'ink-2 (sidebar)': '#0d201d', 'ink-3 (card)': '#14322c' };
 const INK_MUTED = compor([255, 255, 255], 0.04, INK['ink-3 (card)']);
 const INK_COM_MUTED = { ...INK, 'muted composto sobre card': INK_MUTED };
@@ -130,9 +203,12 @@ test('texto secundário passa AA nos dois temas e nos dois conjuntos de superfí
 
 test('destructive é legível como TEXTO e como PREENCHIMENTO — o par inverte junto', () => {
   const globals = readFileSync(globalsPath, 'utf8');
+  const tokens = readFileSync(tokensPath, 'utf8');
   const fillEscuro = lerToken(globals, '.dark', '--color-destructive');
   const sobreFillEscuro = lerToken(globals, '.dark', '--color-destructive-foreground');
   const fillClaro = lerToken(globals, '@theme', '--color-destructive');
+  const foregroundClaroBruto = lerToken(globals, '@theme', '--color-destructive-foreground');
+  const foregroundClaro = normalizarCor(foregroundClaroBruto, tokens);
 
   // TEXTO no escuro, nas superfícies canônicas do protótipo.
   exigirAA('destructive como texto (ink)', fillEscuro, INK);
@@ -141,9 +217,12 @@ test('destructive é legível como TEXTO e como PREENCHIMENTO — o par inverte 
     card: lerToken(globals, '.dark', '--color-card'),
   });
 
-  // PREENCHIMENTO — a metade que uma troca só do texto quebraria.
+  // PREENCHIMENTO — a metade que uma troca só do texto quebraria. O foreground
+  // claro é lido do token real (oklch convertido), não de um literal '#ffffff'
+  // que não existe no arquivo — ver test 'kit do Hub' abaixo pro mesmo cuidado
+  // aplicado ao par que o hub.css define via var().
   exigirAA('foreground sobre o fill escuro', sobreFillEscuro, { 'fill destructive': fillEscuro });
-  exigirAA('branco sobre o fill claro', '#ffffff', { 'fill destructive': fillClaro });
+  exigirAA('foreground claro sobre o fill claro', foregroundClaro, { 'fill destructive': fillClaro });
 
   // A armadilha, escrita como asserção: branco por cima do vermelho do escuro
   // é 2.77. Se alguém "harmonizar" o foreground para branco, este teste explica.
@@ -153,8 +232,33 @@ test('destructive é legível como TEXTO e como PREENCHIMENTO — o par inverte 
   );
 });
 
-test('prova invertida: os valores aposentados reprovam de verdade', () => {
-  // Não é casamento de string: os antigos REPROVAM o mesmo contrato AA.
+test('kit do Hub (ui_kits/hub/hub.css): o par destructive escuro, resolvido do var(), também passa AA', () => {
+  const hub = readFileSync(hubKitPath, 'utf8');
+  const tokens = readFileSync(tokensPath, 'utf8');
+
+  const fillBruto = lerToken(hub, '[data-theme="dark"]', '--color-destructive');
+  const foregroundBruto = lerToken(hub, '[data-theme="dark"]', '--color-destructive-foreground');
+  const fill = normalizarCor(fillBruto, tokens);
+  const foreground = normalizarCor(foregroundBruto, tokens);
+
+  exigirAA('destructive como texto (kit hub)', fill, INK);
+  exigirAA('foreground sobre o fill escuro (kit hub)', foreground, { 'fill destructive': fill });
+
+  // Mesma armadilha do AC2, agora no arquivo onde o review a achou sem guarda:
+  // se `--color-destructive-foreground` do kit voltar a `white`, isto reprova.
+  assert.ok(
+    contraste('#ffffff', fill) < AA,
+    'premissa quebrada (kit hub): se branco passar sobre o fill escuro do kit, a inversão deixou de ser necessária — revise var(--ink-1)',
+  );
+});
+
+test('asserções de premissa: os valores aposentados reprovam de verdade (matemática, não leitura de arquivo)', () => {
+  // Não é casamento de string: os antigos REPROVAM o mesmo contrato AA. Estas
+  // asserções operam sobre literais fixos — documentam a matemática que
+  // justifica os tokens atuais, mas NÃO leem src/globals.css nem detectam
+  // regressão nele (reverter o arquivo inteiro não muda o resultado abaixo).
+  // A prova invertida real — a que detecta regressão de arquivo — é o teste
+  // 'kit do Hub' acima e a leitura via lerToken() nos demais testes.
   assert.ok(contraste('#6b746f', CLARAS.soft) < AA, '--fg-3 antigo sobre --soft');
   assert.ok(contraste('#8a948e', INK['ink-3 (card)']) < AA, '--fg-on-dark-4 antigo sobre --ink-3');
   assert.ok(contraste('#949e98', INK_MUTED) < AA, '--fg-on-dark-4 da PR#15 sobre o muted composto');
@@ -164,6 +268,6 @@ test('prova invertida: os valores aposentados reprovam de verdade', () => {
   // E o atalho que esconde a falha: medido como opaco, o valor da PR#15 "passa".
   assert.ok(
     contraste('#949e98', INK['ink-3 (card)']) >= AA,
-    'premissa: sem compor o alpha, #949e98 parece aprovado — é por isso que a composição é obrigatória',
+    'premissa: sem compor o alpha, #949e98 parece aprovado (4.9944 sobre o card opaco) — é por isso que a composição é obrigatória',
   );
 });

@@ -136,35 +136,45 @@
      * Enxugada ~35% em 26/08/2026 pelo protótipo [Hub] SaaS. Motivo registrado
      * no SPEC-UI.md dele, palavra dele: "os componentes estavam abaulados demais".
      *
-     * MAPA `--r-*` (protótipo) → `--radius-*` (aqui): é 1:1 POR NOME, e isso está
-     * escrito no próprio DS — `docs/design-system/ui_kits/hub/hub.css:141-148`:
-     * "--r-* são aliases retrocompat → SEMPRE apontam pra escala canônica do
-     * tokens.css §7". Ou seja: --r-md ≡ --radius-md, e assim por diante.
+     * MAPA `--r-*` (protótipo) → `--radius-*` (aqui): é DESLOCADO em um degrau,
+     * não 1:1 por nome — achado do review adversarial da PR#18, confirmado pelo
+     * PM com o protótipo na mão (Claude Design, acesso fora deste workspace).
+     * O desempate não é o valor (coincidência de px já enganou um consumidor
+     * antes — ver aviso abaixo); é o PAPEL: `SPEC-UI.md` diz que `--r-md` (5px)
+     * é "inputs, botões, cards de lista", e é exatamente esse papel que
+     * `--radius-sm` cumpre no pacote (Hub força input/textarea/combobox pra
+     * `--radius-sm` — `simplafy-hub-v2 apps/web/src/app/globals.css:358-381`).
+     * Logo `--radius-sm` ≡ `--r-md`, não `--r-sm`.
      *
-     * ⚠️ NÃO mapeie por VALOR. Na régua velha --r-md (8px) valia o mesmo que
-     * --radius-sm (8px), e um consumidor concluiu daí que "--r-md é o --radius-sm
-     * da DS" (simplafy-hub-v2 apps/web/src/app/globals.css, bloco INPUT RADIUS).
-     * Era coincidência de número, não equivalência — e quebrou no encolhimento.
+     * ⚠️ NÃO mapeie por VALOR nem por NOME. Na régua velha `--r-md` (8px) valia
+     * o mesmo que `--radius-sm` (8px), e um consumidor concluiu daí que
+     * "--r-md é o --radius-sm da DS" — coincidência de número, não equivalência,
+     * e ela morreu junto com a régua velha. Foi essa mesma armadilha, agora por
+     * NOME em vez de por valor, que produziu o mapa 1:1 errado desta PR original.
      *
-     *   --r-xs 3px → --radius-xs   checkbox, chip de variável
-     *   --r-sm 4px → --radius-sm   botões pequenos, ibtn, tags
-     *   --r-md 5px → --radius-md   inputs, botões, cards de lista
-     *   --r-lg 7px → --radius-lg   cards de conteúdo
-     *   --r-xl 10px→ --radius-xl   cards de destaque, drawers
+     *   --radius-2xs 3px ≡ --r-xs   tags/chips mínimos                (NOVO)
+     *   --radius-xs  4px ≡ --r-sm   botões pequenos, ibtn, tags
+     *   --radius-sm  5px ≡ --r-md   inputs, botões, cards de lista
+     *   --radius-md  7px ≡ --r-lg   cards de conteúdo
+     *   --radius-lg  10px≡ --r-xl   cards de destaque, drawers
+     *   --radius-xl  12px           ÓRFÃO — o protótipo não tem degrau acima de
+     *                                --r-xl. Mantido só por retrocompat (ninguém
+     *                                remapeia pra cima); não existe no protótipo.
      *
      * --radius-2xl / --radius-3xl não têm degrau correspondente no protótipo —
      * ficam como estão de propósito (fora do escopo da Hub#5.2.13.12).
      * --radius-pill é FORMA intencional (botão-pill, badge), não raio: nunca muda.
      */
-    --radius-xs:   3px;
-    --radius-sm:   4px;
-    --radius-md:   5px;
-    --radius-lg:   7px;
-    --radius-xl:   10px;
+    --radius-2xs:  3px;
+    --radius-xs:   4px;
+    --radius-sm:   5px;
+    --radius-md:   7px;
+    --radius-lg:   10px;
+    --radius-xl:   12px;
     --radius-2xl:  18px;
     --radius-3xl:  24px;
     --radius-pill: 999px;
-    /* retrocompat */
+    /* retrocompat — --radius-btn cai de 8px (pré-shrink) pra 5px: ver CHANGELOG */
     --radius-full: var(--radius-pill);
     --radius-btn:  var(--radius-sm);
     --sidebar-w: 240px;
@@ -195,8 +205,10 @@
        6.94 aqui (#0e1117) · 5.89 card (#1c2130) · 6.33 muted (#161b26), e no Hub,
        que sobrescreve para a paleta ink: 6.52 ink-1 · 5.07 ink-3 · 6.22 ink-2 ·
        4.52 sobre a superfície muted COMPOSTA (branco 4% sobre card = #1d3a34).
-       ⚠️ Compor o alpha antes de medir: #949e98 dá 4.52 sobre o card opaco e
-       4.45 sobre a composta — reprova. Foi por isso que este token é #969f99. */
+       ⚠️ Compor o alpha antes de medir: #949e98 (valor da PR#15) dá 4.9944 sobre
+       o card OPACO — parece aprovado — e 4.4541 sobre o muted COMPOSTO (branco 4%
+       sobre o card) — reprova. Foi por isso que este token é #969f99 (4.5201
+       composto). */
     --color-muted-foreground: #969f99;
     --color-accent: #161b26;
     --color-accent-foreground: #ecf0f5;

@@ -84,7 +84,14 @@
 
 /* ── Dark theme: re-mapeia para a paleta ink + brand-green ─────────
    É o "sabor SaaS" do Hub: continuidade brand com o site, densidade
-   compacta de produto. */
+   compacta de produto.
+   --ink-1/2/3 vêm do tokens.css §4 (marca) — o consumidor real hoje
+   (simplafy-hub-v2/apps/web/src/app/globals.css:186-189, bloco `html.dark`)
+   os espelha em hex cravado (#0b1b18/#0d201d/#14322c) porque ainda não
+   consome os tokens deste pacote diretamente. Se o Hub trocar --color-card
+   lá, esta paleta e o teste de contraste que a usa (scripts/ci/design-tokens-
+   contrast.test.mjs, constante INK) ficam medindo uma superfície que ninguém
+   renderiza — nada liga os dois automaticamente. */
 [data-theme="dark"] {
   --color-background: var(--ink-1);
   --color-foreground: var(--fg-on-dark-1);
@@ -146,14 +153,18 @@ input, textarea { outline: none; }
   --shell-sidebar-w: 240px;
   --shell-sidebar-collapsed: 64px;
   --shell-topbar-h: 56px;
-  /* --r-* são aliases retrocompat → SEMPRE apontam pra escala canônica
-     do tokens.css §7. Não usar valores px próprios (contradiz o canônico). */
-  --r-xs: var(--radius-xs);   /* 3px  — checkbox, chip de variável */
-  --r-sm: var(--radius-sm);   /* 4px  — botões pequenos, ibtn, tags */
-  --r-md: var(--radius-md);   /* 5px  — inputs, botões, cards de lista */
-  --r-lg: var(--radius-lg);   /* 7px  — cards de conteúdo */
-  --r-xl: var(--radius-xl);   /* 10px — cards de destaque, drawers */
+  /* --r-* são aliases retrocompat → apontam pra escala canônica do
+     tokens.css §7, mas DESLOCADOS em um degrau — não são 1:1 por nome.
+     Não usar valores px próprios (contradiz o canônico). Não remapeie por
+     coincidência de valor nem de nome: o desempate é o PAPEL do componente
+     (ver o comentário completo em src/globals.css §radius). */
+  --r-xs: var(--radius-2xs);  /* 3px  — tags/chips mínimos */
+  --r-sm: var(--radius-xs);   /* 4px  — botões pequenos, ibtn, tags */
+  --r-md: var(--radius-sm);   /* 5px  — inputs, botões, cards de lista */
+  --r-lg: var(--radius-md);   /* 7px  — cards de conteúdo */
+  --r-xl: var(--radius-lg);   /* 10px — cards de destaque, drawers */
   --r-pill: var(--radius-pill); /* 999px — forma intencional, não acompanha a escala */
+  /* --radius-xl (12px) não tem alias --r-* — é órfão, o protótipo para em --r-xl. */
 }
 
 /* App shell */

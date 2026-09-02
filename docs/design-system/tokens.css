@@ -130,10 +130,12 @@
      Vale para as duas escadas de texto abaixo, e não é convenção — é o que
      impede o defeito de voltar.
 
-     CONTEÚDO  — os TRÊS primeiros níveis de cada escada (--fg-1..3 e
-       --fg-on-dark-1..3, mais --fg-on-dark-4). Passam AA (≥ 4.5) sobre as TRÊS
-       superfícies do próprio tema. Qualquer coisa que o usuário precise LER —
-       título, corpo, caption, label, texto de apoio, valor de campo — usa estes.
+     CONTEÚDO  — todo nível de cada escada, MENOS o último. A escala clara tem
+       3 níveis de conteúdo (--fg-1..3); a escura tem 4 (--fg-on-dark-1..4) —
+       a assimetria é real, não erro de digitação. Passam AA (≥ 4.5) sobre as
+       TRÊS superfícies do próprio tema. Qualquer coisa que o usuário precise
+       LER — título, corpo, caption, label, texto de apoio, valor de campo —
+       usa estes.
 
      DECORATIVO — o ÚLTIMO nível de cada escada (--fg-4 e --fg-on-dark-5).
        NÃO passam AA. Só grafismo, divisor textual, marca d'água e estado
@@ -235,17 +237,22 @@
   /* ══════════════════════════════════════════════════════════
      7. RADIUS — régua FECHADA
      ──────────────────────────────────────────────────────────
-     Se um valor não está aqui, está errado. Sem 4px, sem 12px.
+     Se um valor não está aqui, está errado.
      ══════════════════════════════════════════════════════════ */
   /* Escala enxugada ~35% em 26/08/2026 — motivo registrado no SPEC-UI.md do
      protótipo [Hub] SaaS: "os componentes estavam abaulados demais".
-     Os aliases --r-* dos kits apontam pra cá 1:1 POR NOME (--r-md ≡ --radius-md);
-     ver ui_kits/hub/hub.css. Nunca mapeie por valor. */
-  --radius-xs:    3px;     /* checkbox, chip de variável        (era 6px) */
-  --radius-sm:    4px;     /* botões pequenos, ibtn, tags       (era 8px) */
-  --radius-md:    5px;     /* inputs, botões, cards de lista    (era 10px) */
-  --radius-lg:    7px;     /* cards de conteúdo                 (era 14px) */
-  --radius-xl:    10px;    /* cards de destaque, drawers        (era 16px) */
+     Os aliases --r-* dos kits apontam pra cá DESLOCADOS em um degrau, não
+     1:1 por nome (--r-md ≡ --radius-sm, não --radius-md) — ver
+     ui_kits/hub/hub.css e o comentário completo em src/globals.css §radius.
+     Nunca mapeie por valor nem por nome; o desempate é o PAPEL do componente. */
+  --radius-2xs:   3px;     /* tags/chips mínimos                        (NOVO) */
+  --radius-xs:    4px;     /* botões pequenos, ibtn, tags        (era 6px) */
+  --radius-sm:    5px;     /* inputs, botões, cards de lista     (era 8px) */
+  --radius-md:    7px;     /* cards de conteúdo                  (era 10px) */
+  --radius-lg:    10px;    /* cards de destaque, drawers          (era 14px) */
+  --radius-xl:    12px;    /* ÓRFÃO — sem degrau no protótipo (que para em
+                               --r-xl/10px); mantido só por retrocompat
+                               (era 16px) */
   --radius-2xl:   18px;    /* card featured (pricing, casos) — sem degrau
                               correspondente no protótipo, mantido */
   --radius-3xl:   24px;    /* CTA blocks grandes — idem, mantido */
