@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.1] — 2026-09-02
+
+### Corrigido
+
+- **O gate de tokens agora roda de verdade.** `pnpm test` (as guardas em `scripts/ci/`) passou a ser executado no job `quality` do `ci.yml` **e** no `publish.yml`. Até aqui nenhum workflow o chamava: as guardas escritas em 2.3.0 (contraste) e 2.4.0 (classes de raio) existiam fora do caminho de merge e fora do caminho de publicação. Isto liga o que a entrada da 2.4.0 registrava como pendente ("hoje isso não está no job `quality` do CI").
+- **`"test"` deixou de passar em silêncio quando não há teste.** Era `node --test scripts/ci/`, que devolve `EXIT=0` com a pasta vazia — renomear um arquivo desligava o gate sem ninguém ver, exatamente o defeito que ligar o gate pretende matar. Agora é `node --test scripts/ci/*.test.mjs`, que devolve `EXIT=1` sem match. Medido nos dois casos.
+- **`ubuntu-latest` nos dois workflows virou exceção DOCUMENTADA do ADR-015 v4, com a evidência no próprio arquivo.** A tentativa de migrar para a VM self-hosted (`runs-on: ${{ vars.CI_RUNNER }}`) foi feita e **revertida com medição**: `simplafy-ui` é repositório **público** e o grupo de runners da org tem `allows_public_repositories: false`, então o job nunca é atribuído — fica `queued` para sempre e **não vira vermelho**. No `publish.yml` isso significaria o pacote parar de ser publicado sem nenhum sinal de erro. A variável de repositório `CI_RUNNER=simplafy-ci-2` segue gravada e **inerte**. Comentário em cima de cada `runs-on` carrega a saída dos comandos, para o próximo agente não "consertar" de volta — na mesma forma do precedente `simplafy-infra/.github/workflows/perimeter-scan.yml:4-7,41`.
+- (issue#2508, PR simplafy-ui#20)
+
 ## [2.4.0] — 2026-09-02
 
 ### Alterado

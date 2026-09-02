@@ -8,6 +8,49 @@ on:
 
 jobs:
   quality:
+    # ⚠️ `ubuntu-latest` AQUI É DELIBERADO — NÃO troque por `${{ vars.CI_RUNNER }}`.
+    # Exceção documentada do ADR-015 v4, na mesma forma do precedente vivo em
+    # `simplafy-infra/.github/workflows/perimeter-scan.yml:4-7,41` (label literal
+    # no workflow + comentário dizendo por quê, e "Não trocar por
+    # ${{ vars.CI_RUNNER }}" escrito no arquivo). Lá o motivo é outro — o scan
+    # precisa enxergar de fora da rede confiável —, mas o formato é este.
+    #
+    # ⚠️ NÃO use o `evolution-api` como precedente: ele mantém
+    # `runs-on: ${{ vars.CI_RUNNER }}` e resolve pela variável de repositório, e
+    # a doc de CI ainda manda movê-lo para o `ci-2` — instrução que quebraria
+    # aquele repo pelo mesmo motivo descrito abaixo (correção em issue#2548).
+    #
+    # `simplafy-ui` é um repositório PÚBLICO, e o grupo de runners da org tem
+    # `allows_public_repositories: false`. Um job apontado para as VMs
+    # self-hosted NUNCA É ATRIBUÍDO: fica `queued` sem dono e termina
+    # CANCELADO — nunca vermelho, nunca com mensagem de erro. (O job desta PR
+    # foi cancelado à mão depois de 205 min; deixado sozinho, o GitHub encerra
+    # por tempo. Nos dois caminhos o resultado é `cancelled`, não `failure`.)
+    #
+    # Medido em 2026-09-02 (PR simplafy-ui#20, run 33672287470):
+    #
+    #   $ gh api /repos/Simplafy-tec/simplafy-ui/actions/runs/33672287470/jobs
+    #   {"name":"quality","labels":["simplafy-ci-2"],"status":"queued",
+    #    "runner_name":"","runner_group_name":"",
+    #    "created_at":"2026-09-02T19:16:16Z"}          <- 205 min sem dono
+    #   (estado final do mesmo job, conferido depois: "status":"completed",
+    #    "conclusion":"cancelled" — `runner_name` vazio é a assinatura de
+    #    "nunca atribuído"; não é fila cheia, é recusa)
+    #
+    #   $ gh api /orgs/Simplafy-tec/actions/runner-groups/1
+    #   {"name":"Default","visibility":"all","allows_public_repositories":false}
+    #
+    #   $ gh api /repos/Simplafy-tec/simplafy-ui --jq '[.name,.visibility]'
+    #   ["simplafy-ui","public"]
+    #
+    # Não era falta de slot: um run do Saúde criado 3h DEPOIS (33691275080,
+    # 22:37Z) tomou os DOIS slots do ci-2 em menos de 1 minuto.
+    #
+    # A variável de repositório `CI_RUNNER` deste repo ainda diz `simplafy-ci-2`
+    # (gravada em 2026-08-14) e está INERTE — este workflow não a lê. Mudar a
+    # variável não conserta nada enquanto o repo for público; o que resolveria é
+    # tornar o repo privado, ou abrir as VMs a PR de fork (recusado: a máquina
+    # tem credencial e cache de todos os repos).
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,10 +62,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          # `cache: pnpm` fica: no runner hospedado o cache do GitHub é o ÚNICO
+          # cache que existe (a VM do job nasce vazia a cada execução). Só faria
+          # sentido tirar em runner self-hosted, onde o store já mora no disco
+          # local por slot — e este repo não pode usar runner self-hosted, ver o
+          # comentário do `runs-on` acima.
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm lint
       - run: pnpm typecheck
+      # Guardas de contraste e de classe de raio dos tokens
+      # (`node --test scripts/ci/*.test.mjs`). Sem este passo, um token que
+      # reprova AA passa pelo CI — foi assim que `--fg-3`, `--fg-on-dark-4` e
+      # `--color-destructive` chegaram ao pacote publicado.
+      # O glob NÃO é estilo: `node --test scripts/ci/` devolve EXIT=0 quando não
+      # acha teste nenhum, então renomear um arquivo desligaria o gate em
+      # silêncio. Com `*.test.mjs`, sem match é EXIT=1. Medido nos dois casos.
+      - run: pnpm test
       - run: pnpm build
