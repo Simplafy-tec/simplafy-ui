@@ -8,21 +8,40 @@ on:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    # ADR-015 v4: todo workflow da org roda em VM self-hosted, roteado pela
+    # variável CI_RUNNER (aqui: simplafy-ci-2). Sem fallback `ubuntu-latest` —
+    # a variável é quem decide a VM, e hardcodar o label impede mover o repo
+    # sem PR.
+    runs-on: ${{ vars.CI_RUNNER }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          # dest isolado por job: os 2 slots do ci-2 rodam como o MESMO usuário
+          # (ciuser, mesma $HOME) e o default (~/setup-pnpm) é reescrito por todo
+          # job paralelo → `ENOTEMPTY: rmdir '/home/ciuser/setup-pnpm'`. Este repo
+          # dispara CI e Publish no MESMO push para main, então a colisão é o caso
+          # normal, não a exceção. Padrão já em produção no simplafy-saude.
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.job }}
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
+          # SEM `cache: pnpm`. Na VM self-hosted o store do pnpm já mora no disco
+          # local, isolado por slot (`npm_config_store_dir=/opt/runner-cache/
+          # pnpm-store-ci2-vm-<slot>`, exportado pelo run-ephemeral.sh —
+          # issue#784/#785). O cache do GitHub seria uma SEGUNDA cópia de ~1 GB
+          # por job, paga sempre e colhida quase nunca (medido no simplafy-saude
+          # em 2026-08-13: 0 hits em 4 runs, 1,68 min de custo por run).
 
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm lint
       - run: pnpm typecheck
+      # Guarda de contraste/raio dos tokens (scripts/ci/, `node --test`). Sem este
+      # passo, um token que reprova AA passa pelo CI — foi assim que `--fg-3`,
+      # `--fg-on-dark-4` e `--color-destructive` chegaram ao pacote publicado.
+      - run: pnpm test
       - run: pnpm build

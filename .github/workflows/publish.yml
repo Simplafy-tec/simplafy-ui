@@ -12,22 +12,38 @@ permissions:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    # ADR-015 v4 — mesma regra do ci.yml. O `secrets.GITHUB_TOKEN` usado abaixo é
+    # emitido por job pelo próprio GitHub (não é GitHub Secret armazenado — Regra
+    # Fundamental #4 segue valendo) e funciona igual em runner self-hosted.
+    # Egress do ci-2 para o registry conferido em 2026-09-02: HEAD em
+    # https://npm.pkg.github.com/@simplafy-tec%2fui devolve 401 (alcança, exige
+    # auth) e registry.npmjs.org devolve 200.
+    runs-on: ${{ vars.CI_RUNNER }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          # Ver ci.yml: $HOME compartilhada entre os slots. Este workflow e o CI
+          # disparam no MESMO push para main — sem `dest` isolado eles competem
+          # pelo mesmo ~/setup-pnpm.
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.job }}
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com
           scope: '@simplafy-tec'
-          cache: pnpm
+          # SEM `cache: pnpm` — ver ci.yml. O `registry-url` continua: é ele que
+          # escreve o .npmrc do job (em ${{ runner.temp }}, isolado) com o
+          # //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}.
 
       - run: pnpm install --frozen-lockfile
+      # Mesmo gate do CI, agora também no caminho que PUBLICA. O CI roda no push
+      # para main, mas em job separado: sem esta linha, um token reprovado sairia
+      # publicado no pacote enquanto o job vizinho ficava vermelho.
+      - run: pnpm test
       - run: pnpm build
       - run: pnpm publish --no-git-checks
         env:
