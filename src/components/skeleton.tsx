@@ -21,7 +21,7 @@ function SkeletonCard({
   return (
     <div
       className={cn(
-        "border-border bg-card space-y-3 rounded-xl border p-4 shadow-sm",
+        "border-border bg-card space-y-3 rounded-md border p-4 shadow-sm",
         className,
       )}
       {...props}
@@ -33,8 +33,8 @@ function SkeletonCard({
       <Skeleton className="h-3 w-full max-w-[85%]" />
       <Skeleton className="h-3 w-full max-w-[60%]" />
       <div className="flex gap-2 pt-2">
-        <Skeleton className="h-9 flex-1 rounded-md" />
-        <Skeleton className="h-9 flex-1 rounded-md" />
+        <Skeleton className="h-9 flex-1 rounded-sm" />
+        <Skeleton className="h-9 flex-1 rounded-sm" />
       </div>
     </div>
   );

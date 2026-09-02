@@ -6,7 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
 
 const accessNoteVariants = cva(
-  'flex gap-2.5 rounded-lg border px-3.5 py-3 text-[13px] leading-snug text-foreground [&_strong]:font-bold',
+  'flex gap-2.5 rounded-md border px-3.5 py-3 text-[13px] leading-snug text-foreground [&_strong]:font-bold',
   {
     variants: {
       kind: {

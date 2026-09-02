@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.3.1] — 2026-09-02
+
+### Corrigido
+
+- **Componentes ainda usavam a classe `rounded-*` de antes do encolhimento de 26/08** (2.3.0 só trocou o VALOR por trás de cada nome, não a classe usada em cada componente) — ficavam 1–2 degraus maiores que o protótipo `[Hub] SaaS`. Inventário completo (`arquivo:linha` → classe antiga → nova, seletor do protótipo, px) na PR. Resumo por papel:
+  - **Botão base/lg** `rounded-md`→`rounded-sm` (`.btn`, 5px); **botão sm/icon** `rounded-md`→`rounded-xs` (`.btn-sm`/`.ibtn`, 4px).
+  - **Input/Textarea/Select (trigger)** `rounded-lg`→`rounded-xs` (`.field input/textarea/select`, 4px).
+  - **Card/MetricCard/OAuthConsent/AccessNote** (conteúdo em bloco) `rounded-lg`→`rounded-md` (`.gr-card`/`.id-card`, 7px).
+  - **Painel flutuante** (Dialog, Select content, DropdownMenu content/sub, Popover, Command root, ChartTooltip) `rounded-2xl`/`rounded-lg`→`rounded-md` (`.cmd-modal`, 7px).
+  - **Item de menu** (CommandItem, DropdownMenuItem/SubTrigger, SelectItem) `rounded-sm`/`rounded-md`→`rounded-xs` (`.cmd-item`, 4px).
+  - **Badge/AccessBadge/SyncPill** `rounded-xs`→`rounded-2xs` (kbd/tag mínimo, 3px).
+  - **Botão de fechar** (Dialog/Sheet close) `rounded-md`/`rounded-sm`→`rounded-xs` (`.ibtn`, 4px).
+  - **Skeleton** (placeholder de Card e de botão) `rounded-xl`/`rounded-md`→`rounded-md`/`rounded-sm`, acompanhando os componentes reais que simula.
+  - Sem correspondente claro no protótipo — deixados como estavam: `checkbox.tsx` (`rounded-sm`), `error-boundary.tsx` e `settings-page.tsx` `SettingsInsetSection` (`rounded-xl`), `Skeleton` base genérico (`rounded-md`), `CommandInput` (`rounded-lg` — `.cmd-search input` do protótipo não declara `border-radius`). (Hub#5.2.13.12)
+
 ## [2.3.0] — 2026-09-01
 
 ### Alterado

@@ -30,7 +30,7 @@ function ChartTooltip({
   return (
     <div
       className={cn(
-        "rounded-lg border bg-card px-3 py-2 text-card-foreground shadow-md",
+        "rounded-md border bg-card px-3 py-2 text-card-foreground shadow-md",
         className,
       )}
     >
