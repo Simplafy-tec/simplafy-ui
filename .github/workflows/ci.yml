@@ -40,8 +40,12 @@ jobs:
 
       - run: pnpm lint
       - run: pnpm typecheck
-      # Guarda de contraste/raio dos tokens (scripts/ci/, `node --test`). Sem este
-      # passo, um token que reprova AA passa pelo CI — foi assim que `--fg-3`,
-      # `--fg-on-dark-4` e `--color-destructive` chegaram ao pacote publicado.
+      # Guardas de contraste e de classe de raio dos tokens
+      # (`node --test scripts/ci/*.test.mjs`). Sem este passo, um token que
+      # reprova AA passa pelo CI — foi assim que `--fg-3`, `--fg-on-dark-4` e
+      # `--color-destructive` chegaram ao pacote publicado.
+      # O glob NÃO é estilo: `node --test scripts/ci/` devolve EXIT=0 quando não
+      # acha teste nenhum, então renomear um arquivo desligaria o gate em
+      # silêncio. Com `*.test.mjs`, sem match é EXIT=1. Medido nos dois casos.
       - run: pnpm test
       - run: pnpm build

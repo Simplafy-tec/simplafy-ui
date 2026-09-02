@@ -1,6 +1,6 @@
 {
   "name": "@simplafy-tec/ui",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Simplafy Design System — componentes, tokens semânticos, Tailwind 4 preset",
   "type": "module",
   "main": "./dist/index.js",
@@ -33,7 +33,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "test": "node --test scripts/ci/",
+    "test": "node --test scripts/ci/*.test.mjs",
     "lint": "eslint src/ --max-warnings 0",
     "clean": "rm -rf dist",
     "storybook": "storybook dev -p 6006",

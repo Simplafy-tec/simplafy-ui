@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.1] — 2026-09-02
+
+### Corrigido
+
+- **O gate de tokens agora roda de verdade.** `pnpm test` (as guardas em `scripts/ci/`) passou a ser executado no job `quality` do `ci.yml` **e** no `publish.yml`. Até aqui nenhum workflow o chamava: as guardas escritas em 2.3.0 (contraste) e 2.4.0 (classes de raio) existiam fora do caminho de merge e fora do caminho de publicação. Isto liga o que a entrada da 2.4.0 registrava como pendente ("hoje isso não está no job `quality` do CI").
+- **`"test"` deixou de passar em silêncio quando não há teste.** Era `node --test scripts/ci/`, que devolve `EXIT=0` com a pasta vazia — renomear um arquivo desligava o gate sem ninguém ver, exatamente o defeito que ligar o gate pretende matar. Agora é `node --test scripts/ci/*.test.mjs`, que devolve `EXIT=1` sem match. Medido nos dois casos.
+- **CI da biblioteca migrado para a VM self-hosted** (`runs-on: ${{ vars.CI_RUNNER }}`, ADR-015 v4). Os dois workflows ainda diziam `ubuntu-latest` embora a variável de repositório já apontasse para `simplafy-ci-2` desde 2026-08-14.
+- (issue#2508, PR simplafy-ui#20)
+
 ## [2.4.0] — 2026-09-02
 
 ### Alterado
