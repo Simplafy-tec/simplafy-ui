@@ -66,7 +66,7 @@ function DefaultErrorFallback({
   return (
     <div
       role="alert"
-      className="border-border bg-card text-card-foreground flex flex-col items-center gap-4 rounded-xl border p-8 text-center shadow-sm"
+      className="border-border bg-card text-card-foreground flex flex-col items-center gap-4 rounded-sm border p-8 text-center shadow-sm"
     >
       <div className="space-y-2">
         <p className="text-foreground text-base font-semibold">

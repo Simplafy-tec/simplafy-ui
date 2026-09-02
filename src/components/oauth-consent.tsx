@@ -40,12 +40,12 @@ function OAuthConsent({
   return (
     <div
       className={cn(
-        'flex items-start gap-3 rounded-lg border border-border bg-card p-3.5',
+        'flex items-start gap-3 rounded-sm border border-border bg-card p-3.5',
         className,
       )}
       {...props}
     >
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-xs bg-muted text-muted-foreground">
         {authorizing ? (
           <RefreshCw size={16} className="spin" aria-hidden="true" />
         ) : providerId ? (

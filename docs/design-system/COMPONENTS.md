@@ -4,7 +4,7 @@
 
 - **NUNCA** criar componente em `apps/web` se equivalente existe em `@simplafy/ui`
 - **NUNCA** hardcodar cor — usar tokens (`bg-primary`, `text-muted-foreground`, `border-border`, etc.)
-- **NUNCA** hardcodar radius — usar `rounded-sm` / `rounded-md` / `rounded-lg` / `rounded-xl`
+- **NUNCA** hardcodar radius — usar `rounded-xs` / `rounded-sm` / `rounded-md` / `rounded-lg` / `rounded-full` (pílula/círculo — NÃO `rounded-pill`, chave do preset sem consumidor: ver `src/tailwind-preset.ts:88-93`). `rounded-xl` é o token ÓRFÃO (`src/globals.css §radius` — sem degrau correspondente no protótipo, 12px, mais arredondado que qualquer card/modal do sistema); a Hub#5.2.13.12 esvaziou o pacote dele (0 usos em `src/components/` hoje) — não reintroduza sem justificar por escrito. `rounded-2xl`/`rounded-3xl` são nativos do Tailwind e estão na escala (18px/24px, card featured/CTA — ver `MIGRATION.md §1.1`), úteis pra caso que não exista ainda em `src/components/`. `rounded-2xs` está na mesma situação de `rounded-pill` — evite até o pacote registrar `--radius-*` em `@theme` (hoje só `@layer base`).
 - **NUNCA** hardcodar font — usar `font-sans` (Geist — corpo, UI, títulos de produto) ou `font-display` (Causten — hero/marca; fallback Geist). Mono = Geist Mono.
 - **Ícones:** SEMPRE `lucide-react` — NÃO importar outro icon pack
 - **Altura inputs:** 40px (`Input`) ou 34px (`Select`) — NÃO alterar

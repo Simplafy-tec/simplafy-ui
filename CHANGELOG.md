@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.4.0] — 2026-09-02
+
+### Alterado
+
+- **⚠️ BREAKING VISUAL — Componentes ainda usavam a classe `rounded-*` de antes do encolhimento de 26/08** (2.3.0 trocou só o VALOR por trás de cada nome, não a classe usada em cada componente) — ficavam 1–2 degraus maiores que o protótipo `[Hub] SaaS`, no mesmo espírito quebrante da 2.3.0 (mesma família de mudança, mesmo aviso). Corrigido por PAPEL do componente no protótipo (`.gr-card`/`.tool-card`/`.cmd-modal`/`.cmd-item`/etc — nunca por coincidência de valor ou tamanho em px), com uma rodada de review adversarial no meio (16 achados, ver abaixo). Tabela completa `arquivo:linha` → classe antiga → nova → seletor do protótipo → px, na PR. Resumo por papel:
+  - **Botão base/lg** `rounded-md`→`rounded-sm` (`.btn`, 5px); **botão sm/icon** `rounded-md`→`rounded-xs` (`.btn-sm`/`.ibtn`, 4px). **Botão de fechar** (Dialog/Sheet) `rounded-md`/`rounded-sm`→`rounded-xs` (mesmo papel de `.ibtn`).
+  - **Input/Textarea/Select (trigger)** `rounded-lg`→`rounded-xs` (`.field input/textarea/select`, `hub.css:858-861`, 4px — não 5px: ver correção do comentário em `src/globals.css §radius` abaixo). **No Hub v2, hoje isso não muda nada visível** — um override em `apps/web/src/app/globals.css:377-382` força `--radius-sm` (5px) nesses três seletores com especificidade maior que o utilitário; a remoção desse bloco é `simplafy-hub-v2#2412`, PR companheira, fora deste repo.
+  - **Card / MetricCard / OAuthConsent / AccessNote** (conteúdo em card único) `rounded-lg`/`rounded-xl`→`rounded-sm` (5px) — a MAIORIA dos cards de conteúdo do protótipo é `--r-md` (`.tool-card`, `.kb-item`, `.score-card`, `.tpl-card`, `.ed-toc .deploy-card`, `.prompt-block`), não `.gr-card`/`.id-card` (7px, minoria — é wrapper de LISTA de linhas, não card de conteúdo único).
+  - **SettingsInsetSection** (agrupador de múltiplos controles, papel de wrapper de lista) fica em `rounded-md` (7px, `.gr-card`) — distinto do Card de conteúdo único acima.
+  - **Painel flutuante** (Dialog, Select content, DropdownMenu content/sub, Popover, Command root, ChartTooltip) `rounded-2xl`/`rounded-lg`→`rounded-md` (`.cmd-modal`, 7px).
+  - **Item de menu** (CommandItem, DropdownMenuItem/SubTrigger, SelectItem) `rounded-sm`/`rounded-md`→`rounded-xs` (`.cmd-item`, 4px).
+  - **Ícone dentro de card** (MetricCard, OAuthConsent) `rounded-lg`/`rounded-sm`→`rounded-xs` (4px) — mapeado pelo PAPEL "ladrilho de ícone em card" (`.gr-row .ic`, `.tool-card .ico`, `.kb-item .ic`, `.tpl-card .em`, todos `--r-sm`), não pelo tamanho em px do quadradinho.
+  - **Badge / AccessBadge / SyncPill** `rounded-xs`→`rounded-full` (NÃO `rounded-2xs` nem `rounded-pill`) — o protótipo chama `.badge`/`.pill`/`.chip` de `--r-pill` (pílula), e tanto `2xs` quanto `pill` são chaves do preset **sem nenhum consumidor** (`--radius-*` mora em `@layer base`, não em `@theme`; nenhum app importa `tailwind-preset.ts` — ver `src/tailwind-preset.ts:88-93`). Usar qualquer uma das duas gera `border-radius: 0` silencioso. `rounded-full` é a classe nativa do Tailwind já usada por `avatar.tsx`/`switch.tsx`/`progress.tsx` — emite `border-radius: calc(infinity * 1px)` (static value do Tailwind 4, não uma var), mesmo efeito visual dos 999px do protótipo (imperceptível, e sempre "mais redondo que qualquer elemento real").
+  - **SheetContent** (drawer) ganhou raio pela primeira vez — só na borda LIVRE (oposta ao lado fixo na viewport): `rounded-b-lg`/`rounded-t-lg`/`rounded-r-lg`/`rounded-l-lg` conforme `side`, 10px (`--radius-lg` ≡ `--r-xl`, "cards de destaque, drawers"). Não tinha classe de raio nenhuma antes.
+  - **CommandInput** `rounded-lg`(10px)→`rounded-sm`(5px) — inerte hoje (campo sem borda/fundo), mas 10px era o MAIOR raio do pacote dentro de um modal de 7px; ficaria visível e errado no dia em que ganhasse fundo.
+  - **Skeleton** (placeholder de Card e de botão) `rounded-xl`/`rounded-md`→`rounded-sm`/`rounded-xs`, acompanhando os valores corrigidos de `Card` e `Button size="sm"` (`h-9` = mesma altura do botão pequeno).
+  - Sem troca de classe nesta versão (⚠️ não é "ficou como estava": o VALOR por trás já mudou na 2.3.0, só a classe continua a mesma) — sem correspondente claro no protótipo: `checkbox.tsx` (`rounded-sm`), `Skeleton` base genérico (`rounded-md`).
+  - `TabsList`/`TabsTrigger` (`tabs.tsx`) e `CommandShortcut` (`command.tsx:124`) TÊM seletor de papel no protótipo (`.tab-group`/`.tab`/`.kbd`), mas nenhum dos três usa `rounded-*` hoje — `Tabs` é sublinhado (`border-b-2`, sem caixa) e `CommandShortcut` é `<span>` de texto sem fundo/borda. Raio não apareceria de qualquer forma; fora do escopo (mudar pra caixa com raio seria mudança de DESENHO, não de régua).
+  - Corrigido o comentário de `src/globals.css §radius` que citava o override do Hub v2 (ver acima) como prova de que inputs deveriam usar `--radius-sm` (5px) — o seletor literal do protótipo (`.field input/textarea/select`) usa `--r-sm` (4px), e o override é o que diverge, não o pacote.
+  - (Hub#5.2.13.12, PR simplafy-ui#19 — review adversarial: 16 achados corrigidos no mesmo branch, ver histórico de commits)
+
+### Adicionado
+
+- **`scripts/ci/radius-classes.test.mjs`** — guarda estática que varre todo `rounded-*` em `src/components/**/*.tsx` e falha se o sufixo não estiver no namespace `--radius-*` que o Tailwind 4 emite sozinho (teria pego o achado do `rounded-2xs` antes de chegar em review). Roda via `pnpm test` (`node --test scripts/ci/`) — **hoje isso não está no job `quality` do CI** (`.github/workflows/ci.yml` não chama `pnpm test`, só `lint`/`typecheck`/`build`); ligar é mudança de workflow, fora do escopo desta PR.
+
 ## [2.3.0] — 2026-09-01
 
 ### Alterado
