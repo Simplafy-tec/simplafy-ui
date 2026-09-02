@@ -71,7 +71,7 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
     <div
       ref={ref}
       className={cn(
-        "rounded-md border bg-card p-5 text-card-foreground shadow-sm",
+        "rounded-sm border bg-card p-5 text-card-foreground shadow-sm",
         className,
       )}
       {...props}
@@ -88,7 +88,7 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
           )}
         </div>
         {icon && (
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xs bg-primary/10 text-primary">
             {icon}
           </div>
         )}

@@ -54,7 +54,7 @@ export function SettingsInsetSection({
   return (
     <section
       className={cn(
-        "border-border bg-muted/10 rounded-xl border p-4",
+        "border-border bg-muted/10 rounded-md border p-4",
         className,
       )}
     >

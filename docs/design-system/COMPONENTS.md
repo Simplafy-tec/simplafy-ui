@@ -4,7 +4,7 @@
 
 - **NUNCA** criar componente em `apps/web` se equivalente existe em `@simplafy/ui`
 - **NUNCA** hardcodar cor — usar tokens (`bg-primary`, `text-muted-foreground`, `border-border`, etc.)
-- **NUNCA** hardcodar radius — usar `rounded-sm` / `rounded-md` / `rounded-lg` / `rounded-xl`
+- **NUNCA** hardcodar radius — usar `rounded-xs` / `rounded-sm` / `rounded-md` / `rounded-lg` / `rounded-xl` / `rounded-full` (pílula/círculo — NÃO `rounded-pill`, chave do preset sem consumidor: ver `src/tailwind-preset.ts:88-93`). `rounded-2xs` também está nessa mesma situação — evite até o pacote registrar `--radius-*` em `@theme` (hoje só `@layer base`).
 - **NUNCA** hardcodar font — usar `font-sans` (Geist — corpo, UI, títulos de produto) ou `font-display` (Causten — hero/marca; fallback Geist). Mono = Geist Mono.
 - **Ícones:** SEMPRE `lucide-react` — NÃO importar outro icon pack
 - **Altura inputs:** 40px (`Input`) ou 34px (`Select`) — NÃO alterar

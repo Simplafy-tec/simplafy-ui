@@ -140,11 +140,20 @@
      * não 1:1 por nome — achado do review adversarial da PR#18, confirmado pelo
      * PM com o protótipo na mão (Claude Design, acesso fora deste workspace).
      * O desempate não é o valor (coincidência de px já enganou um consumidor
-     * antes — ver aviso abaixo); é o PAPEL: `SPEC-UI.md` diz que `--r-md` (5px)
-     * é "inputs, botões, cards de lista", e é exatamente esse papel que
-     * `--radius-sm` cumpre no pacote (Hub força input/textarea/combobox pra
-     * `--radius-sm` — `simplafy-hub-v2 apps/web/src/app/globals.css:358-381`).
-     * Logo `--radius-sm` ≡ `--r-md`, não `--r-sm`.
+     * antes — ver aviso abaixo); é o PAPEL de cada seletor CONCRETO do
+     * protótipo, não a categoria genérica que o SPEC-UI.md usa pra descrever
+     * um degrau. `SPEC-UI.md` rotula `--r-md` (5px) como "inputs, botões,
+     * cards de lista" — mas o seletor literal de campo do próprio protótipo,
+     * `.field input, .field textarea, .field select` (hub.css:858-861), usa
+     * `border-radius: var(--r-sm)` = 4px, não `--r-md`. É esse seletor
+     * concreto que `input.tsx`/`textarea.tsx`/`select.tsx` (Trigger) seguem
+     * (Hub#5.2.13.12) — `--radius-xs`, não `--radius-sm`. A frase do
+     * SPEC-UI.md descreve a CATEGORIA de uso de `--r-md` em prosa, não
+     * sobrepõe o CSS literal do próprio kit. (Achado anterior desta nota
+     * citava o Hub v2 forçando input/textarea/combobox pra `--radius-sm`
+     * via `simplafy-hub-v2 apps/web/src/app/globals.css:358-381` como prova
+     * do contrário — esse bloco é o que diverge do DS e está sendo removido
+     * em `simplafy-hub-v2#2412`; não é fonte de verdade pro pacote.)
      *
      * ⚠️ NÃO mapeie por VALOR nem por NOME. Na régua velha `--r-md` (8px) valia
      * o mesmo que `--radius-sm` (8px), e um consumidor concluiu daí que

@@ -45,13 +45,39 @@ não 1:1 por nome (`--r-md` do protótipo ≡ `--radius-sm`, não `--radius-md`)
 > Retrocompat: `colors_and_type.css` (shim) expõe `--radius-full` → `--radius-pill`
 > e `--radius-btn` → `--radius-sm` pra código legado que ainda usa esses nomes.
 
-**Arquivos a editar no `simplafy-ui`:**
-- `src/tailwind-preset.ts` — escala `borderRadius` com os valores canônicos acima.
-- `src/components/button.tsx` — trocar `rounded-[10px]` hardcoded por `rounded-md` (token, = 10 px).
-- `src/components/select.tsx` — alinhar altura em **40 px** (hoje 34). Combina com o Input.
-- `src/components/{input,textarea}.tsx` — usar `rounded-sm` (8 px).
-- `src/components/{card,metric-card}.tsx` — usar `rounded-lg` (14 px) / `rounded-xl` (16 px).
-- `src/components/badge.tsx` — `rounded-pill` (pílula) ou `rounded-xs` (6 px) conforme o caso.
+> **Histórico:** o bloco abaixo foi o PLANO original (pré-2.3.0), com valores
+> da régua ANTIGA (`--radius-sm` 8px etc.) e uma leitura 1:1-por-nome do mapa
+> `--r-*` → `--radius-*` que a PR#18 revisou (o mapa é deslocado em um degrau,
+> não 1:1). Os `--radius-*` da tabela acima já refletem o valor SHIPPED em
+> 2.3.0. As instruções de arquivo abaixo foram SUPERADAS pela Hub#5.2.13.12
+> (PR simplafy-ui#19) — o que está em `src/components/*.tsx` hoje é o que
+> vale; esta lista fica só como registro do que mudou e por quê, não como
+> tarefa pendente:
+>
+> - `src/tailwind-preset.ts` — escala `borderRadius` com os valores canônicos.
+> - `src/components/button.tsx` — base/lg em `rounded-sm` (5px, `.btn`); sm/icon
+>   em `rounded-xs` (4px, `.btn-sm`/`.ibtn`).
+> - `src/components/select.tsx` — Trigger em `rounded-xs` (4px, `.field select`,
+>   igual Input/Textarea); Content em `rounded-md` (7px, `.cmd-modal`); Item em
+>   `rounded-xs` (4px, `.cmd-item`).
+> - `src/components/{input,textarea}.tsx` — `rounded-xs` (4px) — o seletor
+>   literal do protótipo é `.field input, .field textarea, .field select`
+>   (`hub.css:858-861`) = `--r-sm`, não `--r-md`; ver nota em
+>   `src/globals.css §radius`. Efeito no Hub v2 depende da remoção do
+>   override em `apps/web/src/app/globals.css:377-382`
+>   (`simplafy-hub-v2#2412`).
+> - `src/components/{card,metric-card}.tsx` — `rounded-sm` (5px): a maioria
+>   dos cards de conteúdo do protótipo é `--r-md`/5px (`.tool-card`,
+>   `.kb-item`, `.score-card`, `.tpl-card`, `.ed-toc .deploy-card`,
+>   `.prompt-block`), não `.gr-card`/`.id-card` (7px, minoria — wrapper de
+>   lista) nem `.acard` (10px, card de destaque).
+> - `src/components/badge.tsx` (e `access-badge.tsx`, `sync-pill.tsx`) —
+>   `rounded-full`, não `rounded-pill` nem `rounded-xs`. O protótipo chama
+>   `.badge`/`.pill`/`.chip` de `--r-pill` (pílula, forma intencional — ver
+>   `src/globals.css §radius`), e `rounded-pill` **não compila** (mesmo
+>   problema de `rounded-2xs`: chave fora do namespace `--radius-*` que o
+>   Tailwind emite sozinho — `rounded-full` é a classe nativa equivalente já
+>   usada por `avatar.tsx`/`switch.tsx`/`progress.tsx`).
 
 **Arquivos a editar no `simplafy-hub-v2`:**
 - `apps/web/**/*.tsx` — rodar `rg 'rounded-\[' apps/web/src` e substituir hardcodes por tokens.

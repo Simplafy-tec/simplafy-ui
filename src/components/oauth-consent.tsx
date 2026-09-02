@@ -40,7 +40,7 @@ function OAuthConsent({
   return (
     <div
       className={cn(
-        'flex items-start gap-3 rounded-md border border-border bg-card p-3.5',
+        'flex items-start gap-3 rounded-sm border border-border bg-card p-3.5',
         className,
       )}
       {...props}
