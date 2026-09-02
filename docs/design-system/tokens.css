@@ -251,8 +251,10 @@
   --radius-md:    7px;     /* cards de conteúdo                  (era 10px) */
   --radius-lg:    10px;    /* cards de destaque, drawers          (era 14px) */
   --radius-xl:    12px;    /* ÓRFÃO — sem degrau no protótipo (que para em
-                               --r-xl/10px); mantido só por retrocompat
-                               (era 16px) */
+                               --r-xl/10px). 12px é decisão do PM, não o valor
+                               antigo (16px) nem inventado: dá continuidade entre
+                               --radius-lg (10px) e --radius-2xl (18px), sem par
+                               no protótipo. */
   --radius-2xl:   18px;    /* card featured (pricing, casos) — sem degrau
                               correspondente no protótipo, mantido */
   --radius-3xl:   24px;    /* CTA blocks grandes — idem, mantido */

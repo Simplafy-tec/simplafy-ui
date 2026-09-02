@@ -26,14 +26,21 @@
  * `oklch(0.98 0 0)`, não `#ffffff` — os dois têm luminância diferente, e a
  * margem sobre AA muda conforme qual dos dois se mede. Este arquivo converte
  * `oklch()` para sRGB (Björn Ottosson, mesma fórmula do CSS Color 4) em vez de
- * hardcodar o valor que "parece" ser.
+ * hardcodar o valor que "parece" ser. Convertido, `#f8f8f8` sobre `#dc2626` dá
+ * **4.5474** — 0.047 acima do AA, a MENOR margem de toda a suíte. Se alguém
+ * escurecer um ponto de `--color-destructive` claro, este é o par que estoura
+ * primeiro.
  *
  * ⚠️ Ler `src/globals.css` e `docs/design-system/tokens.css` não basta: o kit
- * do Hub (`docs/design-system/ui_kits/hub/hub.css`) define seu PRÓPRIO par
- * destructive escuro via `var(--error-on-dark)` / `var(--ink-1)`, e esse par
- * nunca era lido por este arquivo — a mesma armadilha do AC2 (branco por cima
- * do fill) podia entrar ali sem o teste perceber. Este arquivo resolve os
- * `var()` do kit contra `tokens.css` e mede o resultado.
+ * do Hub (`docs/design-system/ui_kits/hub/hub.css`) define TRÊS pares próprios
+ * via `var()` — destructive claro (`:root`), destructive escuro
+ * (`[data-theme="dark"]`) e muted-foreground escuro (`[data-theme="dark"]`) —
+ * e nenhum dos três era lido por este arquivo antes desta rodada. A mesma
+ * armadilha do AC2 (branco por cima do fill) e o mesmo defeito da
+ * `Hub#7.1.23.3` (texto secundário ilegível) podiam entrar ali sem o teste
+ * perceber. Este arquivo resolve os `var()` do kit — preferindo o próprio
+ * `hub.css` se ele redefinir o primitivo, e caindo pro `tokens.css` canônico
+ * senão (`normalizarCor`, terceiro argumento) — e mede o resultado.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -110,12 +117,30 @@ const CORES_NOMEADAS = { white: '#ffffff', black: '#000000' };
  * contra o `:root` de `tokensCss` (até 5 saltos, cobre encadeamento), converte
  * `oklch()` e nomes de cor CSS conhecidos. Um valor que já é hex passa direto.
  */
-function normalizarCor(valorBruto, tokensCss) {
+/** true se `css` redefine `token` dentro de algum bloco `:root { ... }` — sem
+ * assert.ok: é consulta, não exigência (ao contrário de lerToken). */
+function defineToken(css, token) {
+  if (!css) return false;
+  const esc = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const blocos = Array.from(css.matchAll(/:root\s*\{([\s\S]*?)\n\s*\}/g));
+  return blocos.some((b) => new RegExp(`(?:^|\n)\s*${esc(token)}\s*:`).test(b[1]));
+}
+
+/**
+ * Normaliza um valor bruto de token pra hex comparável: resolve `var(--x)` —
+ * preferindo `proprioCss` (o arquivo de onde o valor bruto veio, se ele TAMBÉM
+ * redefinir o primitivo — kit que sobrescreve token não pode medir o valor
+ * errado do canônico) e caindo para `:root` de `tokensCss` senão — converte
+ * `oklch()` e nomes de cor CSS conhecidos. Um valor que já é hex passa direto.
+ */
+function normalizarCor(valorBruto, tokensCss, proprioCss = null) {
   let atual = valorBruto.trim().toLowerCase();
   for (let saltos = 0; saltos < 5 && atual.startsWith('var('); saltos += 1) {
     const nomeVar = atual.match(/^var\((--[\w-]+)\)$/)?.[1];
     assert.ok(nomeVar, `valor var() malformado: ${atual}`);
-    atual = lerToken(tokensCss, ':root', nomeVar);
+    atual = defineToken(proprioCss, nomeVar)
+      ? lerToken(proprioCss, ':root', nomeVar)
+      : lerToken(tokensCss, ':root', nomeVar);
   }
   if (atual.startsWith('#')) return atual;
   if (CORES_NOMEADAS[atual]) return CORES_NOMEADAS[atual];
@@ -232,24 +257,78 @@ test('destructive é legível como TEXTO e como PREENCHIMENTO — o par inverte 
   );
 });
 
-test('kit do Hub (ui_kits/hub/hub.css): o par destructive escuro, resolvido do var(), também passa AA', () => {
+test('kit do Hub (ui_kits/hub/hub.css): os TRÊS pares que ele redefine via var() passam AA', () => {
   const hub = readFileSync(hubKitPath, 'utf8');
   const tokens = readFileSync(tokensPath, 'utf8');
 
-  const fillBruto = lerToken(hub, '[data-theme="dark"]', '--color-destructive');
-  const foregroundBruto = lerToken(hub, '[data-theme="dark"]', '--color-destructive-foreground');
-  const fill = normalizarCor(fillBruto, tokens);
-  const foreground = normalizarCor(foregroundBruto, tokens);
+  // 1) Destructive ESCURO — o par que a rodada anterior guardou.
+  const fillEscuroBruto = lerToken(hub, '[data-theme="dark"]', '--color-destructive');
+  const foregroundEscuroBruto = lerToken(hub, '[data-theme="dark"]', '--color-destructive-foreground');
+  const fillEscuro = normalizarCor(fillEscuroBruto, tokens, hub);
+  const foregroundEscuro = normalizarCor(foregroundEscuroBruto, tokens, hub);
 
-  exigirAA('destructive como texto (kit hub)', fill, INK);
-  exigirAA('foreground sobre o fill escuro (kit hub)', foreground, { 'fill destructive': fill });
+  exigirAA('destructive como texto (kit hub)', fillEscuro, INK);
+  exigirAA('foreground sobre o fill escuro (kit hub)', foregroundEscuro, { 'fill destructive': fillEscuro });
 
   // Mesma armadilha do AC2, agora no arquivo onde o review a achou sem guarda:
   // se `--color-destructive-foreground` do kit voltar a `white`, isto reprova.
   assert.ok(
-    contraste('#ffffff', fill) < AA,
+    contraste('#ffffff', fillEscuro) < AA,
     'premissa quebrada (kit hub): se branco passar sobre o fill escuro do kit, a inversão deixou de ser necessária — revise var(--ink-1)',
   );
+
+  // 2) Texto secundário ESCURO (:103) — a guarda cobria só o par destructive;
+  // este é o mesmo defeito da Hub#7.1.23.3, agora no arquivo, sem guarda.
+  const mutedFgBruto = lerToken(hub, '[data-theme="dark"]', '--color-muted-foreground');
+  const mutedFg = normalizarCor(mutedFgBruto, tokens, hub);
+  exigirAA('muted-foreground escuro (kit hub)', mutedFg, INK_COM_MUTED);
+
+  // 3) Destructive CLARO (:57, dentro de :root) — o par claro do MESMO
+  // componente cuja inversão escura o teste acima guarda. Sem isto, trocar
+  // `var(--white)` por um tom escuro no `:root` do kit passa verde.
+  const fillClaroBruto = lerToken(hub, ':root', '--color-destructive');
+  const foregroundClaroBruto = lerToken(hub, ':root', '--color-destructive-foreground');
+  const fillClaroKit = normalizarCor(fillClaroBruto, tokens, hub);
+  const foregroundClaroKit = normalizarCor(foregroundClaroBruto, tokens, hub);
+  exigirAA('foreground sobre o fill claro (kit hub)', foregroundClaroKit, { 'fill destructive claro': fillClaroKit });
+});
+
+test('a régua de raio e o deslocamento dos aliases --r-* estão pinados', () => {
+  // Não é teste de contraste — é a mesma disciplina (ler o arquivo real, não
+  // supor) aplicada à régua de raio, que a A2 do review achou sem verificação
+  // nenhuma: reverter a escala inteira, ou só desfazer o deslocamento
+  // (`--r-md: var(--radius-md)` — o erro 1:1-por-nome que esta PR corrigiu),
+  // passava verde. `lerToken` já lia qualquer seletor de qualquer arquivo;
+  // faltava só chamar.
+  const globals = readFileSync(globalsPath, 'utf8');
+  const tokens = readFileSync(tokensPath, 'utf8');
+  const hub = readFileSync(hubKitPath, 'utf8');
+
+  const REGUA = {
+    '--radius-2xs': '3px',
+    '--radius-xs': '4px',
+    '--radius-sm': '5px',
+    '--radius-md': '7px',
+    '--radius-lg': '10px',
+    '--radius-xl': '12px',
+  };
+  for (const [token, px] of Object.entries(REGUA)) {
+    assert.equal(lerToken(globals, ':root', token), px, `${token} no pacote (src/globals.css)`);
+    assert.equal(lerToken(tokens, ':root', token), px, `${token} no primitivo (tokens.css)`);
+  }
+
+  // O deslocamento — o que o review adversarial e o PM tiveram que descobrir
+  // à mão, e que um comentário sozinho não impede alguém de "consertar" de volta.
+  const DESLOCAMENTO = {
+    '--r-xs': 'var(--radius-2xs)',
+    '--r-sm': 'var(--radius-xs)',
+    '--r-md': 'var(--radius-sm)',
+    '--r-lg': 'var(--radius-md)',
+    '--r-xl': 'var(--radius-lg)',
+  };
+  for (const [alias, destino] of Object.entries(DESLOCAMENTO)) {
+    assert.equal(lerToken(hub, ':root', alias), destino, `${alias} precisa apontar pra ${destino}, não 1:1 por nome`);
+  }
 });
 
 test('asserções de premissa: os valores aposentados reprovam de verdade (matemática, não leitura de arquivo)', () => {

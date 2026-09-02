@@ -15,7 +15,7 @@
 
 ### Adicionado
 
-- **Contrato conteúdo × decorativo** escrito no `tokens.css` §4: os três primeiros níveis de cada escada de texto (`--fg-1..3`, `--fg-on-dark-1..4`) são **conteúdo** e passam AA sobre as três superfícies do tema; o último de cada uma (`--fg-4`, `--fg-on-dark-5`) é **decorativo** — grafismo, divisor, estado desabilitado, nunca texto a ser lido. Com as duas regras de medição que faltavam: medir contra as **três** superfícies, e **compor o alpha** antes de medir superfície translúcida. (Hub#7.1.23.3)
+- **Contrato conteúdo × decorativo** escrito no `tokens.css` §4: todo nível de cada escada de texto, MENOS o último, é **conteúdo** e passa AA sobre as três superfícies do tema — a escala clara tem 3 níveis (`--fg-1..3`), a escura tem 4 (`--fg-on-dark-1..4`); o último de cada uma (`--fg-4`, `--fg-on-dark-5`) é **decorativo** — grafismo, divisor, estado desabilitado, nunca texto a ser lido. Com as duas regras de medição que faltavam: medir contra as **três** superfícies, e **compor o alpha** antes de medir superfície translúcida. (Hub#7.1.23.3)
 
 ## [2.2.1] — 2026-08-24
 

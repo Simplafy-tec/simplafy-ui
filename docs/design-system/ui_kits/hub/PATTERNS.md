@@ -574,7 +574,7 @@ var(--green) var(--ink-1) var(--soft) ...
 - ❌ Filtros que não filtram. Se botão "Filtros", abre painel.
 - ❌ Cores hex inline. Sempre tokens.
 - ❌ Sections com `<span className="meta">` decorativa. Se a info não importa, fora.
-- ❌ Padding/raio chutado. Use `--radius-xs/-sm/-md/-lg/-xl/-pill` (tokens.css §7) e múltiplos de 4px. (No hub.css os aliases `--r-*` apontam pra essa mesma escala.)
+- ❌ Padding/raio chutado. Use `--radius-2xs/-xs/-sm/-md/-lg/-xl/-2xl/-3xl/-pill` (tokens.css §7) e múltiplos de 4px. (No hub.css os aliases `--r-*` apontam pra essa escala, mas DESLOCADOS em um degrau — `--r-md` ≡ `--radius-sm`, não `--radius-md`; não mapeie por nome.)
 - ❌ Inline `<input>` em row de catálogo — use drawer.
 - ❌ Drawer aninhado SEM botão "voltar". Se A abriu B, B precisa de back.
 

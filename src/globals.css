@@ -158,8 +158,10 @@
      *   --radius-md  7px ≡ --r-lg   cards de conteúdo
      *   --radius-lg  10px≡ --r-xl   cards de destaque, drawers
      *   --radius-xl  12px           ÓRFÃO — o protótipo não tem degrau acima de
-     *                                --r-xl. Mantido só por retrocompat (ninguém
-     *                                remapeia pra cima); não existe no protótipo.
+     *                                --r-xl. 12px é DECISÃO DO PM, não o valor
+     *                                antigo (16px) nem inventado: dá continuidade
+     *                                entre --radius-lg (10px) e --radius-2xl
+     *                                (18px), sem par no protótipo.
      *
      * --radius-2xl / --radius-3xl não têm degrau correspondente no protótipo —
      * ficam como estão de propósito (fora do escopo da Hub#5.2.13.12).
