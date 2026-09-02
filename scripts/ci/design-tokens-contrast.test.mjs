@@ -32,15 +32,25 @@
  * primeiro.
  *
  * ⚠️ Ler `src/globals.css` e `docs/design-system/tokens.css` não basta: o kit
- * do Hub (`docs/design-system/ui_kits/hub/hub.css`) define TRÊS pares próprios
- * via `var()` — destructive claro (`:root`), destructive escuro
- * (`[data-theme="dark"]`) e muted-foreground escuro (`[data-theme="dark"]`) —
- * e nenhum dos três era lido por este arquivo antes desta rodada. A mesma
- * armadilha do AC2 (branco por cima do fill) e o mesmo defeito da
- * `Hub#7.1.23.3` (texto secundário ilegível) podiam entrar ali sem o teste
- * perceber. Este arquivo resolve os `var()` do kit — preferindo o próprio
- * `hub.css` se ele redefinir o primitivo, e caindo pro `tokens.css` canônico
- * senão (`normalizarCor`, terceiro argumento) — e mede o resultado.
+ * do Hub (`docs/design-system/ui_kits/hub/hub.css`) redefine 21 pares
+ * foreground/fill via `var()` — esta rodada guarda TRÊS deles: destructive
+ * claro (`:root`), destructive escuro (`[data-theme="dark"]`) e
+ * muted-foreground escuro (`[data-theme="dark"]`). Nenhum dos três era lido
+ * por este arquivo antes desta rodada. A mesma armadilha do AC2 (branco por
+ * cima do fill) e o mesmo defeito da `Hub#7.1.23.3` (texto secundário
+ * ilegível) podiam entrar ali sem o teste perceber. Este arquivo resolve os
+ * `var()` do kit — preferindo o próprio `hub.css` se ele redefinir o
+ * primitivo, e caindo pro `tokens.css` canônico senão (`normalizarCor`,
+ * terceiro argumento) — e mede o resultado.
+ *
+ * ⚠️ Os outros 18 pares do kit seguem SEM guarda, e 4 deles reprovam AA hoje:
+ * `--color-primary-foreground`/`--color-success-foreground` (branco sobre o
+ * verde da marca) = 2.2786 · `--color-orange-foreground` (branco sobre
+ * laranja) = 2.8031 · `--color-purple-foreground` (branco sobre roxo) =
+ * 3.9567. FORA DO ESCOPO desta PR — trocar o texto do botão primário da marca
+ * é decisão de produto, não de token; sem asserção aqui de propósito, pra não
+ * travar merge de token com decisão de marca pendente. Registrado, não
+ * corrigido nem virado issue — o PM está no canal desta PR.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -123,7 +133,7 @@ function defineToken(css, token) {
   if (!css) return false;
   const esc = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const blocos = Array.from(css.matchAll(/:root\s*\{([\s\S]*?)\n\s*\}/g));
-  return blocos.some((b) => new RegExp(`(?:^|\n)\s*${esc(token)}\s*:`).test(b[1]));
+  return blocos.some((b) => new RegExp(`(?:^|\\n)\\s*${esc(token)}\\s*:`).test(b[1]));
 }
 
 /**
@@ -257,7 +267,7 @@ test('destructive é legível como TEXTO e como PREENCHIMENTO — o par inverte 
   );
 });
 
-test('kit do Hub (ui_kits/hub/hub.css): os TRÊS pares que ele redefine via var() passam AA', () => {
+test('kit do Hub (ui_kits/hub/hub.css): três dos pares que ele redefine via var() passam AA', () => {
   const hub = readFileSync(hubKitPath, 'utf8');
   const tokens = readFileSync(tokensPath, 'utf8');
 
@@ -311,11 +321,21 @@ test('a régua de raio e o deslocamento dos aliases --r-* estão pinados', () =>
     '--radius-md': '7px',
     '--radius-lg': '10px',
     '--radius-xl': '12px',
+    // Estes três a PR declara "não mudam" — pinados também, senão a garantia
+    // de "inalterado" vale só até a próxima rodada mexer neles sem querer.
+    '--radius-2xl': '18px',
+    '--radius-3xl': '24px',
+    '--radius-pill': '999px',
   };
   for (const [token, px] of Object.entries(REGUA)) {
     assert.equal(lerToken(globals, ':root', token), px, `${token} no pacote (src/globals.css)`);
     assert.equal(lerToken(tokens, ':root', token), px, `${token} no primitivo (tokens.css)`);
   }
+
+  // --radius-btn: alias retrocompat que o CHANGELOG destaca (cai de 8px pra
+  // 5px) — só existe no pacote (não é primitivo do tokens.css), por isso fora
+  // do loop acima.
+  assert.equal(lerToken(globals, ':root', '--radius-btn'), 'var(--radius-sm)', '--radius-btn precisa seguir --radius-sm');
 
   // O deslocamento — o que o review adversarial e o PM tiveram que descobrir
   // à mão, e que um comentário sozinho não impede alguém de "consertar" de volta.

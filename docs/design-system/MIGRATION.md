@@ -37,7 +37,7 @@ não 1:1 por nome (`--r-md` do protótipo ≡ `--radius-sm`, não `--radius-md`)
 | `--radius-sm` | **5 px** | inputs, botões, cards de lista |
 | `--radius-md` | **7 px** | cards de conteúdo |
 | `--radius-lg` | **10 px** | cards de destaque, drawers |
-| `--radius-xl` | **12 px** | órfão — sem degrau correspondente no protótipo (que para em `--r-xl`), mantido só por retrocompat |
+| `--radius-xl` | **12 px** | órfão — sem degrau correspondente no protótipo (que para em `--r-xl`/10px). 12px é decisão do PM, não o valor antigo (16px) nem inventado: dá continuidade entre `--radius-lg` (10px) e `--radius-2xl` (18px) |
 | `--radius-2xl` | **18 px** | card featured (pricing, casos) — sem degrau correspondente no protótipo |
 | `--radius-3xl` | **24 px** | CTA blocks grandes — idem |
 | `--radius-pill` | **999 px** | botões pill, badges, dots, switch, avatar |
