@@ -20,19 +20,26 @@ Complementa o `AUDIT.md` (que diagnosticou o que tá diferente).
 
 ### 1.1 Radius — alinhar `@simplafy-tec/ui` à escala canônica
 
-A escala canônica de radius vive em `tokens.css §7` (v1.1.0). O `@simplafy-tec/ui`
+A escala canônica de radius vive em `tokens.css §7` (v1.3.0 — enxugada ~35% em
+26/08/2026, ver `SPEC-UI.md` do protótipo `[Hub] SaaS`). O `@simplafy-tec/ui`
 deve adotá-la verbatim. **Não inventar escala "contida" paralela** — a régua
 abaixo é a verdade.
 
+⚠️ O mapa `--r-*` (protótipo) → `--radius-*` (aqui) é **deslocado em um degrau**,
+não 1:1 por nome (`--r-md` do protótipo ≡ `--radius-sm`, não `--radius-md`) — ver
+`ui_kits/hub/hub.css §aliases retrocompat` e o comentário completo em
+`@simplafy-tec/ui/src/globals.css §radius`.
+
 | Token | Valor canônico | Onde usa |
 | --- | --- | --- |
-| `--radius-xs` | **6 px** | tags micro, pills internos de mockup |
-| `--radius-sm` | **8 px** | inputs, tags, dropdown items |
-| `--radius-md` | **10 px** | avatares quadrados, surfaces pequenas, **Button** |
-| `--radius-lg` | **14 px** | card padrão |
-| `--radius-xl` | **16 px** | card grande, hero panels |
-| `--radius-2xl` | **18 px** | card featured (pricing, casos) |
-| `--radius-3xl` | **24 px** | CTA blocks grandes |
+| `--radius-2xs` | **3 px** | tags/chips mínimos |
+| `--radius-xs` | **4 px** | botões pequenos, ibtn, tags |
+| `--radius-sm` | **5 px** | inputs, botões, cards de lista |
+| `--radius-md` | **7 px** | cards de conteúdo |
+| `--radius-lg` | **10 px** | cards de destaque, drawers |
+| `--radius-xl` | **12 px** | órfão — sem degrau correspondente no protótipo (que para em `--r-xl`/10px). 12px é decisão do PM, não o valor antigo (16px) nem inventado: dá continuidade entre `--radius-lg` (10px) e `--radius-2xl` (18px) |
+| `--radius-2xl` | **18 px** | card featured (pricing, casos) — sem degrau correspondente no protótipo |
+| `--radius-3xl` | **24 px** | CTA blocks grandes — idem |
 | `--radius-pill` | **999 px** | botões pill, badges, dots, switch, avatar |
 
 > Retrocompat: `colors_and_type.css` (shim) expõe `--radius-full` → `--radius-pill`

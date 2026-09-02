@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.3.0] — 2026-09-01
+
+### Alterado
+
+- **⚠️ BREAKING VISUAL — Escala de radius** (`--radius-2xs/xs/sm/md/lg/xl`) no `globals.css` e em `docs/design-system/tokens.css` §7: **enxugada ~35%**, alinhando à régua do protótipo `[Hub] SaaS`, que a encolheu em 26/08/2026 pelo motivo registrado no `SPEC-UI.md` dele: *"os componentes estavam abaulados demais"*. **O mapa `--r-*` (protótipo) → `--radius-*` (pacote) é DESLOCADO em um degrau, não 1:1 por nome** — achado do review adversarial, confirmado pelo PM com o protótipo na mão; o desempate foi o papel de cada componente, não o valor nem o nome: `--radius-2xs: 3px` (NOVO — tags/chips mínimos, ≡ `--r-xs`), `--radius-xs: 4px` (era 6px, ≡ `--r-sm`), `--radius-sm: 5px` (era 8px, ≡ `--r-md` — inputs/botões/cards de lista), `--radius-md: 7px` (era 10px, ≡ `--r-lg`), `--radius-lg: 10px` (era 14px, ≡ `--r-xl`), `--radius-xl: 12px` (era 16px — **órfão**, o protótipo não tem degrau acima de `--r-xl`, mantido só por retrocompat). Impacto visual direto em todo `Card`, `Input`, `Textarea`, `Popover`, `DropdownMenu`, `Button`, `Checkbox`, `Badge`, `Tooltip`, `Skeleton` **e no alias `--radius-btn` (→ `--radius-sm`), que cai de 8px para 5px**. `--radius-2xl` (18px), `--radius-3xl` (24px) e `--radius-pill` (999px) **não mudam**: os dois primeiros não têm degrau correspondente no protótipo, e o pill é forma intencional, não raio. (Hub#5.2.13.12)
+
+### Corrigido
+
+- **Contraste de `--color-destructive` no tema escuro** (`globals.css` `.dark`, `ui_kits/hub/hub.css` `[data-theme="dark"]`): era `oklch(0.65 0.22 27)` = `#f9423d`, que como TEXTO dá **3.86** sobre o card `--ink-3` (`#14322c`) do Hub — e o escuro é o tema **default** do produto, então essa era a cor de toda mensagem de erro. Agora `--error-on-dark` (`#f87171`): **6.41** sobre `--ink-1`, **6.12** sobre `--ink-2`, **4.99** sobre `--ink-3`. O par **inverte junto**: `--color-destructive-foreground` no escuro passa a `--ink-1` (`#0b1b18`, **6.41** por cima do preenchimento) — manter `--white` deixaria o botão destrutivo em **2.77**, pior do que estava. Primitivo `--error-on-dark` adicionado ao `tokens.css` §5. (Hub#5.2.13.11)
+- **`--color-destructive` no tema claro** passa de `oklch(0.58 0.22 27)` (= `#df2225`) para `#dc2626`, o `--error` canônico do `tokens.css`. Diferença imperceptível (4.78 → 4.83 sobre branco), elimina a divergência entre pacote e primitivo.
+- **Contraste de `--color-muted-foreground` nos dois temas** (`globals.css`, `tokens.css` `--fg-3` / `--fg-on-dark-4`): claro de `oklch(0.55 0.01 265)` (= `#6f7278`) para **`#666e69`** — o valor antigo reprovava AA sobre as superfícies recuadas da marca (4.48 sobre `--soft`, 4.32 sobre `--soft-3`) e passava só sobre branco puro, a única superfície contra a qual fora calibrado. Escuro de `#94a3b8` para **`#969f99`**, dentro da paleta ink. Medido: claro 5.25 / 4.87 / 4.70; escuro 6.52 / 6.22 / 5.07, e **4.52** sobre a superfície `muted` **composta** do Hub (branco a 4% sobre o card = `#1d3a34`). (Hub#7.1.23.3)
+- **`.chip .x:hover`** (`ui_kits/hub/hub.css`) cravava `color: white` em vez do token de foreground, então não acompanhava a inversão do par no escuro e ficava em 2.77. Passa a usar `var(--color-destructive-foreground)`.
+
+### Adicionado
+
+- **Contrato conteúdo × decorativo** escrito no `tokens.css` §4: todo nível de cada escada de texto, MENOS o último, é **conteúdo** e passa AA sobre as três superfícies do tema — a escala clara tem 3 níveis (`--fg-1..3`), a escura tem 4 (`--fg-on-dark-1..4`); o último de cada uma (`--fg-4`, `--fg-on-dark-5`) é **decorativo** — grafismo, divisor, estado desabilitado, nunca texto a ser lido. Com as duas regras de medição que faltavam: medir contra as **três** superfícies, e **compor o alpha** antes de medir superfície translúcida. (Hub#7.1.23.3)
+
 ## [2.2.1] — 2026-08-24
 
 ### Corrigido

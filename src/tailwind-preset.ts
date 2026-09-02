@@ -85,6 +85,13 @@ export const simplafyPreset = {
         },
       },
       borderRadius: {
+        // '2xs' mantém o preset coerente com a escala do pacote — hoje sem
+        // consumidor (nenhum app importa este preset ainda: `grep -rn
+        // "simplafyPreset|tailwind-preset" simplafy-hub-v2/apps/web` não
+        // devolve nada, e --radius-* vive em @layer base, não em @theme, então
+        // o Tailwind v4 do consumidor não gera `rounded-2xs` sozinho a partir
+        // dela). Não gera classe pra ninguém hoje; existe pra quando gerar.
+        '2xs': 'var(--radius-2xs)',
         xs:   'var(--radius-xs)',
         sm:   'var(--radius-sm)',
         md:   'var(--radius-md)',
