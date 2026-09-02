@@ -4,26 +4,31 @@
  * Por que existe: a Hub#5.2.13.12 (PR#19) trocou `rounded-xs` por
  * `rounded-2xs` em três componentes pra bater com o novo `--radius-2xs`
  * (3px). `2xs` não está no namespace `--radius-*` DEFAULT que o Tailwind 4
- * emite sozinho (`xs|sm|md|lg|xl|2xl|3xl|4xl|full`) — e `--radius-2xs` vive
- * em `@layer base` (`src/globals.css`), não em `@theme`, então não registra
- * chave nova nenhuma. O consumidor também não importa `tailwind-preset.ts`
- * (ver o comentário em `src/tailwind-preset.ts:88-93`, que é onde `2xs` E
- * `pill` estão declarados, mas sem efeito). Resultado: `border-radius: 0`
- * silencioso — canto reto onde devia ter 3px, sem erro de build nenhum.
- * Review adversarial pegou (PR#19, achado 1); isso pinça o mesmo defeito de
- * graça, sem depender de outro humano/agente ler o CSS renderizado.
+ * emite sozinho (`xs|sm|md|lg|xl|2xl|3xl|4xl|full|none`) — e `--radius-2xs`
+ * vive em `@layer base` (`src/globals.css`), não em `@theme`, então não
+ * registra chave nova nenhuma. O consumidor também não importa
+ * `tailwind-preset.ts` (ver o comentário em `src/tailwind-preset.ts:88-93`).
+ * Resultado: `border-radius: 0` silencioso — canto reto onde devia ter 3px,
+ * sem erro de build nenhum. Review adversarial pegou (PR#19, achado 1); isso
+ * pinça o mesmo defeito de graça, sem depender de outro humano/agente ler o
+ * CSS renderizado.
  *
  * O que este teste NÃO faz: não valida qual DEGRAU é o certo pro papel do
  * componente (isso é decisão de design, não regra estática) — só que a
  * classe usada emite CSS de verdade nalgum lugar. "Errado mas visível" passa
  * aqui; "invisível" não passa.
  *
- * Como decide o que é seguro: cruza as chaves de `borderRadius` do
- * `src/tailwind-preset.ts` com o namespace `--radius-*` que o Tailwind 4
- * REGISTRA SOZINHO (hardcoded abaixo, não lido de `node_modules` — o ponto é
- * travar contra o conjunto que o Tailwind entrega por padrão, não contra o
- * que o preset *gostaria* de ter). Valor arbitrário (`rounded-[...]`) é
- * sempre seguro (Tailwind sempre emite arbitrário) e sai da varredura.
+ * Como decide o que é seguro: contra o namespace `--radius-*` que o
+ * TAILWIND 4 registra SOZINHO, hardcoded abaixo (não lido de
+ * `src/tailwind-preset.ts`). Rodada 2 do review adversarial pegou o motivo:
+ * cruzar com o preset só produz falso positivo/negativo — sufixo nativo
+ * (ex.: `4xl`) emite CSS pelo `theme.css` do próprio Tailwind
+ * INDEPENDENTEMENTE do preset, que (o próprio arquivo documenta) nenhum
+ * consumidor importa hoje; e sufixo do preset sem ser nativo (`2xs`, `pill`)
+ * é EXATAMENTE o bug que este guard existe pra pegar — cruzar com ele
+ * escondia a metade do problema atrás da outra metade. Valor arbitrário
+ * (`rounded-[...]`) é sempre seguro (Tailwind sempre emite arbitrário) e sai
+ * da varredura.
  */
 
 import assert from 'node:assert/strict';
@@ -36,30 +41,27 @@ const COMPONENTS_DIR = join(ROOT, 'src/components');
 
 // Namespace `--radius-*` que o Tailwind 4 REGISTRA SOZINHO, sem preset nem
 // @theme customizado — citado pelo review adversarial da PR#19 a partir de
-// `tailwindcss@4.2.2/theme.css`. NÃO inclui `2xs` nem `pill`: essas duas só
-// existem em `src/tailwind-preset.ts`, que nenhum consumidor importa hoje.
-const NATIVO_TAILWIND = new Set(['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full', 'none']);
+// `tailwindcss@4.2.3/theme.css` (`xs|sm|md|lg|xl|2xl|3xl|4xl`) + os static
+// values `none`/`full` (`dist/lib.js`, `full` emite `calc(infinity * 1px)`,
+// não uma var). NÃO inclui `2xs` nem `pill`: essas duas só existem em
+// `src/tailwind-preset.ts`, que nenhum consumidor importa hoje — por isso
+// NÃO fazem esta lista ficar segura (ver cabeçalho do arquivo).
+const NATIVO_TAILWIND = new Set(['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full']);
 
 // Direções válidas de `rounded-<dir>-<suffix>` (border-radius lógico/físico
 // do Tailwind 4) — usadas só pra separar "direção" de "sufixo de tamanho"
 // em `rounded-t-lg`, `rounded-tl-sm`, etc.
 const DIRECOES = new Set(['t', 'r', 'b', 'l', 'tl', 'tr', 'br', 'bl', 's', 'e', 'ss', 'se', 'es', 'ee']);
 
-function lerChavesDoPreset(presetSource) {
-  const bloco = presetSource.match(/borderRadius:\s*\{([\s\S]*?)\n\s*\},/);
-  assert.ok(bloco, 'não achei o bloco borderRadius em src/tailwind-preset.ts — ajuste o regex deste guard junto com o preset');
-  const chaves = new Set();
-  // Chave pode vir como `'2xs':` ou `xs:` — captura os dois formatos.
-  for (const m of bloco[1].matchAll(/^\s*(?:'([\w-]+)'|([a-zA-Z][\w-]*)):/gm)) {
-    chaves.add(m[1] ?? m[2]);
-  }
-  return chaves;
-}
-
+// `withFileTypes + recursive` (Node ≥20.1, o CI roda node-version: 20) exige
+// montar o caminho a partir de `entry.parentPath` (a pasta REAL onde o
+// dirent mora), não do `dir` raiz — senão arquivo em subpasta gera um
+// caminho que não existe e nunca é lido (era o bug B1 da rodada 2: um
+// componente em `src/components/charts/novo.tsx` passava batido).
 function listarArquivosTsx(dir) {
-  return readdirSync(dir, { withFileTypes: true })
+  return readdirSync(dir, { withFileTypes: true, recursive: true })
     .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
-    .map((e) => join(dir, e.name));
+    .map((e) => join(e.parentPath, e.name));
 }
 
 // Casa `rounded`, `rounded-<suffix>`, `rounded-<dir>-<suffix>` e as formas
@@ -69,15 +71,6 @@ function listarArquivosTsx(dir) {
 const RE_ROUNDED = /\brounded(?:-([a-z]{1,2}))?(?:-(\[[^\]]+\]|[a-zA-Z0-9]+))?\b/g;
 
 test('todo rounded-* em src/components emite CSS real no Tailwind 4 do consumidor', () => {
-  const presetSource = readFileSync(join(ROOT, 'src/tailwind-preset.ts'), 'utf8');
-  const chavesDoPreset = lerChavesDoPreset(presetSource);
-  // Só o cruzamento é seguro: preset PODE ter chave que o Tailwind nativo não
-  // tem (é o próprio bug desta PR — '2xs' e 'pill' estão no preset e não são
-  // nativas). O preset também PRECISA continuar tendo as nativas, senão o
-  // teste acusaria falso positivo pra classe que hoje funciona.
-  const seguras = new Set([...NATIVO_TAILWIND].filter((k) => chavesDoPreset.has(k) || k === 'none'));
-  assert.ok(seguras.size >= 8, `esperava pelo menos 8 chaves nativas cobertas pelo preset, achei ${seguras.size} — preset mudou?`);
-
   const achados = [];
   for (const arquivo of listarArquivosTsx(COMPONENTS_DIR)) {
     const linhas = readFileSync(arquivo, 'utf8').split('\n');
@@ -96,7 +89,7 @@ test('todo rounded-* em src/components emite CSS real no Tailwind 4 do consumido
           continue;
         }
         if (sufixo.startsWith('[')) continue; // arbitrário, sempre emite
-        if (!seguras.has(sufixo)) {
+        if (!NATIVO_TAILWIND.has(sufixo)) {
           achados.push(`${arquivo.replace(ROOT, '')}:${i + 1} — classe \`${classe}\` (sufixo \`${sufixo}\`) não está no namespace --radius-* que o Tailwind emite sozinho; vira border-radius:0 silencioso no consumidor. Use um sufixo nativo (${[...NATIVO_TAILWIND].join('|')}) ou valor arbitrário rounded-[...]`);
         }
       }

@@ -161,7 +161,20 @@
      * e ela morreu junto com a régua velha. Foi essa mesma armadilha, agora por
      * NOME em vez de por valor, que produziu o mapa 1:1 errado desta PR original.
      *
-     *   --radius-2xs 3px ≡ --r-xs   tags/chips mínimos                (NOVO)
+     *   --radius-2xs 3px ≡ --r-xs   tags/chips mínimos                (NOVO —
+     *                                hoje INALCANÇÁVEL por classe: chave só
+     *                                existe em @layer base, não @theme;
+     *                                nenhum consumidor importa
+     *                                tailwind-preset.ts. A Hub#5.2.13.12
+     *                                removeu os 3 últimos `rounded-2xs` do
+     *                                pacote (viravam border-radius:0 —
+     *                                achado do review adversarial da PR#19).
+     *                                O papel do protótipo (.kbd) corresponde
+     *                                a CommandShortcut, mas ele é <span> de
+     *                                texto sem fundo/borda — raio invisível
+     *                                ali de qualquer forma. Não reintroduza
+     *                                `rounded-2xs` sem antes registrar
+     *                                `--radius-*` em @theme.)
      *   --radius-xs  4px ≡ --r-sm   botões pequenos, ibtn, tags
      *   --radius-sm  5px ≡ --r-md   inputs, botões, cards de lista
      *   --radius-md  7px ≡ --r-lg   cards de conteúdo
@@ -186,6 +199,11 @@
     --radius-3xl:  24px;
     --radius-pill: 999px;
     /* retrocompat — --radius-btn cai de 8px (pré-shrink) pra 5px: ver CHANGELOG */
+    /* --radius-full também é INALCANÇÁVEL por classe: `rounded-full` do
+     * Tailwind 4 é STATIC VALUE (`calc(infinity * 1px)`), não lê nenhuma var
+     * --radius-*, então nunca resolve pra esta variável. Ela só serve quem
+     * escreve `var(--radius-full)` na mão (shim documentado em
+     * MIGRATION.md), não quem usa a classe utilitária. */
     --radius-full: var(--radius-pill);
     --radius-btn:  var(--radius-sm);
     --sidebar-w: 240px;
