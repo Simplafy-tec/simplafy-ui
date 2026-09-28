@@ -4,3 +4,7 @@ storybook-static/
 *.tsbuildinfo
 .env
 .env.local
+
+# Git worktrees (multi-agent isolation)
+.worktrees/
+.claude/worktrees/
