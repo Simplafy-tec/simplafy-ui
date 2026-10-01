@@ -52,7 +52,7 @@ const buttonVariants = cva(
     },
     compoundVariants: [
       // `link` é texto corrido: sem altura nem padding de botão, em qualquer size.
-      { variant: 'link', className: 'h-auto min-h-0 w-auto min-w-0 px-0 text-sm' },
+      { variant: 'link', className: 'size-auto min-h-0 min-w-0 px-0 text-sm' },
     ],
     defaultVariants: {
       variant: 'default',
