@@ -65,6 +65,7 @@ export { ScrollArea, ScrollBar } from "./components/scroll-area";
 export { Switch } from "./components/switch";
 export { Textarea } from "./components/textarea";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
+export type { TabsListVariant } from "./components/tabs";
 export {
   Select,
   SelectGroup,

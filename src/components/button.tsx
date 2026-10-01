@@ -4,48 +4,56 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
 
 /**
- * Hub 2.0 wireframe — `.btn`, `.btn-primary`, `.btn-outline`, `.btn-ghost`
- * (gradiente 135° primary → #34D399; hover sólido --primary-hover + brightness 1.05)
+ * Protótipo Hub (`kits/hub/hub.css`) — `.btn` 34px / 0 14px / 13px / 600 (:652),
+ * `.btn-sm` 28px / 0 10px / 12.5px (:695) e `.btn-primary` SÓLIDO `--color-primary`,
+ * hover `--color-primary-hover` (:664). Altura e padding moram em `size`; a variante
+ * só decide cor e borda (Platform#2.1.1.10).
  */
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm font-semibold font-sans text-sm leading-tight',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm font-semibold font-sans text-[13px] leading-tight',
     'cursor-pointer',
-    'ring-offset-background transition-[background,background-image,color,border-color,filter,box-shadow] duration-200',
+    'ring-offset-background transition-[background,color,border-color,box-shadow] duration-200',
     'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/20',
     'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
-    '[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+    '[&_svg]:pointer-events-none [&_svg]:size-[15px] [&_svg]:shrink-0',
   ].join(' '),
   {
     variants: {
       variant: {
         default: [
-          'min-h-10 border-0 px-[18px] py-0 text-white shadow-sm',
-          'bg-[linear-gradient(135deg,var(--color-primary),var(--color-primary-gradient-end))]',
-          'hover:[background-image:none] hover:bg-primary-hover hover:brightness-[1.05]',
-          'active:brightness-95',
+          'border-0 py-0 bg-primary text-primary-foreground',
+          // Sombra = box-shadow de `.btn-primary` (hub.css:664): inset 12% preto + anel 1px de 35% do primário.
+          'shadow-[inset_0_1px_0_0_color-mix(in_oklab,black_12%,transparent),0_0_0_1px_color-mix(in_oklab,var(--color-primary)_35%,transparent)]',
+          // Light: `--color-primary-hover`. Dark: o hover CLAREIA (protótipo: --green-bright); escurecer
+          // com texto quase preto reprovava AA (3,95:1 com #15803d).
+          'hover:bg-primary-hover dark:hover:bg-[color-mix(in_oklab,var(--color-primary)_82%,white)]',
         ].join(' '),
         destructive:
-          'min-h-10 border-0 px-[18px] py-0 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+          'border-0 py-0 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
         outline: [
-          'min-h-10 border-[1.5px] border-border bg-card px-[18px] py-0 text-foreground',
+          'border-[1.5px] border-border bg-card py-0 text-foreground',
           'hover:border-primary hover:bg-sidebar-accent hover:text-primary',
         ].join(' '),
         secondary:
-          'min-h-10 border-0 px-[18px] py-0 bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          'border-0 py-0 bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: [
-          'min-h-10 border-[1.5px] border-transparent bg-transparent px-[18px] py-0 text-muted-foreground',
+          'border-[1.5px] border-transparent bg-transparent py-0 text-muted-foreground',
           'hover:bg-primary/10 hover:text-primary',
         ].join(' '),
-        link: 'min-h-0 border-0 px-0 py-0 text-primary underline-offset-4 hover:underline',
+        link: 'border-0 py-0 text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: '',
-        sm: 'min-h-9 rounded-xs px-3 text-sm',
+        default: 'min-h-[34px] px-[14px]',
+        sm: 'min-h-7 rounded-xs px-2.5 text-[12.5px] [&_svg]:size-[13px]',
         lg: 'min-h-11 rounded-sm px-8 text-sm',
         icon: 'size-10 min-h-10 min-w-10 shrink-0 rounded-xs px-0',
       },
     },
+    compoundVariants: [
+      // `link` é texto corrido: sem altura nem padding de botão, em qualquer size.
+      { variant: 'link', className: 'size-auto min-h-0 min-w-0 px-0 text-sm' },
+    ],
     defaultVariants: {
       variant: 'default',
       size: 'default',
