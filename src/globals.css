@@ -18,7 +18,7 @@
  *
  * Padrão de componentes (@simplafy/ui) — aplicar sempre aqui, não só em telas isoladas:
  * - Controles: border-border, bg-card, foco border-primary + ring-[3px] ring-primary/20
- * - Botões: Button (gradiente primary, outline/ghost wireframe)
+ * - Botões: Button (primário SÓLIDO, 34px/28px; outline/ghost wireframe)
  * - Fundo modal (Dialog/Sheet): z-[100]; painel z-[101]; popovers/dropdowns/select z-[110] (acima do painel)
  * - Listas/hover item: bg-primary/10 onde couber (dropdown, menu, command)
  */
@@ -41,6 +41,7 @@
   --color-primary: oklch(0.72 0.19 150);
   --color-primary-foreground: oklch(0.98 0 0);
   --color-primary-hover: #16a34a;
+  /* Mantido por retrocompatibilidade: o Button deixou de usar gradiente (2.5→3.0); consumidores podem ainda ler. */
   --color-primary-gradient-end: #34d399;
 
   /* Secondary */

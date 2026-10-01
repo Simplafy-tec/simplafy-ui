@@ -12,7 +12,7 @@ const Tabs = TabsPrimitive.Root;
  * e `.view-toggle` (:1940): fundo `--color-muted`, ativo = card + foreground + sombra
  * (Platform#2.1.1.10). O trigger lê a variante do `TabsList` pai.
  */
-type TabsListVariant = "underline" | "segmented";
+export type TabsListVariant = "underline" | "segmented";
 const TabsListVariantContext = React.createContext<TabsListVariant>("underline");
 
 interface TabsListProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
@@ -27,7 +27,7 @@ const TabsList = React.forwardRef<React.ComponentRef<typeof TabsPrimitive.List>,
         data-variant={variant}
         className={cn(
           variant === "segmented"
-            ? "inline-flex min-w-0 max-w-full gap-0.5 overflow-x-auto rounded-sm bg-muted p-[3px] text-muted-foreground [scrollbar-width:none]"
+            ? "inline-flex min-w-0 max-w-full gap-0.5 overflow-x-auto rounded-sm bg-muted p-[3px] text-muted-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             : "flex border-b text-muted-foreground",
           className,
         )}

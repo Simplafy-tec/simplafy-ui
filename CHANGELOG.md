@@ -1,11 +1,13 @@
 # Changelog
 
-## [2.5.0] — 2026-10-01
+## [3.0.0] — 2026-10-01
 
 ### Alterado
 
 - **⚠️ BREAKING VISUAL — Button alinhado ao protótipo (Platform#2.1.1.10).** Altura **default 40→34px** (padding 18→14px, fonte 14→13px) e **`sm` 36→28px** (padding 12→10px, fonte 12.5px; ícone 13px). Ícone dentro do botão 16→15px. Protótipo: `.btn` (`kits/hub/hub.css:652`) e `.btn-sm` (:695). `lg` (44px) e `icon` (40×40) não mudam. **Input/Select continuam em 40px** (decisão de 30/09: o protótipo passou a 40px).
-- **⚠️ BREAKING VISUAL — `Button` default deixou de ser gradiente:** fundo SÓLIDO `--color-primary`, texto `--color-primary-foreground`, hover `--color-primary-hover` (`.btn-primary`, `hub.css:664`). Não ficou o brilho verde do dark mode do protótipo (`--brand-green` + glow): o DS não tem esse token.
+- **⚠️ BREAKING VISUAL — `Button` default deixou de ser gradiente:** fundo SÓLIDO `--color-primary`, texto `--color-primary-foreground`, hover `--color-primary-hover` (`.btn-primary`, `hub.css:664`; sombra = a do protótipo). **No tema escuro o texto do primário passa de branco a quase preto** (`--color-primary-foreground` do `.dark`) e o hover clareia em vez de escurecer (contraste AA mantido). Não ficou o brilho verde do dark do protótipo (`--brand-green` + glow): o DS não tem esse token.
+- **Versão major (3.0.0), não minor:** o Hub v2 declara `^2.4.0` e uma minor entraria sozinha na próxima atualização de dependências; major obriga cada consumidor a bumpar de propósito.
+- **Altura virou mínima** (`min-h-[34px]`/`min-h-7`, não `h-*`): botão com texto em 2 linhas cresce em vez de vazar. `variant="link"` mantém `text-sm` (14px) e `w-auto` em qualquer size.
 
 ### Adicionado
 
