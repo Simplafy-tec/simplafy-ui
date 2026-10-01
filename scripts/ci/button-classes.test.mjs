@@ -27,7 +27,7 @@ test('Button primário é sólido (sem gradiente) com hover do token', () => {
 });
 
 test('altura é MÍNIMA (min-h), nunca fixa (h-[34px]/h-7)', () => {
-  assert.doesNotMatch(button, /\bh-\[34px\]|\bh-7\b/);
+  assert.doesNotMatch(button, /(?<![-\w])h-\[34px\]|(?<![-\w])h-7(?![-\w])/);
 });
 
 test('link some com altura, largura e padding de botão em qualquer size (size-auto)', () => {
