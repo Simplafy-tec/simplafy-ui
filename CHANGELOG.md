@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.5.0] — 2026-10-01
+
+### Alterado
+
+- **⚠️ BREAKING VISUAL — Button alinhado ao protótipo (Platform#2.1.1.10).** Altura **default 40→34px** (padding 18→14px, fonte 14→13px) e **`sm` 36→28px** (padding 12→10px, fonte 12.5px; ícone 13px). Ícone dentro do botão 16→15px. Protótipo: `.btn` (`kits/hub/hub.css:652`) e `.btn-sm` (:695). `lg` (44px) e `icon` (40×40) não mudam. **Input/Select continuam em 40px** (decisão de 30/09: o protótipo passou a 40px).
+- **⚠️ BREAKING VISUAL — `Button` default deixou de ser gradiente:** fundo SÓLIDO `--color-primary`, texto `--color-primary-foreground`, hover `--color-primary-hover` (`.btn-primary`, `hub.css:664`). Não ficou o brilho verde do dark mode do protótipo (`--brand-green` + glow): o DS não tem esse token.
+
+### Adicionado
+
+- **`TabsList variant="segmented"`** — abas em pílula do protótipo (`.tab-group`/`.tab`, `.view-toggle`): fundo `bg-muted`, ativa = `bg-card` + `text-foreground` + sombra. O padrão (`underline`) não muda.
+
 ## [2.4.1] — 2026-09-02
 
 ### Corrigido

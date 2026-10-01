@@ -164,13 +164,17 @@ hot / urgente → orange
 
 | Variant | Uso |
 |---|---|
-| `default` | Ação primária (fundo verde gradiente) |
+| `default` | Ação primária (fundo verde SÓLIDO, como `.btn-primary` do protótipo) |
 | `outline` | Ação secundária, cancelar |
 | `ghost` | Ação terciária, ícone em tabela |
 | `destructive` | Excluir, ação irreversível |
 | `link` | Link inline no texto |
 
-**Sizes:** `default` (h-9), `sm` (h-8), `lg` (h-10), `icon` (h-9 w-9)
+**Sizes:** `default` (34px, padding 14px, 13px), `sm` (28px, padding 10px, 12.5px), `lg` (44px), `icon` (40×40)
+
+## Tabs
+
+`<TabsList>` aceita `variant`: `underline` (padrão, abas de página) ou `segmented` (grupo em pílula do protótipo — `.tab-group`/`.view-toggle`: fundo `bg-muted`, aba ativa = card + `text-foreground` + sombra).
 
 ---
 
