@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.1] — 2026-10-01
+
+### Corrigido
+
+- **`cn()` tratava os tamanhos de fonte nomeados do Hub como COR e os descartava.** O `tailwind-merge` só conhece a escala padrão do Tailwind: `cn('text-compact', 'text-foreground')` devolvia só `text-foreground`, e o botão "Lista/Kanban" do Pipeline e o item do menu lateral voltavam a 16px. Agora `text-3xs`, `text-2xs`, `text-micro`, `text-compact`, `text-md` e `text-panel-title` (os `--text-*` do `@theme` do Hub) entram na escala `text` do tema (`src/lib/tailwind-merge-config.mjs`). **Efeito no consumidor:** os rótulos que perdiam o tamanho passam a ter o tamanho certo — e, por perderem o `leading-none` da base, a altura de linha deles muda (ex.: labels do CRM, 16px). É o que o protótipo define; confira a tela ao subir. **Atenção:** a lista é cópia dos tamanhos do Hub; um tamanho novo no `@theme` do Hub precisa entrar também em `tailwind-merge-config.mjs`, senão o defeito volta. Guarda: `scripts/ci/cn-font-size.test.mjs`.
+
 ## [3.0.0] — 2026-10-01
 
 ### Alterado
