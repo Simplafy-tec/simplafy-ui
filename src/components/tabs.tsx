@@ -48,7 +48,7 @@ const TabsTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         variant === "segmented"
-          ? "inline-flex items-center justify-center whitespace-nowrap rounded-xs px-3 py-[5px] text-[12.5px] font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/20 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+          ? "inline-flex items-center justify-center whitespace-nowrap rounded-xs px-3 py-[5px] text-[12.5px] leading-[1.2] font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/20 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm"
           : "-mb-px inline-flex items-center justify-center whitespace-nowrap border-b-2 border-transparent px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/20 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-primary data-[state=active]:text-primary",
         className,
       )}
