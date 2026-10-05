@@ -1,8 +1,8 @@
 name: 🔍 CI
 
+# Só na PR: o merge na main não roda o CI de novo (o commit que entrou por PR
+# já passou aqui) e a publicação mora no publish.yml, disparada pela tag `v*`.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
