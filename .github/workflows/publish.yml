@@ -1,8 +1,12 @@
 name: 📦 Publish @simplafy-tec/ui
 
+# Só a tag de versão publica. Com `push` na main junto, todo merge sem bump de
+# versão tentava republicar a mesma versão e morria em
+# `E409 Cannot publish over existing version` (run 32884155909), e o merge que
+# trazia o bump disparava dois publishes do mesmo commit, um deles fadado ao
+# 409 (runs 24744428701 e 24744430929, v1.1.1).
 on:
   push:
-    branches: [main]
     tags:
       - 'v*'
 
@@ -64,6 +68,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Só publica commit que já está na main: uma tag pode apontar para commit
+      # de branch. Exige o histórico completo (`fetch-depth: 0`) para o
+      # merge-base enxergar `origin/main`.
+      - name: Ref publicável (commit contido na main)
+        run: |
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::$GITHUB_SHA ($GITHUB_REF_NAME) não está na main — publique só o que entrou por PR"
+            exit 1
+          fi
 
       - uses: pnpm/action-setup@v4
         with:
@@ -78,10 +94,22 @@ jobs:
           # .npmrc do job com `//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}`.
           cache: pnpm
 
+      # A tag tem de ser a versão do package.json: tag sem bump publicaria por
+      # cima de versão existente (E409), e bump sem tag correspondente sairia com
+      # o número errado. Falha antes de instalar qualquer coisa.
+      - name: Tag confere com a versão do pacote
+        run: |
+          versao="v$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_NAME" != "$versao" ]; then
+            echo "::error::tag $GITHUB_REF_NAME não confere com a versão do package.json ($versao)"
+            exit 1
+          fi
+
       - run: pnpm install --frozen-lockfile
-      # Mesmo gate do CI, agora também no caminho que PUBLICA. O CI roda no push
-      # para main, mas em job separado: sem esta linha, um token reprovado sairia
-      # publicado no pacote enquanto o job vizinho ficava vermelho.
+      # Gate dos tokens no caminho que PUBLICA. Fica mesmo com o CI da PR: a main
+      # deste repo não tem proteção de branch e já recebeu push direto (deae02c),
+      # então nem todo commit tagueado passou pelo CI. Custa segundos
+      # (`node --test`, sem dependência extra); lint e typecheck ficam só no CI.
       - run: pnpm test
       - run: pnpm build
       - run: pnpm publish --no-git-checks

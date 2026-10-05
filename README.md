@@ -44,6 +44,28 @@ import "@simplafy-tec/ui/globals.css";
 
 Ver `COMPONENTS.md` para tabela completa de decisão.
 
+## Publicação
+
+Por tag `v*` (`.github/workflows/publish.yml`), no GitHub Packages, em runner
+hospedado pelo GitHub. **Sem tag, nada é publicado**: o merge na `main` não
+publica.
+
+1. Numa PR para a `main`: bump de `version` no `package.json` e a entrada nova
+   no `CHANGELOG.md`.
+2. Depois do merge, crie a tag no commit de merge da `main` e envie:
+
+   ```bash
+   git checkout main && git pull
+   git tag v<versão>        # igual ao `version` do package.json
+   git push origin v<versão>
+   ```
+
+- **Travas:** o publish reprova se a tag não for igual a `v<version>` do
+  `package.json` (tag sem bump bateria em `E409 Cannot publish over existing
+  version`) e se o commit tagueado não estiver na `main`.
+- **Gate:** lint, typecheck, testes e build rodam no CI da PR; o publish
+  repete só o teste dos tokens e o build.
+
 ---
 
 ## Design System
