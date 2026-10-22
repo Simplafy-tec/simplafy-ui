@@ -8,7 +8,13 @@ import { cn } from '../lib/utils';
  * `.btn-sm` 28px / 0 10px / 12.5px (:695) e `.btn-primary` SÓLIDO `--color-primary`,
  * hover `--color-primary-hover` (:664). Altura e padding moram em `size`; a variante
  * só decide cor e borda (Platform#2.1.1.10).
+ *
+ * Toque (Platform#2.1.1.12): em tela estreita (< 768px) ou ponteiro grosso (`pointer: coarse`) `default` e `sm` sobem
+ * para 40×40px, como `ds-campo-40.css` do protótipo (`@media (pointer: coarse), (max-width: 767px)` → `min-height: 40px`).
+ * Altura responsiva no próprio botão, não pseudo-elemento: o alvo de toque é visível e o layout reserva o espaço.
+ * Desktop (≥ 768px, ponteiro fino) não muda: 34px / 28px. `lg` (44) e `icon` (40) já cumprem.
  */
+const TOQUE_40 = 'max-md:min-h-10 max-md:min-w-10 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10';
 const buttonVariants = cva(
   [
     'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm font-semibold font-sans text-[13px] leading-tight',
@@ -44,15 +50,20 @@ const buttonVariants = cva(
         link: 'border-0 py-0 text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'min-h-[34px] px-[14px]',
-        sm: 'min-h-7 rounded-xs px-2.5 text-[12.5px] [&_svg]:size-[13px]',
+        default: `min-h-[34px] px-[14px] ${TOQUE_40}`,
+        sm: `min-h-7 rounded-xs px-2.5 text-[12.5px] [&_svg]:size-[13px] ${TOQUE_40}`,
         lg: 'min-h-11 rounded-sm px-8 text-sm',
         icon: 'size-10 min-h-10 min-w-10 shrink-0 rounded-xs px-0',
       },
     },
     compoundVariants: [
       // `link` é texto corrido: sem altura nem padding de botão, em qualquer size.
-      { variant: 'link', className: 'size-auto min-h-0 min-w-0 px-0 text-sm' },
+      {
+        variant: 'link',
+        // Os `max-md:`/`pointer-coarse` do size não são desfeitos por `min-h-0` puro (outro modificador): zerar aqui também.
+        className:
+          'size-auto min-h-0 min-w-0 px-0 text-sm max-md:min-h-0 max-md:min-w-0 [@media(pointer:coarse)]:min-h-0 [@media(pointer:coarse)]:min-w-0',
+      },
     ],
     defaultVariants: {
       variant: 'default',
