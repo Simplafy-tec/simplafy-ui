@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.0] — 2026-10-22
+
+### Adicionado
+
+- **`Button` `default` e `sm` com área de toque de 40×40px no celular (Platform#2.1.1.12).** Em tela estreita (< 768px) ou ponteiro grosso (`pointer: coarse`) o botão sobe para `min-h-10 min-w-10`, como `ds-campo-40.css` do protótipo (`@media (pointer: coarse), (max-width: 767px)`). Resolvido NO kit (altura responsiva no próprio botão), nunca tela a tela. **Desktop não muda** (≥ 768px, ponteiro fino): `default` 34px, `sm` 28px. `lg` (44px) e `icon` (40px) já cumpriam. `variant="link"` segue sem altura nem largura mínima (texto corrido).
+- Guardas em `scripts/ci/button-classes.test.mjs` (prova invertida: tirar `TOQUE_40` do `default`/`sm`, o `max-md:` ou o reset do `link` deixa o teste vermelho).
+- Minor (3.1.0) e não major: o visual do desktop é o mesmo; o Hub v2 declara `^3.0.1` e o bump do especificador para `^3.1.0` é deliberado (story Platform#2.1.1.12).
+
 ## [3.0.1] — 2026-10-01
 
 ### Corrigido

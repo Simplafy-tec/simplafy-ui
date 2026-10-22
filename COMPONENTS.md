@@ -172,6 +172,8 @@ hot / urgente → orange
 
 **Sizes:** `default` (34px, padding 14px, 13px), `sm` (28px, padding 10px, 12.5px), `lg` (44px), `icon` (40×40)
 
+**Toque (celular):** em tela < 768px ou `pointer: coarse`, `default` e `sm` têm área de toque de 40×40px (`min-h-10 min-w-10`), resolvida no próprio kit; nenhuma tela precisa ajustar. No desktop: 34px / 28px. `variant="link"` não tem altura mínima.
+
 ## Tabs
 
 `<TabsList>` aceita `variant`: `underline` (padrão, abas de página) ou `segmented` (grupo em pílula do protótipo — `.tab-group`/`.view-toggle`: fundo `bg-muted`, aba ativa = card + `text-foreground` + sombra).
