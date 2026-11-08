@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1] — 2026-11-08
+
+### Corrigido
+
+- **X de fechar do `SheetContent` com alvo de toque de 40×40px (issue#3876).** O botão era só o ícone (16px), abaixo do piso de 40px da casa: quem usa o celular errava o toque para fechar a gaveta (Exportar, Compartilhar painel…). Agora o botão é `size-10` centrado, com `right-1 top-1`, então o ícone de 16px fica no MESMO ponto de antes (24px do canto): o visual não muda, só a área clicável cresce. Foco visível (`ring-[3px]`) e rótulo «Fechar» mantidos. Resolvido NO kit, nunca tela a tela. Guarda: `scripts/ci/sheet-close-touch.test.mjs` (prova invertida: voltar a `right-4 top-4` sem `size-10` deixa o teste vermelho). `DialogContent` tem o mesmo X de 16px e NÃO foi alterado aqui (fora do pedido).
+- Patch (3.1.1): o Hub v2 declara `^3.1.0` e pega a correção ao atualizar o pacote.
+
 ## [3.1.0] — 2026-10-22
 
 ### Adicionado
