@@ -149,6 +149,8 @@ hot / urgente → orange
 </Sheet>
 ```
 
+**X de fechar:** o `SheetContent` já traz o X com área de toque de 40×40px (o ícone segue com 16px, no mesmo ponto); nenhuma tela precisa ajustar. Para esconder: `showCloseButton={false}`.
+
 ### Loading Skeleton
 ```tsx
 <div className="flex flex-col gap-3">
